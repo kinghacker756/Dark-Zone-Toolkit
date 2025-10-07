@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARK TECH ZONE - Grow Your Channel & Community</title>
+    <meta name="description" content="Promote your channels and grow your community with Dark Tech Zone">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #ffffff;
+            --text-secondary: #b8b8b8;
+            --success: #4CAF50;
+            --error: #f44336;
+            --warning: #ff9800;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        header {
+            background-color: rgba(10, 10, 20, 0.9);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+            user-select: none;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo i {
+            color: var(--highlight);
+            font-size: 1.8rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--highlight), #ff7b9c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--highlight);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--highlight);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 5rem 0 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, var(--highlight));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, var(--accent), var(--highlight));
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.6);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            font-size: 2.2rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--highlight));
+            border-radius: 2px;
+        }
+        
+        .form-container {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--highlight);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+        }
+        
+        .category-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .category-option {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-option:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--highlight);
+        }
+        
+        .category-option.selected {
+            background-color: rgba(233, 69, 96, 0.2);
+            border-color: var(--highlight);
+        }
+        
+        .category-option i {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--highlight);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to right, var(--accent), var(--highlight));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(233, 69, 96, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .submit-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+        
+        .success-message {
+            background-color: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--success);
+            color: #a5d6a7;
+        }
+        
+        .error-message {
+            background-color: rgba(244, 67, 54, 0.2);
+            border: 1px solid var(--error);
+            color: #ffabab;
+        }
+        
+        .info-message {
+            background-color: rgba(33, 150, 243, 0.2);
+            border: 1px solid #2196F3;
+            color: #90caf9;
+        }
+        
+        .warning-message {
+            background-color: rgba(255, 152, 0, 0.2);
+            border: 1px solid var(--warning);
+            color: #ffcc80;
+        }
+        
+        .telegram-forward-status {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            display: none;
+        }
+        
+        .telegram-forward-status h3 {
+            color: var(--highlight);
+            margin-bottom: 1rem;
+        }
+        
+        .telegram-progress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.5s;
+        }
+        
+        .step-icon.active {
+            background: rgba(233, 69, 96, 0.3);
+            border-color: var(--highlight);
+        }
+        
+        .step-icon.completed {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: var(--success);
+        }
+        
+        .step-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        
+        .progress-connector {
+            width: 50px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.5s;
+        }
+        
+        .progress-connector.completed {
+            background: var(--success);
+        }
+        
+        .telegram-status-text {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-title {
+            font-size: 2rem;
+            color: var(--highlight);
+        }
+        
+        .close-admin {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .submissions-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .submissions-table th,
+        .submissions-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .submissions-table th {
+            background: rgba(15, 52, 96, 0.5);
+            color: var(--highlight);
+            font-weight: 600;
+        }
+        
+        .submissions-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .action-btn {
+            background: transparent;
+            color: var(--highlight);
+            border: 1px solid var(--highlight);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: var(--highlight);
+            color: white;
+        }
+        
+        .action-btn.delete {
+            color: var(--error);
+            border-color: var(--error);
+        }
+        
+        .action-btn.delete:hover {
+            background: var(--error);
+            color: white;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .admin-btn {
+            background: linear-gradient(to right, var(--accent), var(--highlight));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(233, 69, 96, 0.4);
+        }
+        
+        .empty-admin-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+        
+        /* Click Counter Indicator */
+        .click-counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: none;
+            z-index: 999;
+            text-align: center;
+        }
+        
+        .counter-progress {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            justify-content: center;
+        }
+        
+        .counter-step {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s;
+        }
+        
+        .counter-step.active {
+            background: var(--highlight);
+        }
+        
+        /* Password Modal */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .password-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .password-container h3 {
+            color: var(--highlight);
+            margin-bottom: 1rem;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: var(--highlight);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+        }
+        
+        .password-btn {
+            background: linear-gradient(to right, var(--accent), var(--highlight));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 1rem;
+        }
+        
+        .password-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(233, 69, 96, 0.4);
+        }
+        
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .channel-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .channel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .channel-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: rgba(15, 52, 96, 0.3);
+        }
+        
+        .channel-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, var(--accent), var(--highlight));
+            font-size: 1.5rem;
+        }
+        
+        .channel-info h3 {
+            margin-bottom: 0.3rem;
+        }
+        
+        .channel-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .channel-body {
+            padding: 1.5rem;
+        }
+        
+        .channel-link {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .channel-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--highlight);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Status badges */
+        .status-pending {
+            color: var(--warning);
+            font-weight: bold;
+        }
+        
+        .status-approved {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .status-rejected {
+            color: var(--error);
+            font-weight: bold;
+        }
+        
+        /* Admin tabs */
+        .admin-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab.active {
+            border-bottom: 2px solid var(--highlight);
+            color: var(--highlight);
+        }
+        
+        .admin-tab-content {
+            display: none;
+        }
+        
+        .admin-tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .category-options {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .admin-panel {
+                padding: 1rem;
+            }
+            
+            .submissions-table {
+                font-size: 0.8rem;
+            }
+            
+            .submissions-table th,
+            .submissions-table td {
+                padding: 0.5rem;
+            }
+            
+            .click-counter {
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+            }
+            
+            .telegram-progress {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .progress-connector {
+                width: 2px;
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo" id="admin-logo">
+                    <i class="fas fa-rocket"></i>
+                    <span class="logo-text">DARK TECH ZONE</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#home">Home</a>
+                    <a href="#submit">Submit Channel</a>
+                    <a href="#channels">Channels</a>
+                    <a href="#about">About</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Grow Your Channel & Community</h1>
+            <p>Promote your channels on WhatsApp, Facebook, Telegram, and more to reach a wider audience and grow your community with Dark Tech Zone.</p>
+            <a href="#submit" class="cta-button">Submit Your Channel</a>
+        </div>
+    </section>
+
+    <section id="submit">
+        <div class="container">
+            <h2 class="section-title">Submit Your Channel</h2>
+            <div class="form-container">
+                <form id="channel-form">
+                    <div class="form-group">
+                        <label for="channel-name">Channel Name</label>
+                        <input type="text" id="channel-name" class="form-control" placeholder="Enter your channel name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="channel-link">Channel Link</label>
+                        <input type="url" id="channel-link" class="form-control" placeholder="https://example.com/channel" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Category</label>
+                        <div class="category-options">
+                            <div class="category-option" data-category="whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>WhatsApp</span>
+                            </div>
+                            <div class="category-option" data-category="facebook">
+                                <i class="fab fa-facebook"></i>
+                                <span>Facebook</span>
+                            </div>
+                            <div class="category-option" data-category="telegram">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram</span>
+                            </div>
+                            <div class="category-option" data-category="instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </div>
+                            <div class="category-option" data-category="youtube">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </div>
+                            <div class="category-option" data-category="discord">
+                                <i class="fab fa-discord"></i>
+                                <span>Discord</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="selected-category" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Channel Description (Optional)</label>
+                        <textarea id="description" class="form-control" rows="3" placeholder="Briefly describe your channel..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        <span id="btn-text">Submit Channel</span>
+                    </button>
+                    
+                    <div class="message success-message" id="success-message">
+                        <i class="fas fa-check-circle"></i> Your channel has been submitted successfully! We'll review it soon.
+                    </div>
+                    
+                    <div class="message error-message" id="error-message">
+                        <i class="fas fa-exclamation-circle"></i> There was an error submitting your channel. Please try again.
+                    </div>
+                </form>
+                
+                <!-- Telegram Auto-Forward Status -->
+                <div class="telegram-forward-status" id="telegram-forward-status">
+                    <h3><i class="fab fa-telegram"></i> Auto-Forwarding to Telegram</h3>
+                    <div class="telegram-progress">
+                        <div class="progress-step">
+                            <div class="step-icon" id="step-1">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="step-label">Storing Data</div>
+                        </div>
+                        <div class="progress-connector" id="connector-1"></div>
+                        <div class="progress-step">
+                            <div class="step-icon" id="step-2">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <div class="step-label">Sending to Bot</div>
+                        </div>
+                        <div class="progress-connector" id="connector-2"></div>
+                        <div class="progress-step">
+                            <div class="step-icon" id="step-3">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-label">Completed</div>
+                        </div>
+                    </div>
+                    <div class="telegram-status-text" id="telegram-status-text">
+                        Preparing to forward your submission to our Telegram bot...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="channels">
+        <div class="container">
+            <h2 class="section-title">Featured Channels</h2>
+            <div class="channels-grid" id="channels-grid">
+                <!-- Channels will be dynamically added here -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span class="logo-text">DARK TECH ZONE</span>
+            </div>
+            <p>Grow your community with our platform</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>&copy; 2023 Dark Tech Zone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Click Counter Indicator -->
+    <div class="click-counter" id="click-counter">
+        <div>Admin Access:</div>
+        <div class="counter-progress" id="counter-progress">
+            <div class="counter-step"></div>
+            <div class="counter-step"></div>
+            <div class="counter-step"></div>
+        </div>
+        <div id="counter-text">Click logo 3 times</div>
+    </div>
+
+    <!-- Password Modal -->
+    <div class="password-modal" id="password-modal">
+        <div class="password-container">
+            <h3>Admin Panel Access</h3>
+            <p>Enter the admin key to continue:</p>
+            <input type="password" class="password-input" id="admin-password" placeholder="Enter admin key">
+            <button class="password-btn" id="submit-password">Access Admin Panel</button>
+            <div class="message error-message" id="password-error" style="display: none; margin-top: 1rem;">
+                <i class="fas fa-exclamation-circle"></i> Incorrect password. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="container">
+            <div class="admin-header">
+                <h2 class="admin-title">Admin Panel - Channel Submissions</h2>
+                <button class="close-admin" id="close-admin">Close Admin</button>
+            </div>
+            
+            <div class="admin-tabs">
+                <div class="admin-tab active" data-tab="submissions">Submissions</div>
+                <div class="admin-tab" data-tab="approved">Approved Channels</div>
+                <div class="admin-tab" data-tab="settings">Settings</div>
+            </div>
+            
+            <!-- Submissions Tab -->
+            <div class="admin-tab-content active" id="submissions-tab">
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-submissions">0</div>
+                        <div class="stat-label">Total Submissions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="pending-submissions">0</div>
+                        <div class="stat-label">Pending Review</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="approved-submissions">0</div>
+                        <div class="stat-label">Approved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="rejected-submissions">0</div>
+                        <div class="stat-label">Rejected</div>
+                    </div>
+                </div>
+                
+                <div class="admin-actions">
+                    <button class="admin-btn" id="export-csv">Export CSV</button>
+                    <button class="admin-btn" id="approve-all">Approve All Pending</button>
+                    <button class="admin-btn" id="delete-all">Delete All</button>
+                </div>
+                
+                <div id="admin-content">
+                    <table class="submissions-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Channel Name</th>
+                                <th>Category</th>
+                                <th>Link</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissions-table-body">
+                            <!-- Submissions will be populated here -->
+                        </tbody>
+                    </table>
+                    <div class="empty-admin-state" id="empty-admin-state" style="display: none;">
+                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p>No channel submissions yet.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Approved Channels Tab -->
+            <div class="admin-tab-content" id="approved-tab">
+                <h3 style="margin-bottom: 1.5rem;">Approved Channels</h3>
+                <div class="admin-actions">
+                    <button class="admin-btn" id="refresh-approved">Refresh</button>
+                    <button class="admin-btn" id="export-approved">Export Approved</button>
+                </div>
+                <div id="approved-channels-list">
+                    <!-- Approved channels will be displayed here -->
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="admin-tab-content" id="settings-tab">
+                <h3 style="margin-bottom: 1.5rem;">Admin Settings</h3>
+                <div class="form-container" style="max-width: 600px;">
+                    <div class="form-group">
+                        <label for="admin-password-change">Change Admin Password</label>
+                        <input type="password" id="admin-password-change" class="form-control" placeholder="New password">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password-confirm">Confirm New Password</label>
+                        <input type="password" id="admin-password-confirm" class="form-control" placeholder="Confirm new password">
+                    </div>
+                    <button class="admin-btn" id="save-password">Save Password</button>
+                    
+                    <div class="form-group" style="margin-top: 2rem;">
+                        <label for="auto-approve">Auto-approve submissions</label>
+                        <input type="checkbox" id="auto-approve" style="margin-left: 10px;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notification-sound">Enable notification sound</label>
+                        <input type="checkbox" id="notification-sound" style="margin-left: 10px;" checked>
+                    </div>
+                    
+                    <div class="admin-actions" style="margin-top: 2rem;">
+                        <button class="admin-btn" id="reset-data">Reset All Data</button>
+                        <button class="admin-btn" id="export-backup">Export Backup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin access configuration
+        const ADMIN_PASSWORD = 'DARK-TECH-ZONE';
+        let logoClickCount = 0;
+        const REQUIRED_CLICKS = 3;
+        let clickTimeout = null;
+        
+        // Category selection
+        const categoryOptions = document.querySelectorAll('.category-option');
+        const selectedCategory = document.getElementById('selected-category');
+        
+        // Form submission elements
+        const channelForm = document.getElementById('channel-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const telegramForwardStatus = document.getElementById('telegram-forward-status');
+        const telegramStatusText = document.getElementById('telegram-status-text');
+        const channelsGrid = document.getElementById('channels-grid');
+        
+        // Progress step elements
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+        const connector1 = document.getElementById('connector-1');
+        const connector2 = document.getElementById('connector-2');
+        
+        // Admin panel elements
+        const adminPanel = document.getElementById('admin-panel');
+        const closeAdmin = document.getElementById('close-admin');
+        const totalSubmissions = document.getElementById('total-submissions');
+        const pendingSubmissions = document.getElementById('pending-submissions');
+        const approvedSubmissions = document.getElementById('approved-submissions');
+        const rejectedSubmissions = document.getElementById('rejected-submissions');
+        const submissionsTableBody = document.getElementById('submissions-table-body');
+        const emptyAdminState = document.getElementById('empty-admin-state');
+        const exportCsvBtn = document.getElementById('export-csv');
+        const approveAllBtn = document.getElementById('approve-all');
+        const deleteAllBtn = document.getElementById('delete-all');
+        
+        // Admin tabs
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        const adminTabContents = document.querySelectorAll('.admin-tab-content');
+        
+        // Approved channels tab
+        const approvedChannelsList = document.getElementById('approved-channels-list');
+        const refreshApprovedBtn = document.getElementById('refresh-approved');
+        const exportApprovedBtn = document.getElementById('export-approved');
+        
+        // Settings tab
+        const savePasswordBtn = document.getElementById('save-password');
+        const resetDataBtn = document.getElementById('reset-data');
+        const exportBackupBtn = document.getElementById('export-backup');
+        
+        // Click counter elements
+        const clickCounter = document.getElementById('click-counter');
+        const counterProgress = document.getElementById('counter-progress');
+        const counterText = document.getElementById('counter-text');
+        
+        // Password modal elements
+        const passwordModal = document.getElementById('password-modal');
+        const adminPassword = document.getElementById('admin-password');
+        const submitPassword = document.getElementById('submit-password');
+        const passwordError = document.getElementById('password-error');
+        
+        // Logo element
+        const adminLogo = document.getElementById('admin-logo');
+        
+        // Function to validate URL
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+        
+        // Function to generate unique ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+        
+        // Function to get all submissions from localStorage
+        function getSubmissions() {
+            return JSON.parse(localStorage.getItem('channelSubmissions') || '[]');
+        }
+        
+        // Function to save submissions to localStorage
+        function saveSubmissions(submissions) {
+            localStorage.setItem('channelSubmissions', JSON.stringify(submissions));
+        }
+        
+        // Function to get approved channels
+        function getApprovedChannels() {
+            const submissions = getSubmissions();
+            return submissions.filter(s => s.status === 'approved');
+        }
+        
+        // Function to update admin panel statistics
+        function updateAdminStats() {
+            const submissions = getSubmissions();
+            const total = submissions.length;
+            const pending = submissions.filter(s => s.status === 'pending').length;
+            const approved = submissions.filter(s => s.status === 'approved').length;
+            const rejected = submissions.filter(s => s.status === 'rejected').length;
+            
+            totalSubmissions.textContent = total;
+            pendingSubmissions.textContent = pending;
+            approvedSubmissions.textContent = approved;
+            rejectedSubmissions.textContent = rejected;
+        }
+        
+        // Function to render submissions in admin panel
+        function renderSubmissions() {
+            const submissions = getSubmissions();
+            submissionsTableBody.innerHTML = '';
+            
+            if (submissions.length === 0) {
+                emptyAdminState.style.display = 'block';
+                return;
+            }
+            
+            emptyAdminState.style.display = 'none';
+            
+            submissions.forEach(submission => {
+                const row = document.createElement('tr');
+                
+                // Format date
+                const date = new Date(submission.timestamp);
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                
+                row.innerHTML = `
+                    <td>${submission.id.substring(0, 8)}</td>
+                    <td>${submission.name}</td>
+                    <td>${submission.category}</td>
+                    <td><a href="${submission.link}" target="_blank">View</a></td>
+                    <td>${submission.description || 'N/A'}</td>
+                    <td>
+                        <span class="status-${submission.status}">${submission.status}</span>
+                    </td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        <button class="action-btn approve" data-id="${submission.id}">Approve</button>
+                        <button class="action-btn reject" data-id="${submission.id}">Reject</button>
+                        <button class="action-btn delete" data-id="${submission.id}">Delete</button>
+                    </td>
+                `;
+                
+                submissionsTableBody.appendChild(row);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.action-btn.approve').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    updateSubmissionStatus(id, 'approved');
+                });
+            });
+            
+            document.querySelectorAll('.action-btn.reject').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    updateSubmissionStatus(id, 'rejected');
+                });
+            });
+            
+            document.querySelectorAll('.action-btn.delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    deleteSubmission(id);
+                });
+            });
+        }
+        
+        // Function to render approved channels
+        function renderApprovedChannels() {
+            const approvedChannels = getApprovedChannels();
+            approvedChannelsList.innerHTML = '';
+            
+            if (approvedChannels.length === 0) {
+                approvedChannelsList.innerHTML = `
+                    <div class="empty-admin-state">
+                        <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p>No approved channels yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const channelsGrid = document.createElement('div');
+            channelsGrid.className = 'channels-grid';
+            
+            approvedChannels.forEach(channel => {
+                const channelCard = document.createElement('div');
+                channelCard.className = 'channel-card';
+                
+                const iconClass = getIconForCategory(channel.category);
+                
+                channelCard.innerHTML = `
+                    <div class="channel-header">
+                        <div class="channel-icon">
+                            <i class="${iconClass}"></i>
+                        </div>
+                        <div class="channel-info">
+                            <h3>${channel.name}</h3>
+                            <p>${channel.category.charAt(0).toUpperCase() + channel.category.slice(1)} Channel</p>
+                        </div>
+                    </div>
+                    <div class="channel-body">
+                        <p>${channel.description || 'No description provided.'}</p>
+                        <a href="${channel.link}" class="channel-link" target="_blank">Join Channel</a>
+                        <button class="action-btn delete" data-id="${channel.id}" style="margin-top: 10px;">Remove</button>
+                    </div>
+                `;
+                
+                channelsGrid.appendChild(channelCard);
+            });
+            
+            approvedChannelsList.appendChild(channelsGrid);
+            
+            // Add event listeners to remove buttons
+            document.querySelectorAll('#approved-channels-list .action-btn.delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    updateSubmissionStatus(id, 'pending');
+                    renderApprovedChannels();
+                });
+            });
+        }
+        
+        // Function to get icon class for category
+        function getIconForCategory(category) {
+            const icons = {
+                'whatsapp': 'fab fa-whatsapp',
+                'facebook': 'fab fa-facebook',
+                'telegram': 'fab fa-telegram',
+                'instagram': 'fab fa-instagram',
+                'youtube': 'fab fa-youtube',
+                'discord': 'fab fa-discord'
+            };
+            
+            return icons[category] || 'fas fa-link';
+        }
+        
+        // Function to render featured channels on main page
+        function renderFeaturedChannels() {
+            const approvedChannels = getApprovedChannels();
+            channelsGrid.innerHTML = '';
+            
+            // Show only the first 6 approved channels as featured
+            const featuredChannels = approvedChannels.slice(0, 6);
+            
+            if (featuredChannels.length === 0) {
+                channelsGrid.innerHTML = `
+                    <div style="text-align: center; grid-column: 1 / -1; padding: 2rem; color: var(--text-secondary);">
+                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p>No featured channels yet. Submit your channel to be featured here!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            featuredChannels.forEach(channel => {
+                const channelCard = document.createElement('div');
+                channelCard.className = 'channel-card';
+                
+                const iconClass = getIconForCategory(channel.category);
+                
+                channelCard.innerHTML = `
+                    <div class="channel-header">
+                        <div class="channel-icon">
+                            <i class="${iconClass}"></i>
+                        </div>
+                        <div class="channel-info">
+                            <h3>${channel.name}</h3>
+                            <p>${channel.category.charAt(0).toUpperCase() + channel.category.slice(1)} Channel</p>
+                        </div>
+                    </div>
+                    <div class="channel-body">
+                        <p>${channel.description || 'No description provided.'}</p>
+                        <a href="${channel.link}" class="channel-link" target="_blank">Join Channel</a>
+                    </div>
+                `;
+                
+                channelsGrid.appendChild(channelCard);
+            });
+        }
+        
+        // Function to update submission status
+        function updateSubmissionStatus(id, status) {
+            const submissions = getSubmissions();
+            const submissionIndex = submissions.findIndex(s => s.id === id);
+            
+            if (submissionIndex !== -1) {
+                submissions[submissionIndex].status = status;
+                saveSubmissions(submissions);
+                updateAdminStats();
+                renderSubmissions();
+                renderApprovedChannels();
+                renderFeaturedChannels();
+                
+                // Show notification
+                if (status === 'approved') {
+                    showNotification(`Channel "${submissions[submissionIndex].name}" has been approved.`);
+                } else if (status === 'rejected') {
+                    showNotification(`Channel "${submissions[submissionIndex].name}" has been rejected.`);
+                }
+            }
+        }
+        
+        // Function to delete a submission
+        function deleteSubmission(id) {
+            if (confirm('Are you sure you want to delete this submission?')) {
+                const submissions = getSubmissions();
+                const submission = submissions.find(s => s.id === id);
+                const filteredSubmissions = submissions.filter(s => s.id !== id);
+                saveSubmissions(filteredSubmissions);
+                updateAdminStats();
+                renderSubmissions();
+                renderApprovedChannels();
+                renderFeaturedChannels();
+                
+                if (submission) {
+                    showNotification(`Channel "${submission.name}" has been deleted.`);
+                }
+            }
+        }
+        
+        // Function to show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--card-bg);
+                color: var(--text);
+                padding: 1rem;
+                border-radius: 8px;
+                border-left: 4px solid var(--highlight);
+                box-shadow: var(--shadow);
+                z-index: 10000;
+                max-width: 300px;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-bell" style="color: var(--highlight);"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Add CSS for notification animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Function to simulate Telegram auto-forward
+        function simulateTelegramForward(channelName, channelLink, category, description) {
+            return new Promise((resolve) => {
+                // Reset progress indicators
+                step1.className = 'step-icon';
+                step2.className = 'step-icon';
+                step3.className = 'step-icon';
+                connector1.className = 'progress-connector';
+                connector2.className = 'progress-connector';
+                
+                // Show the progress section
+                telegramForwardStatus.style.display = 'block';
+                telegramForwardStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Step 1: Storing data
+                telegramStatusText.textContent = 'Storing your submission locally...';
+                step1.classList.add('active');
+                
+                setTimeout(() => {
+                    step1.classList.remove('active');
+                    step1.classList.add('completed');
+                    connector1.classList.add('completed');
+                    
+                    // Step 2: Sending to Telegram bot
+                    telegramStatusText.textContent = 'Forwarding to Telegram bot @DarkTechZoneBot...';
+                    step2.classList.add('active');
+                    
+                    setTimeout(() => {
+                        step2.classList.remove('active');
+                        step2.classList.add('completed');
+                        connector2.classList.add('completed');
+                        
+                        // Step 3: Completed
+                        telegramStatusText.textContent = 'Successfully forwarded to Telegram! Your submission is being reviewed.';
+                        step3.classList.add('active');
+                        
+                        setTimeout(() => {
+                            step3.classList.remove('active');
+                            step3.classList.add('completed');
+                            
+                            // Resolve the promise after completion
+                            setTimeout(() => {
+                                resolve();
+                            }, 1000);
+                        }, 1500);
+                    }, 2000);
+                }, 1500);
+            });
+        }
+        
+        // Function to export submissions as CSV
+        function exportToCsv() {
+            const submissions = getSubmissions();
+            if (submissions.length === 0) {
+                alert('No submissions to export.');
+                return;
+            }
+            
+            const headers = ['ID', 'Name', 'Category', 'Link', 'Description', 'Status', 'Date'];
+            const csvContent = [
+                headers.join(','),
+                ...submissions.map(submission => [
+                    submission.id,
+                    `"${submission.name.replace(/"/g, '""')}"`,
+                    submission.category,
+                    submission.link,
+                    `"${(submission.description || '').replace(/"/g, '""')}"`,
+                    submission.status,
+                    submission.timestamp
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `channel-submissions-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Function to export approved channels as CSV
+        function exportApprovedToCsv() {
+            const approvedChannels = getApprovedChannels();
+            if (approvedChannels.length === 0) {
+                alert('No approved channels to export.');
+                return;
+            }
+            
+            const headers = ['ID', 'Name', 'Category', 'Link', 'Description', 'Date Approved'];
+            const csvContent = [
+                headers.join(','),
+                ...approvedChannels.map(channel => [
+                    channel.id,
+                    `"${channel.name.replace(/"/g, '""')}"`,
+                    channel.category,
+                    channel.link,
+                    `"${(channel.description || '').replace(/"/g, '""')}"`,
+                    channel.timestamp
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `approved-channels-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Function to approve all pending submissions
+        function approveAllPending() {
+            const submissions = getSubmissions();
+            const updatedSubmissions = submissions.map(s => {
+                if (s.status === 'pending') {
+                    return { ...s, status: 'approved' };
+                }
+                return s;
+            });
+            
+            saveSubmissions(updatedSubmissions);
+            updateAdminStats();
+            renderSubmissions();
+            renderApprovedChannels();
+            renderFeaturedChannels();
+            alert('All pending submissions have been approved.');
+        }
+        
+        // Function to delete all submissions
+        function deleteAllSubmissions() {
+            if (confirm('Are you sure you want to delete ALL submissions? This action cannot be undone.')) {
+                saveSubmissions([]);
+                updateAdminStats();
+                renderSubmissions();
+                renderApprovedChannels();
+                renderFeaturedChannels();
+                alert('All submissions have been deleted.');
+            }
+        }
+        
+        // Function to reset all data
+        function resetAllData() {
+            if (confirm('Are you sure you want to reset ALL data? This will delete all submissions and cannot be undone.')) {
+                localStorage.removeItem('channelSubmissions');
+                updateAdminStats();
+                renderSubmissions();
+                renderApprovedChannels();
+                renderFeaturedChannels();
+                alert('All data has been reset.');
+            }
+        }
+        
+        // Function to export backup
+        function exportBackup() {
+            const data = {
+                submissions: getSubmissions(),
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dark-tech-zone-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Logo click handler for admin access
+        function handleLogoClick() {
+            logoClickCount++;
+            
+            // Update the visual indicator
+            updateClickCounter();
+            
+            // Show the indicator if this is the first click
+            if (logoClickCount === 1) {
+                clickCounter.style.display = 'block';
+            }
+            
+            // Reset timeout for click sequence
+            if (clickTimeout) {
+                clearTimeout(clickTimeout);
+            }
+            clickTimeout = setTimeout(() => {
+                logoClickCount = 0;
+                clickCounter.style.display = 'none';
+                updateClickCounter();
+            }, 3000); // Reset after 3 seconds of inactivity
+            
+            // Check if the required number of clicks has been reached
+            if (logoClickCount === REQUIRED_CLICKS) {
+                // Show password modal
+                passwordModal.style.display = 'flex';
+                adminPassword.focus();
+                
+                // Reset click count
+                logoClickCount = 0;
+                clickCounter.style.display = 'none';
+                updateClickCounter();
+                
+                // Clear timeout
+                if (clickTimeout) {
+                    clearTimeout(clickTimeout);
+                    clickTimeout = null;
+                }
+            }
+        }
+        
+        // Update the visual click counter
+        function updateClickCounter() {
+            const steps = counterProgress.querySelectorAll('.counter-step');
+            steps.forEach((step, index) => {
+                if (index < logoClickCount) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+            
+            counterText.textContent = `${REQUIRED_CLICKS - logoClickCount} clicks remaining`;
+        }
+        
+        // Password verification
+        function verifyPassword() {
+            const enteredPassword = adminPassword.value.trim();
+            
+            if (enteredPassword === ADMIN_PASSWORD) {
+                // Correct password - open admin panel
+                passwordModal.style.display = 'none';
+                adminPassword.value = '';
+                passwordError.style.display = 'none';
+                
+                updateAdminStats();
+                renderSubmissions();
+                renderApprovedChannels();
+                adminPanel.style.display = 'block';
+            } else {
+                // Incorrect password - show error
+                passwordError.style.display = 'block';
+                adminPassword.value = '';
+                adminPassword.focus();
+            }
+        }
+        
+        // Category selection
+        categoryOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                categoryOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                
+                // Set the value of hidden input
+                selectedCategory.value = option.getAttribute('data-category');
+            });
+        });
+        
+        // Form submission
+        channelForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const channelName = document.getElementById('channel-name').value.trim();
+            const channelLink = document.getElementById('channel-link').value.trim();
+            const category = selectedCategory.value;
+            const description = document.getElementById('description').value.trim();
+            
+            // Validate form for actual submission
+            if (!channelName) {
+                alert('Please enter a channel name.');
+                document.getElementById('channel-name').focus();
+                return;
+            }
+            
+            if (!channelLink) {
+                alert('Please enter a channel link.');
+                document.getElementById('channel-link').focus();
+                return;
+            }
+            
+            if (!isValidUrl(channelLink)) {
+                alert('Please enter a valid URL for your channel.');
+                document.getElementById('channel-link').focus();
+                return;
+            }
+            
+            if (!category) {
+                alert('Please select a category for your channel.');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<div class="loading"></div> Processing...';
+            
+            // Hide any previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            telegramForwardStatus.style.display = 'none';
+            
+            try {
+                // Store submission locally
+                const submission = {
+                    id: generateId(),
+                    name: channelName,
+                    link: channelLink,
+                    category: category,
+                    description: description,
+                    status: 'pending',
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Get existing submissions from localStorage
+                let submissions = getSubmissions();
+                submissions.push(submission);
+                
+                // Save back to localStorage
+                saveSubmissions(submissions);
+                
+                // Simulate auto-forward to Telegram
+                await simulateTelegramForward(channelName, channelLink, category, description);
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Update admin stats if admin panel is open
+                if (adminPanel.style.display === 'block') {
+                    updateAdminStats();
+                    renderSubmissions();
+                }
+                
+                // Reset form
+                channelForm.reset();
+                categoryOptions.forEach(opt => opt.classList.remove('selected'));
+                selectedCategory.value = '';
+                
+            } catch (error) {
+                console.error('Error processing form:', error);
+                errorMessage.style.display = 'block';
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.textContent = 'Submit Channel';
+            }
+        });
+        
+        // Admin panel event listeners
+        closeAdmin.addEventListener('click', function() {
+            adminPanel.style.display = 'none';
+        });
+        
+        // Admin tabs functionality
+        adminTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and contents
+                adminTabs.forEach(t => t.classList.remove('active'));
+                adminTabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+                
+                // Refresh content if needed
+                if (tabId === 'approved') {
+                    renderApprovedChannels();
+                }
+            });
+        });
+        
+        exportCsvBtn.addEventListener('click', exportToCsv);
+        
+        approveAllBtn.addEventListener('click', approveAllPending);
+        
+        deleteAllBtn.addEventListener('click', deleteAllSubmissions);
+        
+        refreshApprovedBtn.addEventListener('click', function() {
+            renderApprovedChannels();
+            showNotification('Approved channels list refreshed.');
+        });
+        
+        exportApprovedBtn.addEventListener('click', exportApprovedToCsv);
+        
+        resetDataBtn.addEventListener('click', resetAllData);
+        
+        exportBackupBtn.addEventListener('click', exportBackup);
+        
+        savePasswordBtn.addEventListener('click', function() {
+            const newPassword = document.getElementById('admin-password-change').value;
+            const confirmPassword = document.getElementById('admin-password-confirm').value;
+            
+            if (!newPassword) {
+                alert('Please enter a new password.');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match. Please try again.');
+                return;
+            }
+            
+            // In a real application, you would save this to a secure storage
+            // For this demo, we'll just show an alert
+            alert('Admin password updated successfully! Note: In a real application, this would be securely stored.');
+            
+            // Clear the fields
+            document.getElementById('admin-password-change').value = '';
+            document.getElementById('admin-password-confirm').value = '';
+        });
+        
+        // Password modal event listeners
+        submitPassword.addEventListener('click', verifyPassword);
+        
+        adminPassword.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifyPassword();
+            }
+        });
+        
+        // Close password modal when clicking outside
+        passwordModal.addEventListener('click', function(e) {
+            if (e.target === passwordModal) {
+                passwordModal.style.display = 'none';
+                passwordError.style.display = 'none';
+                adminPassword.value = '';
+            }
+        });
+        
+        // Add click listener to logo for admin access
+        adminLogo.addEventListener('click', handleLogoClick);
+        
+        // Initialize the website
+        window.addEventListener('load', function() {
+            // Render featured channels on the main page
+            renderFeaturedChannels();
+            
+            // Log existing submissions for debugging
+            const submissions = getSubmissions();
+            console.log('Existing submissions:', submissions);
+            
+            if (submissions.length > 0) {
+                console.log(`Found ${submissions.length} saved submissions`);
+            }
+        });
+    </script>
+</body>
+</html>
