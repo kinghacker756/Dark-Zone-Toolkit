@@ -3,1968 +3,1011 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARK TECH ZONE - Grow Your Channel & Community</title>
-    <meta name="description" content="Promote your channels and grow your community with Dark Tech Zone">
+    <title>DARK-ZONE TOOLKIT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <style>
+        /* ===== CSS Variables for Enhanced Design ===== */
         :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #0f3460;
-            --highlight: #e94560;
-            --text: #ffffff;
-            --text-secondary: #b8b8b8;
-            --success: #4CAF50;
-            --error: #f44336;
-            --warning: #ff9800;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --dark-bg: #1a1d29;
+            --card-bg: #252a3a;
+            --card-hover: #2d3346;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b7c3;
+            --text-muted: #6c7293;
+            --border-color: #2e344e;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-        
+
+        /* ===== Base Styles ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--text);
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
             line-height: 1.6;
-            min-height: 100vh;
-            padding-bottom: 2rem;
+            overflow-x: hidden;
         }
-        
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ===== Layout Styles ===== */
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+            display: flex;
+            min-height: 100vh;
         }
-        
-        header {
-            background-color: rgba(10, 10, 20, 0.9);
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: var(--card-bg);
             box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            z-index: 1000;
+            border-right: 1px solid var(--border-color);
         }
-        
-        .navbar {
+
+        .logo-container {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            background: var(--primary-gradient);
+            margin: 10px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            padding: 1.5rem 0;
+        }
+
+        .nav-item {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin: 0.5rem 1rem;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary-gradient);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--card-hover);
+        }
+
+        .nav-item:hover::before, .nav-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-item i {
+            margin-right: 1rem;
+            width: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+            background: var(--dark-bg);
+            position: relative;
+        }
+
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background: var(--primary-gradient);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem 0;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
         }
-        
-        .logo {
+
+        .search-bar {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            cursor: pointer;
-            transition: transform 0.3s;
-            user-select: none;
+            background: var(--card-bg);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-light);
+            width: 400px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
         }
-        
-        .logo:hover {
-            transform: scale(1.05);
+
+        .search-bar:focus-within {
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.5);
         }
-        
-        .logo i {
-            color: var(--highlight);
-            font-size: 1.8rem;
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            padding: 0.5rem;
+            width: 100%;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 1rem;
         }
-        
-        .logo-text {
-            font-size: 1.5rem;
+
+        .search-bar input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--card-bg);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--secondary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: var(--primary-gradient);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .welcome-text h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
             font-weight: 700;
-            background: linear-gradient(to right, var(--highlight), #ff7b9c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
         }
-        
-        .nav-links {
+
+        .welcome-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        .welcome-stats {
             display: flex;
             gap: 2rem;
         }
-        
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-        
-        .nav-links a:hover {
-            color: var(--highlight);
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--highlight);
-            transition: width 0.3s;
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
-        .hero {
+
+        .stat {
             text-align: center;
-            padding: 5rem 0 3rem;
         }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, var(--highlight));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
         }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            color: var(--text-secondary);
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
-        
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(to right, var(--accent), var(--highlight));
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+
+        /* Tool Categories & Cards */
+        .category-section {
+            margin-bottom: 3rem;
         }
-        
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.6);
-        }
-        
+
         .section-title {
-            text-align: center;
-            margin: 3rem 0 2rem;
-            font-size: 2.2rem;
-            position: relative;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
-        
-        .section-title::after {
+
+        .section-title span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, var(--accent), var(--highlight));
-            border-radius: 2px;
-        }
-        
-        .form-container {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 2.5rem;
-            box-shadow: var(--shadow);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background-color: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--highlight);
-            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
-        }
-        
-        .category-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-        
-        .category-option {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .category-option:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: var(--highlight);
-        }
-        
-        .category-option.selected {
-            background-color: rgba(233, 69, 96, 0.2);
-            border-color: var(--highlight);
-        }
-        
-        .category-option i {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: var(--highlight);
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(to right, var(--accent), var(--highlight));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(233, 69, 96, 0.4);
-        }
-        
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-        
-        .submit-btn:disabled {
-            background: #555;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .message {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            text-align: center;
-            display: none;
-        }
-        
-        .success-message {
-            background-color: rgba(76, 175, 80, 0.2);
-            border: 1px solid var(--success);
-            color: #a5d6a7;
-        }
-        
-        .error-message {
-            background-color: rgba(244, 67, 54, 0.2);
-            border: 1px solid var(--error);
-            color: #ffabab;
-        }
-        
-        .info-message {
-            background-color: rgba(33, 150, 243, 0.2);
-            border: 1px solid #2196F3;
-            color: #90caf9;
-        }
-        
-        .warning-message {
-            background-color: rgba(255, 152, 0, 0.2);
-            border: 1px solid var(--warning);
-            color: #ffcc80;
-        }
-        
-        .telegram-forward-status {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            display: none;
-        }
-        
-        .telegram-forward-status h3 {
-            color: var(--highlight);
-            margin-bottom: 1rem;
-        }
-        
-        .telegram-progress {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        
-        .progress-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .step-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.5s;
-        }
-        
-        .step-icon.active {
-            background: rgba(233, 69, 96, 0.3);
-            border-color: var(--highlight);
-        }
-        
-        .step-icon.completed {
-            background: rgba(76, 175, 80, 0.3);
-            border-color: var(--success);
-        }
-        
-        .step-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-        
-        .progress-connector {
-            width: 50px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.2);
-            transition: background 0.5s;
-        }
-        
-        .progress-connector.completed {
-            background: var(--success);
-        }
-        
-        .telegram-status-text {
-            margin-top: 1rem;
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Admin Panel Styles */
-        .admin-panel {
-            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            display: none;
-            overflow-y: auto;
-            padding: 2rem;
+            height: 5px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s;
         }
-        
-        .admin-header {
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            background: var(--card-hover);
+        }
+
+        .tool-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .tool-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .tool-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .tool-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .tool-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tool-status {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-inactive {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .tool-usage {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Contact & Issue Reporting Section */
+        .contact-panel {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        .admin-title {
-            font-size: 2rem;
-            color: var(--highlight);
+
+        .contact-header h2 {
+            font-size: 1.8rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
         }
-        
-        .close-admin {
-            background: var(--error);
+
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .submit-btn {
+            background: var(--primary-gradient);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
+            padding: 1rem 2rem;
+            border-radius: 10px;
             font-size: 1rem;
-        }
-        
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--highlight);
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        
-        .submissions-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-        
-        .submissions-table th,
-        .submissions-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .submissions-table th {
-            background: rgba(15, 52, 96, 0.5);
-            color: var(--highlight);
             font-weight: 600;
-        }
-        
-        .submissions-table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .action-btn {
-            background: transparent;
-            color: var(--highlight);
-            border: 1px solid var(--highlight);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
             cursor: pointer;
-            margin-right: 0.5rem;
             transition: all 0.3s;
+            box-shadow: var(--shadow-light);
+            grid-column: 1 / -1;
+            justify-self: start;
+            margin-top: 1rem;
         }
-        
-        .action-btn:hover {
-            background: var(--highlight);
-            color: white;
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
-        
-        .action-btn.delete {
-            color: var(--error);
-            border-color: var(--error);
-        }
-        
-        .action-btn.delete:hover {
-            background: var(--error);
-            color: white;
-        }
-        
-        .admin-actions {
+
+        .contact-links {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
             flex-wrap: wrap;
         }
-        
-        .admin-btn {
-            background: linear-gradient(to right, var(--accent), var(--highlight));
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .admin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(233, 69, 96, 0.4);
-        }
-        
-        .empty-admin-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-        }
-        
-        /* Click Counter Indicator */
-        .click-counter {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            display: none;
-            z-index: 999;
-            text-align: center;
-        }
-        
-        .counter-progress {
+
+        .contact-link {
             display: flex;
-            gap: 5px;
-            margin-top: 5px;
-            justify-content: center;
-        }
-        
-        .counter-step {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: background 0.3s;
-        }
-        
-        .counter-step.active {
-            background: var(--highlight);
-        }
-        
-        /* Password Modal */
-        .password-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
             align-items: center;
-        }
-        
-        .password-container {
+            gap: 0.7rem;
+            padding: 0.8rem 1.5rem;
             background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
         }
-        
-        .password-container h3 {
-            color: var(--highlight);
-            margin-bottom: 1rem;
+
+        .contact-link:hover {
+            background: var(--card-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-        
-        .password-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background-color: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .password-input:focus {
-            outline: none;
-            border-color: var(--highlight);
-            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
-        }
-        
-        .password-btn {
-            background: linear-gradient(to right, var(--accent), var(--highlight));
+
+        .contact-link.whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            font-size: 1rem;
         }
-        
-        .password-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(233, 69, 96, 0.4);
+
+        .contact-link.admin {
+            background: var(--secondary-gradient);
+            color: white;
         }
-        
-        .channels-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .welcome-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            
+            .welcome-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
-        
-        .channel-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .contact-form {
+                grid-template-columns: 1fr;
+            }
         }
-        
-        .channel-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-        
-        .channel-header {
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background-color: rgba(15, 52, 96, 0.3);
-        }
-        
-        .channel-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(to right, var(--accent), var(--highlight));
-            font-size: 1.5rem;
-        }
-        
-        .channel-info h3 {
-            margin-bottom: 0.3rem;
-        }
-        
-        .channel-info p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        
-        .channel-body {
-            padding: 1.5rem;
-        }
-        
-        .channel-link {
-            display: inline-block;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--text);
-            text-decoration: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        
-        .channel-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        .social-links a {
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            transition: color 0.3s;
-        }
-        
-        .social-links a:hover {
-            color: var(--highlight);
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Status badges */
-        .status-pending {
-            color: var(--warning);
-            font-weight: bold;
-        }
-        
-        .status-approved {
-            color: var(--success);
-            font-weight: bold;
-        }
-        
-        .status-rejected {
-            color: var(--error);
-            font-weight: bold;
-        }
-        
-        /* Admin tabs */
-        .admin-tabs {
-            display: flex;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .admin-tab {
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .admin-tab.active {
-            border-bottom: 2px solid var(--highlight);
-            color: var(--highlight);
-        }
-        
-        .admin-tab-content {
-            display: none;
-        }
-        
-        .admin-tab-content.active {
-            display: block;
-        }
-        
+
         @media (max-width: 768px) {
-            .navbar {
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: flex-start;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-stats {
                 flex-direction: column;
                 gap: 1rem;
             }
             
-            .nav-links {
-                gap: 1.5rem;
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 1.5rem;
+                left: 1.5rem;
+                z-index: 1100;
+                background: var(--primary-gradient);
+                color: white;
+                border: none;
+                width: 50px;
+                height: 50px;
+                border-radius: 10px;
+                font-size: 1.5rem;
+                cursor: pointer;
+                box-shadow: var(--shadow);
             }
-            
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .category-options {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            }
-            
-            .form-container {
-                padding: 1.5rem;
-            }
-            
-            .admin-panel {
-                padding: 1rem;
-            }
-            
-            .submissions-table {
-                font-size: 0.8rem;
-            }
-            
-            .submissions-table th,
-            .submissions-table td {
-                padding: 0.5rem;
-            }
-            
-            .click-counter {
-                bottom: 10px;
-                right: 10px;
-                left: 10px;
-            }
-            
-            .admin-actions {
-                flex-direction: column;
-            }
-            
-            .telegram-progress {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .progress-connector {
-                width: 2px;
-                height: 30px;
-            }
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        /* Loading Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tool-card, .contact-panel, .welcome-banner {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--success-gradient);
+            color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo" id="admin-logo">
-                    <i class="fas fa-rocket"></i>
-                    <span class="logo-text">DARK TECH ZONE</span>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebar">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-toolbox"></i>
+                    <span>DARK-ZONE TOOLKIT</span>
                 </div>
-                <div class="nav-links">
-                    <a href="#home">Home</a>
-                    <a href="#submit">Submit Channel</a>
-                    <a href="#channels">Channels</a>
-                    <a href="#about">About</a>
+            </div>
+            <div class="nav-links">
+                <div class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
                 </div>
-            </nav>
-        </div>
-    </header>
+                <div class="nav-item">
+                    <i class="fas fa-tools"></i>
+                    <span>All Tools</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Recent Tools</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-star"></i>
+                    <span>Favorites</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help & Support</span>
+                </div>
+            </div>
+        </nav>
 
-    <section class="hero" id="home">
-        <div class="container">
-            <h1>Grow Your Channel & Community</h1>
-            <p>Promote your channels on WhatsApp, Facebook, Telegram, and more to reach a wider audience and grow your community with Dark Tech Zone.</p>
-            <a href="#submit" class="cta-button">Submit Your Channel</a>
-        </div>
-    </section>
+        <!-- Main Content -->
+        <main class="main-content">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <header>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search for tools, features, or help...">
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Premium User</div>
+                    </div>
+                </div>
+            </header>
 
-    <section id="submit">
-        <div class="container">
-            <h2 class="section-title">Submit Your Channel</h2>
-            <div class="form-container">
-                <form id="channel-form">
-                    <div class="form-group">
-                        <label for="channel-name">Channel Name</label>
-                        <input type="text" id="channel-name" class="form-control" placeholder="Enter your channel name" required>
+            <!-- Welcome Banner -->
+            <section class="welcome-banner">
+                <div class="welcome-text">
+                    <h1>Welcome back!</h1>
+                    <p>You have 12 tools available. Your last tool used was "Image Compressor" 2 hours ago.</p>
+                </div>
+                <div class="welcome-stats">
+                    <div class="stat">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Tools Available</div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="channel-link">Channel Link</label>
-                        <input type="url" id="channel-link" class="form-control" placeholder="https://example.com/channel" required>
+                    <div class="stat">
+                        <div class="stat-value">142</div>
+                        <div class="stat-label">Tasks Completed</div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label>Select Category</label>
-                        <div class="category-options">
-                            <div class="category-option" data-category="whatsapp">
-                                <i class="fab fa-whatsapp"></i>
-                                <span>WhatsApp</span>
-                            </div>
-                            <div class="category-option" data-category="facebook">
-                                <i class="fab fa-facebook"></i>
-                                <span>Facebook</span>
-                            </div>
-                            <div class="category-option" data-category="telegram">
-                                <i class="fab fa-telegram"></i>
-                                <span>Telegram</span>
-                            </div>
-                            <div class="category-option" data-category="instagram">
-                                <i class="fab fa-instagram"></i>
-                                <span>Instagram</span>
-                            </div>
-                            <div class="category-option" data-category="youtube">
-                                <i class="fab fa-youtube"></i>
-                                <span>YouTube</span>
-                            </div>
-                            <div class="category-option" data-category="discord">
-                                <i class="fab fa-discord"></i>
-                                <span>Discord</span>
-                            </div>
+                    <div class="stat">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tool Categories Section -->
+            <section class="category-section">
+                <h2 class="section-title"><span>Text & Code Tools</span> <i class="fas fa-code"></i></h2>
+                <div class="tools-grid">
+                    <!-- Tool Card 1 -->
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-font"></i>
                         </div>
-                        <input type="hidden" id="selected-category" required>
+                        <h3 class="tool-title">Text Formatter</h3>
+                        <p class="tool-description">Format and style your text with various options including case conversion, spacing, and more.</p>
+                        <div class="tool-footer">
+                            <span class="tool-status status-active">Active</span>
+                            <span class="tool-usage">1.2K uses</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Tool Card 2 -->
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="tool-title">HTML Formatter</h3>
+                        <p class="tool-description">Clean and format your HTML code for better readability and SEO optimization.</p>
+                        <div class="tool-footer">
+                            <span class="tool-status status-active">Active</span>
+                            <span class="tool-usage">856 uses</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Tool Card 3 -->
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3 class="tool-title">Password Generator</h3>
+                        <p class="tool-description">Create strong and secure passwords for your accounts with customizable options.</p>
+                        <div class="tool-footer">
+                            <span class="tool-status status-active">Active</span>
+                            <span class="tool-usage">2.4K uses</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="category-section">
+                <h2 class="section-title"><span>Image & Media Tools</span> <i class="fas fa-image"></i></h2>
+                <div class="tools-grid">
+                    <!-- Tool Card 4 -->
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-compress-arrows-alt"></i>
+                        </div>
+                        <h3 class="tool-title">Image Compressor</h3>
+                        <p class="tool-description">Reduce image file size without losing quality with advanced compression algorithms.</p>
+                        <div class="tool-footer">
+                            <span class="tool-status status-active">Active</span>
+                            <span class="tool-usage">3.1K uses</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Tool Card 5 -->
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="tool-title">Format Converter</h3>
+                        <p class="tool-description">Convert images between different formats (JPG, PNG, WEBP, etc.) in seconds.</p>
+                        <div class="tool-footer">
+                            <span class="tool-status status-inactive">Maintenance</span>
+                            <span class="tool-usage">742 uses</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Tool Card 6 -->
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="tool-title">Color Picker</h3>
+                        <p class="tool-description">Pick colors from images and generate beautiful color palettes for your projects.</p>
+                        <div class="tool-footer">
+                            <span class="tool-status status-active">Active</span>
+                            <span class="tool-usage">1.5K uses</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact & Issue Reporting Section -->
+            <section class="contact-panel">
+                <div class="contact-header">
+                    <h2>Report an Issue</h2>
+                    <p>Found a problem with a tool? Let us know and we'll fix it ASAP!</p>
+                </div>
+                
+                <form class="contact-form" id="issueForm">
+                    <div class="form-group">
+                        <label for="userName">Your Name</label>
+                        <input type="text" id="userName" placeholder="Enter your name" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="description">Channel Description (Optional)</label>
-                        <textarea id="description" class="form-control" rows="3" placeholder="Briefly describe your channel..."></textarea>
+                        <label for="userEmail">Your Email</label>
+                        <input type="email" id="userEmail" placeholder="Enter your email" required>
                     </div>
                     
-                    <button type="submit" class="submit-btn" id="submit-btn">
-                        <span id="btn-text">Submit Channel</span>
+                    <div class="form-group">
+                        <label for="toolSelect">Select Tool</label>
+                        <select id="toolSelect" required>
+                            <option value="">Select a tool...</option>
+                            <option value="text-formatter">Text Formatter</option>
+                            <option value="html-formatter">HTML Formatter</option>
+                            <option value="password-generator">Password Generator</option>
+                            <option value="image-compressor">Image Compressor</option>
+                            <option value="format-converter">Format Converter</option>
+                            <option value="color-picker">Color Picker</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="prioritySelect">Priority</label>
+                        <select id="prioritySelect" required>
+                            <option value="">Select priority...</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="issueDetails">Issue Details</label>
+                        <textarea id="issueDetails" rows="5" placeholder="Please describe the issue in detail, including steps to reproduce if possible..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Report
                     </button>
-                    
-                    <div class="message success-message" id="success-message">
-                        <i class="fas fa-check-circle"></i> Your channel has been submitted successfully! We'll review it soon.
-                    </div>
-                    
-                    <div class="message error-message" id="error-message">
-                        <i class="fas fa-exclamation-circle"></i> There was an error submitting your channel. Please try again.
-                    </div>
                 </form>
                 
-                <!-- Telegram Auto-Forward Status -->
-                <div class="telegram-forward-status" id="telegram-forward-status">
-                    <h3><i class="fab fa-telegram"></i> Auto-Forwarding to Telegram</h3>
-                    <div class="telegram-progress">
-                        <div class="progress-step">
-                            <div class="step-icon" id="step-1">
-                                <i class="fas fa-database"></i>
-                            </div>
-                            <div class="step-label">Storing Data</div>
-                        </div>
-                        <div class="progress-connector" id="connector-1"></div>
-                        <div class="progress-step">
-                            <div class="step-icon" id="step-2">
-                                <i class="fas fa-paper-plane"></i>
-                            </div>
-                            <div class="step-label">Sending to Bot</div>
-                        </div>
-                        <div class="progress-connector" id="connector-2"></div>
-                        <div class="progress-step">
-                            <div class="step-icon" id="step-3">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="step-label">Completed</div>
-                        </div>
-                    </div>
-                    <div class="telegram-status-text" id="telegram-status-text">
-                        Preparing to forward your submission to our Telegram bot...
-                    </div>
+                <div class="contact-links">
+                    <a href="https://whatsapp.com/channel/0029VbBPXH5J3jv6YXsgrL1t" class="contact-link whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp Channel</span>
+                    </a>
+                    <a href="https://wa.me/message/Z2LRD5O5L4B2I1" class="contact-link admin" target="_blank">
+                        <i class="fas fa-headset"></i>
+                        <span>Admin Contact</span>
+                    </a>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="channels">
-        <div class="container">
-            <h2 class="section-title">Featured Channels</h2>
-            <div class="channels-grid" id="channels-grid">
-                <!-- Channels will be dynamically added here -->
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="logo">
-                <i class="fas fa-rocket"></i>
-                <span class="logo-text">DARK TECH ZONE</span>
-            </div>
-            <p>Grow your community with our platform</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
-                <a href="#"><i class="fab fa-telegram"></i></a>
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-            <p>&copy; 2023 Dark Tech Zone. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Click Counter Indicator -->
-    <div class="click-counter" id="click-counter">
-        <div>Admin Access:</div>
-        <div class="counter-progress" id="counter-progress">
-            <div class="counter-step"></div>
-            <div class="counter-step"></div>
-            <div class="counter-step"></div>
-        </div>
-        <div id="counter-text">Click logo 3 times</div>
+            </section>
+        </main>
     </div>
 
-    <!-- Password Modal -->
-    <div class="password-modal" id="password-modal">
-        <div class="password-container">
-            <h3>Admin Panel Access</h3>
-            <p>Enter the admin key to continue:</p>
-            <input type="password" class="password-input" id="admin-password" placeholder="Enter admin key">
-            <button class="password-btn" id="submit-password">Access Admin Panel</button>
-            <div class="message error-message" id="password-error" style="display: none; margin-top: 1rem;">
-                <i class="fas fa-exclamation-circle"></i> Incorrect password. Please try again.
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="admin-panel">
-        <div class="container">
-            <div class="admin-header">
-                <h2 class="admin-title">Admin Panel - Channel Submissions</h2>
-                <button class="close-admin" id="close-admin">Close Admin</button>
-            </div>
-            
-            <div class="admin-tabs">
-                <div class="admin-tab active" data-tab="submissions">Submissions</div>
-                <div class="admin-tab" data-tab="approved">Approved Channels</div>
-                <div class="admin-tab" data-tab="settings">Settings</div>
-            </div>
-            
-            <!-- Submissions Tab -->
-            <div class="admin-tab-content active" id="submissions-tab">
-                <div class="admin-stats">
-                    <div class="stat-card">
-                        <div class="stat-value" id="total-submissions">0</div>
-                        <div class="stat-label">Total Submissions</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="pending-submissions">0</div>
-                        <div class="stat-label">Pending Review</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="approved-submissions">0</div>
-                        <div class="stat-label">Approved</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="rejected-submissions">0</div>
-                        <div class="stat-label">Rejected</div>
-                    </div>
-                </div>
-                
-                <div class="admin-actions">
-                    <button class="admin-btn" id="export-csv">Export CSV</button>
-                    <button class="admin-btn" id="approve-all">Approve All Pending</button>
-                    <button class="admin-btn" id="delete-all">Delete All</button>
-                </div>
-                
-                <div id="admin-content">
-                    <table class="submissions-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Channel Name</th>
-                                <th>Category</th>
-                                <th>Link</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="submissions-table-body">
-                            <!-- Submissions will be populated here -->
-                        </tbody>
-                    </table>
-                    <div class="empty-admin-state" id="empty-admin-state" style="display: none;">
-                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                        <p>No channel submissions yet.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Approved Channels Tab -->
-            <div class="admin-tab-content" id="approved-tab">
-                <h3 style="margin-bottom: 1.5rem;">Approved Channels</h3>
-                <div class="admin-actions">
-                    <button class="admin-btn" id="refresh-approved">Refresh</button>
-                    <button class="admin-btn" id="export-approved">Export Approved</button>
-                </div>
-                <div id="approved-channels-list">
-                    <!-- Approved channels will be displayed here -->
-                </div>
-            </div>
-            
-            <!-- Settings Tab -->
-            <div class="admin-tab-content" id="settings-tab">
-                <h3 style="margin-bottom: 1.5rem;">Admin Settings</h3>
-                <div class="form-container" style="max-width: 600px;">
-                    <div class="form-group">
-                        <label for="admin-password-change">Change Admin Password</label>
-                        <input type="password" id="admin-password-change" class="form-control" placeholder="New password">
-                    </div>
-                    <div class="form-group">
-                        <label for="admin-password-confirm">Confirm New Password</label>
-                        <input type="password" id="admin-password-confirm" class="form-control" placeholder="Confirm new password">
-                    </div>
-                    <button class="admin-btn" id="save-password">Save Password</button>
-                    
-                    <div class="form-group" style="margin-top: 2rem;">
-                        <label for="auto-approve">Auto-approve submissions</label>
-                        <input type="checkbox" id="auto-approve" style="margin-left: 10px;">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="notification-sound">Enable notification sound</label>
-                        <input type="checkbox" id="notification-sound" style="margin-left: 10px;" checked>
-                    </div>
-                    
-                    <div class="admin-actions" style="margin-top: 2rem;">
-                        <button class="admin-btn" id="reset-data">Reset All Data</button>
-                        <button class="admin-btn" id="export-backup">Export Backup</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span>Issue reported successfully!</span>
     </div>
 
     <script>
-        // Admin access configuration
-        const ADMIN_PASSWORD = 'DARK-TECH-ZONE';
-        let logoClickCount = 0;
-        const REQUIRED_CLICKS = 3;
-        let clickTimeout = null;
-        
-        // Category selection
-        const categoryOptions = document.querySelectorAll('.category-option');
-        const selectedCategory = document.getElementById('selected-category');
-        
-        // Form submission elements
-        const channelForm = document.getElementById('channel-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const btnText = document.getElementById('btn-text');
-        const successMessage = document.getElementById('success-message');
-        const errorMessage = document.getElementById('error-message');
-        const telegramForwardStatus = document.getElementById('telegram-forward-status');
-        const telegramStatusText = document.getElementById('telegram-status-text');
-        const channelsGrid = document.getElementById('channels-grid');
-        
-        // Progress step elements
-        const step1 = document.getElementById('step-1');
-        const step2 = document.getElementById('step-2');
-        const step3 = document.getElementById('step-3');
-        const connector1 = document.getElementById('connector-1');
-        const connector2 = document.getElementById('connector-2');
-        
-        // Admin panel elements
-        const adminPanel = document.getElementById('admin-panel');
-        const closeAdmin = document.getElementById('close-admin');
-        const totalSubmissions = document.getElementById('total-submissions');
-        const pendingSubmissions = document.getElementById('pending-submissions');
-        const approvedSubmissions = document.getElementById('approved-submissions');
-        const rejectedSubmissions = document.getElementById('rejected-submissions');
-        const submissionsTableBody = document.getElementById('submissions-table-body');
-        const emptyAdminState = document.getElementById('empty-admin-state');
-        const exportCsvBtn = document.getElementById('export-csv');
-        const approveAllBtn = document.getElementById('approve-all');
-        const deleteAllBtn = document.getElementById('delete-all');
-        
-        // Admin tabs
-        const adminTabs = document.querySelectorAll('.admin-tab');
-        const adminTabContents = document.querySelectorAll('.admin-tab-content');
-        
-        // Approved channels tab
-        const approvedChannelsList = document.getElementById('approved-channels-list');
-        const refreshApprovedBtn = document.getElementById('refresh-approved');
-        const exportApprovedBtn = document.getElementById('export-approved');
-        
-        // Settings tab
-        const savePasswordBtn = document.getElementById('save-password');
-        const resetDataBtn = document.getElementById('reset-data');
-        const exportBackupBtn = document.getElementById('export-backup');
-        
-        // Click counter elements
-        const clickCounter = document.getElementById('click-counter');
-        const counterProgress = document.getElementById('counter-progress');
-        const counterText = document.getElementById('counter-text');
-        
-        // Password modal elements
-        const passwordModal = document.getElementById('password-modal');
-        const adminPassword = document.getElementById('admin-password');
-        const submitPassword = document.getElementById('submit-password');
-        const passwordError = document.getElementById('password-error');
-        
-        // Logo element
-        const adminLogo = document.getElementById('admin-logo');
-        
-        // Function to validate URL
-        function isValidUrl(string) {
-            try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
-        
-        // Function to generate unique ID
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
-        
-        // Function to get all submissions from localStorage
-        function getSubmissions() {
-            return JSON.parse(localStorage.getItem('channelSubmissions') || '[]');
-        }
-        
-        // Function to save submissions to localStorage
-        function saveSubmissions(submissions) {
-            localStorage.setItem('channelSubmissions', JSON.stringify(submissions));
-        }
-        
-        // Function to get approved channels
-        function getApprovedChannels() {
-            const submissions = getSubmissions();
-            return submissions.filter(s => s.status === 'approved');
-        }
-        
-        // Function to update admin panel statistics
-        function updateAdminStats() {
-            const submissions = getSubmissions();
-            const total = submissions.length;
-            const pending = submissions.filter(s => s.status === 'pending').length;
-            const approved = submissions.filter(s => s.status === 'approved').length;
-            const rejected = submissions.filter(s => s.status === 'rejected').length;
-            
-            totalSubmissions.textContent = total;
-            pendingSubmissions.textContent = pending;
-            approvedSubmissions.textContent = approved;
-            rejectedSubmissions.textContent = rejected;
-        }
-        
-        // Function to render submissions in admin panel
-        function renderSubmissions() {
-            const submissions = getSubmissions();
-            submissionsTableBody.innerHTML = '';
-            
-            if (submissions.length === 0) {
-                emptyAdminState.style.display = 'block';
-                return;
-            }
-            
-            emptyAdminState.style.display = 'none';
-            
-            submissions.forEach(submission => {
-                const row = document.createElement('tr');
-                
-                // Format date
-                const date = new Date(submission.timestamp);
-                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-                
-                row.innerHTML = `
-                    <td>${submission.id.substring(0, 8)}</td>
-                    <td>${submission.name}</td>
-                    <td>${submission.category}</td>
-                    <td><a href="${submission.link}" target="_blank">View</a></td>
-                    <td>${submission.description || 'N/A'}</td>
-                    <td>
-                        <span class="status-${submission.status}">${submission.status}</span>
-                    </td>
-                    <td>${formattedDate}</td>
-                    <td>
-                        <button class="action-btn approve" data-id="${submission.id}">Approve</button>
-                        <button class="action-btn reject" data-id="${submission.id}">Reject</button>
-                        <button class="action-btn delete" data-id="${submission.id}">Delete</button>
-                    </td>
-                `;
-                
-                submissionsTableBody.appendChild(row);
-            });
-            
-            // Add event listeners to action buttons
-            document.querySelectorAll('.action-btn.approve').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    updateSubmissionStatus(id, 'approved');
-                });
-            });
-            
-            document.querySelectorAll('.action-btn.reject').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    updateSubmissionStatus(id, 'rejected');
-                });
-            });
-            
-            document.querySelectorAll('.action-btn.delete').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    deleteSubmission(id);
-                });
-            });
-        }
-        
-        // Function to render approved channels
-        function renderApprovedChannels() {
-            const approvedChannels = getApprovedChannels();
-            approvedChannelsList.innerHTML = '';
-            
-            if (approvedChannels.length === 0) {
-                approvedChannelsList.innerHTML = `
-                    <div class="empty-admin-state">
-                        <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                        <p>No approved channels yet.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const channelsGrid = document.createElement('div');
-            channelsGrid.className = 'channels-grid';
-            
-            approvedChannels.forEach(channel => {
-                const channelCard = document.createElement('div');
-                channelCard.className = 'channel-card';
-                
-                const iconClass = getIconForCategory(channel.category);
-                
-                channelCard.innerHTML = `
-                    <div class="channel-header">
-                        <div class="channel-icon">
-                            <i class="${iconClass}"></i>
-                        </div>
-                        <div class="channel-info">
-                            <h3>${channel.name}</h3>
-                            <p>${channel.category.charAt(0).toUpperCase() + channel.category.slice(1)} Channel</p>
-                        </div>
-                    </div>
-                    <div class="channel-body">
-                        <p>${channel.description || 'No description provided.'}</p>
-                        <a href="${channel.link}" class="channel-link" target="_blank">Join Channel</a>
-                        <button class="action-btn delete" data-id="${channel.id}" style="margin-top: 10px;">Remove</button>
-                    </div>
-                `;
-                
-                channelsGrid.appendChild(channelCard);
-            });
-            
-            approvedChannelsList.appendChild(channelsGrid);
-            
-            // Add event listeners to remove buttons
-            document.querySelectorAll('#approved-channels-list .action-btn.delete').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    updateSubmissionStatus(id, 'pending');
-                    renderApprovedChannels();
-                });
-            });
-        }
-        
-        // Function to get icon class for category
-        function getIconForCategory(category) {
-            const icons = {
-                'whatsapp': 'fab fa-whatsapp',
-                'facebook': 'fab fa-facebook',
-                'telegram': 'fab fa-telegram',
-                'instagram': 'fab fa-instagram',
-                'youtube': 'fab fa-youtube',
-                'discord': 'fab fa-discord'
-            };
-            
-            return icons[category] || 'fas fa-link';
-        }
-        
-        // Function to render featured channels on main page
-        function renderFeaturedChannels() {
-            const approvedChannels = getApprovedChannels();
-            channelsGrid.innerHTML = '';
-            
-            // Show only the first 6 approved channels as featured
-            const featuredChannels = approvedChannels.slice(0, 6);
-            
-            if (featuredChannels.length === 0) {
-                channelsGrid.innerHTML = `
-                    <div style="text-align: center; grid-column: 1 / -1; padding: 2rem; color: var(--text-secondary);">
-                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                        <p>No featured channels yet. Submit your channel to be featured here!</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            featuredChannels.forEach(channel => {
-                const channelCard = document.createElement('div');
-                channelCard.className = 'channel-card';
-                
-                const iconClass = getIconForCategory(channel.category);
-                
-                channelCard.innerHTML = `
-                    <div class="channel-header">
-                        <div class="channel-icon">
-                            <i class="${iconClass}"></i>
-                        </div>
-                        <div class="channel-info">
-                            <h3>${channel.name}</h3>
-                            <p>${channel.category.charAt(0).toUpperCase() + channel.category.slice(1)} Channel</p>
-                        </div>
-                    </div>
-                    <div class="channel-body">
-                        <p>${channel.description || 'No description provided.'}</p>
-                        <a href="${channel.link}" class="channel-link" target="_blank">Join Channel</a>
-                    </div>
-                `;
-                
-                channelsGrid.appendChild(channelCard);
-            });
-        }
-        
-        // Function to update submission status
-        function updateSubmissionStatus(id, status) {
-            const submissions = getSubmissions();
-            const submissionIndex = submissions.findIndex(s => s.id === id);
-            
-            if (submissionIndex !== -1) {
-                submissions[submissionIndex].status = status;
-                saveSubmissions(submissions);
-                updateAdminStats();
-                renderSubmissions();
-                renderApprovedChannels();
-                renderFeaturedChannels();
-                
-                // Show notification
-                if (status === 'approved') {
-                    showNotification(`Channel "${submissions[submissionIndex].name}" has been approved.`);
-                } else if (status === 'rejected') {
-                    showNotification(`Channel "${submissions[submissionIndex].name}" has been rejected.`);
-                }
-            }
-        }
-        
-        // Function to delete a submission
-        function deleteSubmission(id) {
-            if (confirm('Are you sure you want to delete this submission?')) {
-                const submissions = getSubmissions();
-                const submission = submissions.find(s => s.id === id);
-                const filteredSubmissions = submissions.filter(s => s.id !== id);
-                saveSubmissions(filteredSubmissions);
-                updateAdminStats();
-                renderSubmissions();
-                renderApprovedChannels();
-                renderFeaturedChannels();
-                
-                if (submission) {
-                    showNotification(`Channel "${submission.name}" has been deleted.`);
-                }
-            }
-        }
-        
-        // Function to show notification
-        function showNotification(message) {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: var(--card-bg);
-                color: var(--text);
-                padding: 1rem;
-                border-radius: 8px;
-                border-left: 4px solid var(--highlight);
-                box-shadow: var(--shadow);
-                z-index: 10000;
-                max-width: 300px;
-                animation: slideIn 0.3s ease-out;
-            `;
-            
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-bell" style="color: var(--highlight);"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Remove notification after 3 seconds
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease-in';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-        }
-        
-        // Add CSS for notification animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Function to simulate Telegram auto-forward
-        function simulateTelegramForward(channelName, channelLink, category, description) {
-            return new Promise((resolve) => {
-                // Reset progress indicators
-                step1.className = 'step-icon';
-                step2.className = 'step-icon';
-                step3.className = 'step-icon';
-                connector1.className = 'progress-connector';
-                connector2.className = 'progress-connector';
-                
-                // Show the progress section
-                telegramForwardStatus.style.display = 'block';
-                telegramForwardStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Step 1: Storing data
-                telegramStatusText.textContent = 'Storing your submission locally...';
-                step1.classList.add('active');
-                
-                setTimeout(() => {
-                    step1.classList.remove('active');
-                    step1.classList.add('completed');
-                    connector1.classList.add('completed');
-                    
-                    // Step 2: Sending to Telegram bot
-                    telegramStatusText.textContent = 'Forwarding to Telegram bot @DarkTechZoneBot...';
-                    step2.classList.add('active');
-                    
-                    setTimeout(() => {
-                        step2.classList.remove('active');
-                        step2.classList.add('completed');
-                        connector2.classList.add('completed');
-                        
-                        // Step 3: Completed
-                        telegramStatusText.textContent = 'Successfully forwarded to Telegram! Your submission is being reviewed.';
-                        step3.classList.add('active');
-                        
-                        setTimeout(() => {
-                            step3.classList.remove('active');
-                            step3.classList.add('completed');
-                            
-                            // Resolve the promise after completion
-                            setTimeout(() => {
-                                resolve();
-                            }, 1000);
-                        }, 1500);
-                    }, 2000);
-                }, 1500);
-            });
-        }
-        
-        // Function to export submissions as CSV
-        function exportToCsv() {
-            const submissions = getSubmissions();
-            if (submissions.length === 0) {
-                alert('No submissions to export.');
-                return;
-            }
-            
-            const headers = ['ID', 'Name', 'Category', 'Link', 'Description', 'Status', 'Date'];
-            const csvContent = [
-                headers.join(','),
-                ...submissions.map(submission => [
-                    submission.id,
-                    `"${submission.name.replace(/"/g, '""')}"`,
-                    submission.category,
-                    submission.link,
-                    `"${(submission.description || '').replace(/"/g, '""')}"`,
-                    submission.status,
-                    submission.timestamp
-                ].join(','))
-            ].join('\n');
-            
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `channel-submissions-${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-        
-        // Function to export approved channels as CSV
-        function exportApprovedToCsv() {
-            const approvedChannels = getApprovedChannels();
-            if (approvedChannels.length === 0) {
-                alert('No approved channels to export.');
-                return;
-            }
-            
-            const headers = ['ID', 'Name', 'Category', 'Link', 'Description', 'Date Approved'];
-            const csvContent = [
-                headers.join(','),
-                ...approvedChannels.map(channel => [
-                    channel.id,
-                    `"${channel.name.replace(/"/g, '""')}"`,
-                    channel.category,
-                    channel.link,
-                    `"${(channel.description || '').replace(/"/g, '""')}"`,
-                    channel.timestamp
-                ].join(','))
-            ].join('\n');
-            
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `approved-channels-${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-        
-        // Function to approve all pending submissions
-        function approveAllPending() {
-            const submissions = getSubmissions();
-            const updatedSubmissions = submissions.map(s => {
-                if (s.status === 'pending') {
-                    return { ...s, status: 'approved' };
-                }
-                return s;
-            });
-            
-            saveSubmissions(updatedSubmissions);
-            updateAdminStats();
-            renderSubmissions();
-            renderApprovedChannels();
-            renderFeaturedChannels();
-            alert('All pending submissions have been approved.');
-        }
-        
-        // Function to delete all submissions
-        function deleteAllSubmissions() {
-            if (confirm('Are you sure you want to delete ALL submissions? This action cannot be undone.')) {
-                saveSubmissions([]);
-                updateAdminStats();
-                renderSubmissions();
-                renderApprovedChannels();
-                renderFeaturedChannels();
-                alert('All submissions have been deleted.');
-            }
-        }
-        
-        // Function to reset all data
-        function resetAllData() {
-            if (confirm('Are you sure you want to reset ALL data? This will delete all submissions and cannot be undone.')) {
-                localStorage.removeItem('channelSubmissions');
-                updateAdminStats();
-                renderSubmissions();
-                renderApprovedChannels();
-                renderFeaturedChannels();
-                alert('All data has been reset.');
-            }
-        }
-        
-        // Function to export backup
-        function exportBackup() {
-            const data = {
-                submissions: getSubmissions(),
-                exportDate: new Date().toISOString(),
-                version: '1.0'
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `dark-tech-zone-backup-${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-        
-        // Logo click handler for admin access
-        function handleLogoClick() {
-            logoClickCount++;
-            
-            // Update the visual indicator
-            updateClickCounter();
-            
-            // Show the indicator if this is the first click
-            if (logoClickCount === 1) {
-                clickCounter.style.display = 'block';
-            }
-            
-            // Reset timeout for click sequence
-            if (clickTimeout) {
-                clearTimeout(clickTimeout);
-            }
-            clickTimeout = setTimeout(() => {
-                logoClickCount = 0;
-                clickCounter.style.display = 'none';
-                updateClickCounter();
-            }, 3000); // Reset after 3 seconds of inactivity
-            
-            // Check if the required number of clicks has been reached
-            if (logoClickCount === REQUIRED_CLICKS) {
-                // Show password modal
-                passwordModal.style.display = 'flex';
-                adminPassword.focus();
-                
-                // Reset click count
-                logoClickCount = 0;
-                clickCounter.style.display = 'none';
-                updateClickCounter();
-                
-                // Clear timeout
-                if (clickTimeout) {
-                    clearTimeout(clickTimeout);
-                    clickTimeout = null;
-                }
-            }
-        }
-        
-        // Update the visual click counter
-        function updateClickCounter() {
-            const steps = counterProgress.querySelectorAll('.counter-step');
-            steps.forEach((step, index) => {
-                if (index < logoClickCount) {
-                    step.classList.add('active');
-                } else {
-                    step.classList.remove('active');
-                }
-            });
-            
-            counterText.textContent = `${REQUIRED_CLICKS - logoClickCount} clicks remaining`;
-        }
-        
-        // Password verification
-        function verifyPassword() {
-            const enteredPassword = adminPassword.value.trim();
-            
-            if (enteredPassword === ADMIN_PASSWORD) {
-                // Correct password - open admin panel
-                passwordModal.style.display = 'none';
-                adminPassword.value = '';
-                passwordError.style.display = 'none';
-                
-                updateAdminStats();
-                renderSubmissions();
-                renderApprovedChannels();
-                adminPanel.style.display = 'block';
-            } else {
-                // Incorrect password - show error
-                passwordError.style.display = 'block';
-                adminPassword.value = '';
-                adminPassword.focus();
-            }
-        }
-        
-        // Category selection
-        categoryOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                // Remove selected class from all options
-                categoryOptions.forEach(opt => opt.classList.remove('selected'));
-                
-                // Add selected class to clicked option
-                option.classList.add('selected');
-                
-                // Set the value of hidden input
-                selectedCategory.value = option.getAttribute('data-category');
-            });
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMMq_CJET3SJwqVCWcl7xE8PKb1Ijf0Kw",
+            authDomain: "web-toolkit-cacd4.firebaseapp.com",
+            projectId: "web-toolkit-cacd4",
+            storageBucket: "web-toolkit-cacd4.firebasestorage.app",
+            messagingSenderId: "1021129117273",
+            appId: "1:1021129117273:web:6525e85cd1d71b8d442b48"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
         });
-        
-        // Form submission
-        channelForm.addEventListener('submit', async function(e) {
+
+        // Handle issue form submission
+        document.getElementById('issueForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Get form values
-            const channelName = document.getElementById('channel-name').value.trim();
-            const channelLink = document.getElementById('channel-link').value.trim();
-            const category = selectedCategory.value;
-            const description = document.getElementById('description').value.trim();
+            const userName = document.getElementById('userName').value;
+            const userEmail = document.getElementById('userEmail').value;
+            const toolSelect = document.getElementById('toolSelect').value;
+            const prioritySelect = document.getElementById('prioritySelect').value;
+            const issueDetails = document.getElementById('issueDetails').value;
             
-            // Validate form for actual submission
-            if (!channelName) {
-                alert('Please enter a channel name.');
-                document.getElementById('channel-name').focus();
+            // Basic validation
+            if (!userName || !userEmail || !toolSelect || !prioritySelect || !issueDetails) {
+                alert('Please fill in all fields');
                 return;
             }
             
-            if (!channelLink) {
-                alert('Please enter a channel link.');
-                document.getElementById('channel-link').focus();
-                return;
-            }
+            // Create issue object
+            const issueReport = {
+                userName: userName,
+                userEmail: userEmail,
+                tool: toolSelect,
+                priority: prioritySelect,
+                issue: issueDetails,
+                timestamp: new Date().toISOString(),
+                status: 'new'
+            };
             
-            if (!isValidUrl(channelLink)) {
-                alert('Please enter a valid URL for your channel.');
-                document.getElementById('channel-link').focus();
-                return;
-            }
-            
-            if (!category) {
-                alert('Please select a category for your channel.');
-                return;
-            }
-            
-            // Show loading state
-            submitBtn.disabled = true;
-            btnText.innerHTML = '<div class="loading"></div> Processing...';
-            
-            // Hide any previous messages
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
-            telegramForwardStatus.style.display = 'none';
-            
-            try {
-                // Store submission locally
-                const submission = {
-                    id: generateId(),
-                    name: channelName,
-                    link: channelLink,
-                    category: category,
-                    description: description,
-                    status: 'pending',
-                    timestamp: new Date().toISOString()
-                };
-                
-                // Get existing submissions from localStorage
-                let submissions = getSubmissions();
-                submissions.push(submission);
-                
-                // Save back to localStorage
-                saveSubmissions(submissions);
-                
-                // Simulate auto-forward to Telegram
-                await simulateTelegramForward(channelName, channelLink, category, description);
-                
-                // Show success message
-                successMessage.style.display = 'block';
-                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Update admin stats if admin panel is open
-                if (adminPanel.style.display === 'block') {
-                    updateAdminStats();
-                    renderSubmissions();
-                }
-                
-                // Reset form
-                channelForm.reset();
-                categoryOptions.forEach(opt => opt.classList.remove('selected'));
-                selectedCategory.value = '';
-                
-            } catch (error) {
-                console.error('Error processing form:', error);
-                errorMessage.style.display = 'block';
-                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } finally {
-                // Reset button state
-                submitBtn.disabled = false;
-                btnText.textContent = 'Submit Channel';
-            }
+            // Save to Firebase
+            db.collection("issues").add(issueReport)
+              .then((docRef) => {
+                  console.log("Issue report written with ID: ", docRef.id);
+                  showToast();
+                  document.getElementById('issueForm').reset();
+              })
+              .catch((error) => {
+                  console.error("Error adding document: ", error);
+                  alert('There was an error submitting your report. Please try again.');
+              });
         });
-        
-        // Admin panel event listeners
-        closeAdmin.addEventListener('click', function() {
-            adminPanel.style.display = 'none';
-        });
-        
-        // Admin tabs functionality
-        adminTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
+
+        // Show toast notification
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // Tool card click handlers
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const toolName = this.querySelector('.tool-title').textContent;
+                const toolStatus = this.querySelector('.tool-status').textContent;
                 
-                // Remove active class from all tabs and contents
-                adminTabs.forEach(t => t.classList.remove('active'));
-                adminTabContents.forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked tab and corresponding content
-                this.classList.add('active');
-                document.getElementById(`${tabId}-tab`).classList.add('active');
-                
-                // Refresh content if needed
-                if (tabId === 'approved') {
-                    renderApprovedChannels();
+                if (toolStatus === 'Active') {
+                    // In a real implementation, this would open the tool
+                    alert(`Opening: ${toolName}\n\nThis would launch the tool in a real implementation.`);
+                } else {
+                    alert(`The ${toolName} is currently under maintenance. Please check back later.`);
                 }
             });
         });
-        
-        exportCsvBtn.addEventListener('click', exportToCsv);
-        
-        approveAllBtn.addEventListener('click', approveAllPending);
-        
-        deleteAllBtn.addEventListener('click', deleteAllSubmissions);
-        
-        refreshApprovedBtn.addEventListener('click', function() {
-            renderApprovedChannels();
-            showNotification('Approved channels list refreshed.');
+
+        // Navigation active state
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Close sidebar on mobile after selection
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
+            });
         });
-        
-        exportApprovedBtn.addEventListener('click', exportApprovedToCsv);
-        
-        resetDataBtn.addEventListener('click', resetAllData);
-        
-        exportBackupBtn.addEventListener('click', exportBackup);
-        
-        savePasswordBtn.addEventListener('click', function() {
-            const newPassword = document.getElementById('admin-password-change').value;
-            const confirmPassword = document.getElementById('admin-password-confirm').value;
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
             
-            if (!newPassword) {
-                alert('Please enter a new password.');
-                return;
-            }
-            
-            if (newPassword !== confirmPassword) {
-                alert('Passwords do not match. Please try again.');
-                return;
-            }
-            
-            // In a real application, you would save this to a secure storage
-            // For this demo, we'll just show an alert
-            alert('Admin password updated successfully! Note: In a real application, this would be securely stored.');
-            
-            // Clear the fields
-            document.getElementById('admin-password-change').value = '';
-            document.getElementById('admin-password-confirm').value = '';
-        });
-        
-        // Password modal event listeners
-        submitPassword.addEventListener('click', verifyPassword);
-        
-        adminPassword.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                verifyPassword();
-            }
-        });
-        
-        // Close password modal when clicking outside
-        passwordModal.addEventListener('click', function(e) {
-            if (e.target === passwordModal) {
-                passwordModal.style.display = 'none';
-                passwordError.style.display = 'none';
-                adminPassword.value = '';
-            }
-        });
-        
-        // Add click listener to logo for admin access
-        adminLogo.addEventListener('click', handleLogoClick);
-        
-        // Initialize the website
-        window.addEventListener('load', function() {
-            // Render featured channels on the main page
-            renderFeaturedChannels();
-            
-            // Log existing submissions for debugging
-            const submissions = getSubmissions();
-            console.log('Existing submissions:', submissions);
-            
-            if (submissions.length > 0) {
-                console.log(`Found ${submissions.length} saved submissions`);
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !menuToggle.contains(event.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
             }
         });
     </script>
