@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Zone - Admin Control Panel</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .admin-login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 231, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header i {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #00ffe7, #008cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00ffe7, #008cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-header p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ffe7;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 255, 231, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #00ffe7;
+            box-shadow: 0 0 20px rgba(0, 255, 231, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #00ffe7, #008cff);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 231, 0.3);
+        }
+
+        .login-error {
+            color: #ff4444;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-header {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 231, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left h1 {
+            background: linear-gradient(45deg, #00ffe7, #008cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 68, 68, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .admin-container {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 231, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(0, 255, 231, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .stat-card h3 {
+            color: #aaa;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00ffe7, #008cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-trend {
+            font-size: 0.9rem;
+            color: #25D366;
+            margin-top: 8px;
+        }
+
+        .stat-trend.down {
+            color: #ff4444;
+        }
+
+        /* Tabs Navigation */
+        .tabs-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 231, 0.1);
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: rgba(0, 255, 231, 0.1);
+            color: #00ffe7;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Panel Styles */
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 231, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 231, 0.1);
+        }
+
+        .panel-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .panel-header h2 i {
+            margin-right: 10px;
+            color: #00ffe7;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #00ffe7, #008cff);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 231, 0.2);
+        }
+
+        .action-btn.red {
+            background: linear-gradient(45deg, #ff4444, #ff6b6b);
+            color: white;
+        }
+
+        .action-btn.green {
+            background: linear-gradient(45deg, #25D366, #00ff88);
+            color: white;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ffe7;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 255, 231, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00ffe7;
+            box-shadow: 0 0 15px rgba(0, 255, 231, 0.1);
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th {
+            background: rgba(0, 255, 231, 0.1);
+            color: #00ffe7;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(0, 255, 231, 0.2);
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge.success {
+            background: rgba(37, 211, 102, 0.2);
+            color: #25D366;
+        }
+
+        .badge.warning {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .badge.danger {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+
+        .badge.info {
+            background: rgba(0, 150, 255, 0.2);
+            color: #0096ff;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .icon-btn.edit {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .icon-btn.delete {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+
+        .icon-btn.view {
+            background: rgba(0, 150, 255, 0.2);
+            color: #0096ff;
+        }
+
+        .icon-btn.block {
+            background: rgba(108, 117, 125, 0.2);
+            color: #6c757d;
+        }
+
+        .icon-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 231, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 255, 231, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            color: #aaa;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 231, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .search-box button {
+            background: rgba(0, 255, 231, 0.1);
+            border: none;
+            padding: 0 20px;
+            color: #00ffe7;
+            cursor: pointer;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            flex-direction: column;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 255, 231, 0.3);
+            border-top-color: #00ffe7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .alert.info {
+            background: rgba(0, 150, 255, 0.1);
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            color: #0096ff;
+        }
+
+        .alert.warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+        }
+
+        .alert.success {
+            background: rgba(37, 211, 102, 0.1);
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            color: #25D366;
+        }
+
+        .alert.danger {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff4444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs-navigation {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                min-width: 120px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="adminLogin" class="admin-login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <i class="fas fa-user-shield"></i>
+                <h1>DARK ZONE ADMIN</h1>
+                <p>Restricted Access - Authorized Personnel Only</p>
+            </div>
+            
+            <div class="alert info">
+                <i class="fas fa-info-circle"></i>
+                Update Firebase API keys in firebase-config.js
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> Username</label>
+                <input type="text" id="adminUser" placeholder="Enter admin username" autocomplete="off">
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="adminPass" placeholder="Enter admin password" autocomplete="off">
+            </div>
+            
+            <button onclick="adminLogin()" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> ACCESS ADMIN PANEL
+            </button>
+            
+            <div id="loginError" class="login-error">
+                <i class="fas fa-exclamation-circle"></i> Invalid credentials!
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="header-left">
+                <h1><i class="fas fa-terminal"></i> Dark Zone Control Panel</h1>
+            </div>
+            <div class="header-right">
+                <span id="currentTime" style="color: #aaa; font-size: 0.9rem;"></span>
+                <button onclick="logout()" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Container -->
+        <div class="admin-container">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-users" style="color: #00ffe7;"></i>
+                    <h3>Total Users</h3>
+                    <div class="stat-number" id="statUsers">0</div>
+                    <div class="stat-trend" id="statUsersTrend">+0 today</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-ban" style="color: #ff4444;"></i>
+                    <h3>Blocked IPs</h3>
+                    <div class="stat-number" id="statBlocked">0</div>
+                    <div class="stat-trend" id="statBlockedTrend">Last: None</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tools" style="color: #25D366;"></i>
+                    <h3>Active Tools</h3>
+                    <div class="stat-number" id="statTools">0</div>
+                    <div class="stat-trend" id="statToolsTrend">All Operational</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-eye" style="color: #0096ff;"></i>
+                    <h3>Today's Visits</h3>
+                    <div class="stat-number" id="statToday">0</div>
+                    <div class="stat-trend" id="statTodayTrend">Live tracking</div>
+                </div>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs-navigation">
+                <button class="tab-btn active" onclick="switchTab('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </button>
+                <button class="tab-btn" onclick="switchTab('tools')">
+                    <i class="fas fa-tools"></i> Tool Management
+                </button>
+                <button class="tab-btn" onclick="switchTab('users')">
+                    <i class="fas fa-users"></i> User Management
+                </button>
+                <button class="tab-btn" onclick="switchTab('security')">
+                    <i class="fas fa-shield-alt"></i> Security
+                </button>
+                <button class="tab-btn" onclick="switchTab('settings')">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+            
+            <!-- Dashboard Tab -->
+            <div id="tabDashboard" class="tab-content active">
+                <div class="alert info">
+                    <i class="fas fa-chart-line"></i>
+                    Real-time statistics and monitoring dashboard
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-chart-bar"></i> Recent Activity</h2>
+                        <button onclick="refreshAll()" class="action-btn">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="search-container">
+                        <div class="search-box">
+                            <input type="text" id="searchActivity" placeholder="Search activity...">
+                            <button onclick="searchActivity()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="data-table" id="activityTable">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>IP Address</th>
+                                    <th>User Agent</th>
+                                    <th>Visits</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activityBody">
+                                <!-- Activity data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px; color: #666;">
+                        <i class="fas fa-info-circle"></i> Showing last 50 activities
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tools Management Tab -->
+            <div id="tabTools" class="tab-content">
+                <div class="alert info">
+                    <i class="fas fa-wrench"></i>
+                    Manage and configure available tools
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-plus-circle"></i> Add New Tool</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Tool Name *</label>
+                            <input type="text" id="toolName" placeholder="YouTube Watch Time">
+                        </div>
+                        <div class="form-group">
+                            <label>Tool Link *</label>
+                            <input type="text" id="toolLink" placeholder="https://example.com/tool">
+                        </div>
+                        <div class="form-group">
+                            <label>Icon (Font Awesome)</label>
+                            <input type="text" id="toolIcon" placeholder="fab fa-youtube" value="fas fa-tools">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="toolCategory">
+                                <option value="security">Security</option>
+                                <option value="utility" selected>Utility</option>
+                                <option value="network">Network</option>
+                                <option value="development">Development</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tags (comma separated)</label>
+                            <input type="text" id="toolTags" placeholder="youtube, views, time">
+                        </div>
+                        <div class="form-group">
+                            <label>Order</label>
+                            <input type="number" id="toolOrder" value="1" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="toolDescription" rows="3" placeholder="Brief description of the tool"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button onclick="addTool()" class="action-btn green">
+                            <i class="fas fa-plus"></i> Add Tool
+                        </button>
+                        <button onclick="clearToolForm()" class="action-btn">
+                            <i class="fas fa-broom"></i> Clear Form
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-list"></i> Manage Existing Tools</h2>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="exportTools()" class="action-btn">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="cards-grid" id="toolsListAdmin">
+                        <!-- Tools will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Management Tab -->
+            <div id="tabUsers" class="tab-content">
+                <div class="alert warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    IP blocking will prevent users from accessing the toolkit
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-user-plus"></i> Manage User Access</h2>
+                        <button onclick="showAddUserModal()" class="action-btn">
+                            <i class="fas fa-user-plus"></i> Add User
+                        </button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Block IP Address</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="blockIP" placeholder="Enter IP to block (e.g., 192.168.1.1)">
+                            <button onclick="blockIPAddress()" class="action-btn red">
+                                <i class="fas fa-ban"></i> Block IP
+                            </button>
+                        </div>
+                        <small style="color: #888; display: block; margin-top: 5px;">
+                            Use CIDR notation for ranges (e.g., 192.168.1.0/24)
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-users-cog"></i> Blocked IP Addresses</h2>
+                        <span class="badge danger" id="blockedCount">0 Blocked</span>
+                    </div>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>Blocked At</th>
+                                <th>Reason</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blockedIPsList">
+                            <!-- Blocked IPs will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Security Tab -->
+            <div id="tabSecurity" class="tab-content">
+                <div class="alert danger">
+                    <i class="fas fa-shield-alt"></i>
+                    Security settings - Proceed with caution
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-key"></i> Admin Credentials</h2>
+                        <button onclick="showChangePasswordModal()" class="action-btn">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Current Username</label>
+                            <input type="text" value="admin" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Password Last Changed</label>
+                            <input type="text" id="passwordLastChanged" value="Never" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-database"></i> Database Operations</h2>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <button onclick="backupDatabase()" class="action-btn">
+                            <i class="fas fa-download"></i> Backup Data
+                        </button>
+                        <button onclick="clearOldData()" class="action-btn warning">
+                            <i class="fas fa-trash"></i> Clear Old Data
+                        </button>
+                        <button onclick="resetVisits()" class="action-btn red">
+                            <i class="fas fa-redo"></i> Reset Visit Count
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div id="tabSettings" class="tab-content">
+                <div class="alert success">
+                    <i class="fas fa-cogs"></i>
+                    Configure application settings
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-whatsapp"></i> WhatsApp Integration</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>WhatsApp Channel URL</label>
+                            <input type="text" id="whatsappURL" value="https://whatsapp.com/channel/0029VbBXISPDuMRjYCb7Xl0X">
+                        </div>
+                        <div class="form-group">
+                            <label>Auto-open Delay (ms)</label>
+                            <input type="number" id="redirectDelay" value="1000" min="0" max="10000">
+                        </div>
+                        <div class="form-group">
+                            <label>Enable Auto-redirect</label>
+                            <select id="enableRedirect">
+                                <option value="true" selected>Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button onclick="updateWhatsappSettings()" class="action-btn">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                        <button onclick="testRedirect()" class="action-btn">
+                            <i class="fas fa-external-link-alt"></i> Test Redirect
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-globe"></i> Website Settings</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Website Title</label>
+                            <input type="text" id="websiteTitle" value="DARK ZONE TOOLKIT">
+                        </div>
+                        <div class="form-group">
+                            <label>Website Subtitle</label>
+                            <input type="text" id="websiteSubtitle" value="Premium Hacking Tools Collection">
+                        </div>
+                        <div class="form-group">
+                            <label>Theme Color</label>
+                            <input type="color" id="themeColor" value="#00ffe7">
+                        </div>
+                        <div class="form-group">
+                            <label>Maintenance Mode</label>
+                            <select id="maintenanceMode">
+                                <option value="false" selected>Disabled</option>
+                                <option value="true">Enabled</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button onclick="updateWebsiteSettings()" class="action-btn" style="margin-top: 20px;">
+                        <i class="fas fa-save"></i> Update Website Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let db;
+        let currentTab = 'dashboard';
+        
+        // Initialize Firebase
+        try {
+            db = firebase.firestore();
+            console.log("Firebase initialized successfully");
+        } catch (error) {
+            console.error("Firebase initialization error:", error);
+        }
+        
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // Admin Login
+        function adminLogin() {
+            const username = document.getElementById('adminUser').value;
+            const password = document.getElementById('adminPass').value;
+            
+            // Simple authentication (in production, use Firebase Auth)
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadAdminData();
+                startAdminUpdates();
+                
+                // Record admin login
+                recordAdminActivity('Login');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('loginError').style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // Record admin activity
+        async function recordAdminActivity(action) {
+            try {
+                await db.collection('adminLogs').add({
+                    action: action,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    ip: await getCurrentIP()
+                });
+            } catch (error) {
+                console.error("Error recording admin activity:", error);
+            }
+        }
+        
+        // Get current IP
+        async function getCurrentIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'unknown';
+            }
+        }
+        
+        // Switch tabs
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            currentTab = tabName;
+            
+            // Load tab data
+            switch(tabName) {
+                case 'dashboard':
+                    loadActivity();
+                    break;
+                case 'tools':
+                    loadToolsAdmin();
+                    break;
+                case 'users':
+                    loadBlockedIPs();
+                    break;
+                case 'security':
+                    loadSecurityStats();
+                    break;
+                case 'settings':
+                    loadWebsiteSettings();
+                    break;
+            }
+        }
+        
+        // Load all admin data
+        async function loadAdminData() {
+            try {
+                await Promise.all([
+                    loadUserStats(),
+                    loadActivity(),
+                    loadToolsAdmin(),
+                    loadBlockedIPs()
+                ]);
+            } catch (error) {
+                console.error("Error loading admin data:", error);
+                showAlert('Error connecting to Firebase. Check your API keys.', 'danger');
+            }
+        }
+        
+        // Load user statistics
+        async function loadUserStats() {
+            try {
+                // Total users
+                const usersSnap = await db.collection('userVisits').get();
+                document.getElementById('statUsers').textContent = usersSnap.size;
+                
+                // Blocked IPs
+                const blockedSnap = await db.collection('blockedIPs').get();
+                document.getElementById('statBlocked').textContent = blockedSnap.size;
+                document.getElementById('blockedCount').textContent = blockedSnap.size + ' Blocked';
+                
+                // Active tools
+                const toolsSnap = await db.collection('tools').get();
+                document.getElementById('statTools').textContent = toolsSnap.size;
+                
+                // Today's visits
+                const today = new Date().toISOString().split('T')[0];
+                const todayVisits = usersSnap.docs.filter(doc => {
+                    const lastVisit = doc.data().lastVisit;
+                    return lastVisit && lastVisit.includes(today);
+                });
+                document.getElementById('statToday').textContent = todayVisits.length;
+                
+                // Update trends
+                updateTrends();
+            } catch (error) {
+                console.error("Error loading user stats:", error);
+            }
+        }
+        
+        // Update trend indicators
+        function updateTrends() {
+            // This would compare with previous data
+            // For now, we'll show static messages
+        }
+        
+        // Load activity
+        async function loadActivity() {
+            try {
+                const activityRef = db.collection('userVisits').orderBy('lastVisit', 'desc').limit(50);
+                const snapshot = await activityRef.get();
+                const activityBody = document.getElementById('activityBody');
+                activityBody.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    activityBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                                <i class="fas fa-database" style="font-size: 2rem; margin-bottom: 10px;"></i><br>
+                                No activity data found
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const user = doc.data();
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${new Date(user.lastVisit).toLocaleString()}</td>
+                        <td><strong>${user.ip}</strong></td>
+                        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            ${user.userAgent || 'Unknown'}
+                        </td>
+                        <td><span class="badge info">${user.visitCount || 1}</span></td>
+                        <td><span class="badge success">Active</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button onclick="blockUserIP('${user.ip}')" class="icon-btn block" title="Block IP">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                                <button onclick="viewUserDetails('${user.ip}')" class="icon-btn view" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    activityBody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Error loading activity:", error);
+            }
+        }
+        
+        // Load tools for admin
+        async function loadToolsAdmin() {
+            try {
+                const toolsRef = db.collection('tools').orderBy('order');
+                const snapshot = await toolsRef.get();
+                const container = document.getElementById('toolsListAdmin');
+                container.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
+                            <i class="fas fa-tools" style="font-size: 2rem; margin-bottom: 10px;"></i><br>
+                            No tools found. Add your first tool!
+                        </div>
+                    `;
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const tool = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="${tool.icon || 'fas fa-tools'}"></i> ${tool.name}
+                            </div>
+                            ${tool.isNew ? '<span class="badge warning">NEW</span>' : ''}
+                        </div>
+                        <div class="card-body">
+                            <p>${tool.description || 'No description provided.'}</p>
+                            <div style="margin-top: 15px;">
+                                <small style="color: #888;">Link: ${tool.link.substring(0, 50)}...</small><br>
+                                <small style="color: #888;">Category: ${tool.category || 'Utility'}</small>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button onclick="editTool('${doc.id}')" class="icon-btn edit" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteTool('${doc.id}', '${tool.name}')" class="icon-btn delete" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error loading tools:", error);
+            }
+        }
+        
+        // Add new tool
+        async function addTool() {
+            const name = document.getElementById('toolName').value.trim();
+            const link = document.getElementById('toolLink').value.trim();
+            const icon = document.getElementById('toolIcon').value.trim();
+            const category = document.getElementById('toolCategory').value;
+            const tags = document.getElementById('toolTags').value.trim();
+            const order = parseInt(document.getElementById('toolOrder').value) || 1;
+            const description = document.getElementById('toolDescription').value.trim();
+            
+            if (!name || !link) {
+                showAlert('Please fill in tool name and link', 'warning');
+                return;
+            }
+            
+            try {
+                await db.collection('tools').add({
+                    name: name,
+                    link: link,
+                    icon: icon || "fas fa-tools",
+                    category: category,
+                    tags: tags,
+                    order: order,
+                    description: description,
+                    added: new Date().toISOString(),
+                    isNew: true,
+                    active: true
+                });
+                
+                showAlert(`Tool "${name}" added successfully!`, 'success');
+                clearToolForm();
+                loadToolsAdmin();
+                loadUserStats();
+                recordAdminActivity(`Added tool: ${name}`);
+            } catch (error) {
+                console.error("Error adding tool:", error);
+                showAlert('Error adding tool. Check Firebase connection.', 'danger');
+            }
+        }
+        
+        // Clear tool form
+        function clearToolForm() {
+            document.getElementById('toolName').value = '';
+            document.getElementById('toolLink').value = '';
+            document.getElementById('toolIcon').value = 'fas fa-tools';
+            document.getElementById('toolDescription').value = '';
+            document.getElementById('toolTags').value = '';
+            document.getElementById('toolOrder').value = '1';
+        }
+        
+        // Edit tool
+        async function editTool(toolId) {
+            const newName = prompt("Enter new tool name:", "");
+            if (newName) {
+                try {
+                    await db.collection('tools').doc(toolId).update({
+                        name: newName,
+                        updated: new Date().toISOString()
+                    });
+                    showAlert('Tool updated successfully!', 'success');
+                    loadToolsAdmin();
+                    recordAdminActivity(`Edited tool: ${newName}`);
+                } catch (error) {
+                    showAlert('Error updating tool.', 'danger');
+                }
+            }
+        }
+        
+        // Delete tool
+        async function deleteTool(toolId, toolName) {
+            if (confirm(`Are you sure you want to delete "${toolName}"?`)) {
+                try {
+                    await db.collection('tools').doc(toolId).delete();
+                    showAlert(`Tool "${toolName}" deleted!`, 'success');
+                    loadToolsAdmin();
+                    loadUserStats();
+                    recordAdminActivity(`Deleted tool: ${toolName}`);
+                } catch (error) {
+                    showAlert('Error deleting tool.', 'danger');
+                }
+            }
+        }
+        
+        // Block IP address
+        async function blockIPAddress() {
+            const ip = document.getElementById('blockIP').value.trim();
+            if (!ip) {
+                showAlert('Please enter an IP address', 'warning');
+                return;
+            }
+            
+            const reason = prompt("Enter reason for blocking:", "Admin blocked");
+            
+            try {
+                await db.collection('blockedIPs').doc(ip).set({
+                    ip: ip,
+                    blockedAt: new Date().toISOString(),
+                    reason: reason || "Admin blocked",
+                    blockedBy: ADMIN_USERNAME
+                });
+                
+                showAlert(`IP ${ip} blocked successfully!`, 'success');
+                document.getElementById('blockIP').value = '';
+                loadBlockedIPs();
+                loadUserStats();
+                loadActivity();
+                recordAdminActivity(`Blocked IP: ${ip}`);
+            } catch (error) {
+                console.error("Error blocking IP:", error);
+                showAlert('Error blocking IP. Check Firebase connection.', 'danger');
+            }
+        }
+        
+        // Block user IP from activity list
+        async function blockUserIP(ip) {
+            if (confirm(`Block IP ${ip}?`)) {
+                const reason = prompt("Enter reason for blocking:", "Blocked from user list");
+                
+                try {
+                    await db.collection('blockedIPs').doc(ip).set({
+                        ip: ip,
+                        blockedAt: new Date().toISOString(),
+                        reason: reason || "Blocked from user list",
+                        blockedBy: ADMIN_USERNAME
+                    });
+                    
+                    showAlert(`IP ${ip} blocked!`, 'success');
+                    loadBlockedIPs();
+                    loadUserStats();
+                    loadActivity();
+                    recordAdminActivity(`Blocked user IP: ${ip}`);
+                } catch (error) {
+                    showAlert('Error blocking IP.', 'danger');
+                }
+            }
+        }
+        
+        // View user details
+        function viewUserDetails(ip) {
+            alert(`User IP: ${ip}\nViewing detailed information...`);
+            // In a real application, you would fetch and display detailed user info
+        }
+        
+        // Load blocked IPs
+        async function loadBlockedIPs() {
+            try {
+                const blockedRef = db.collection('blockedIPs').orderBy('blockedAt', 'desc');
+                const snapshot = await blockedRef.get();
+                const list = document.getElementById('blockedIPsList');
+                list.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    list.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 20px; color: #666;">
+                                No blocked IPs found
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const ipData = doc.data();
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${ipData.ip}</strong></td>
+                        <td>${new Date(ipData.blockedAt).toLocaleString()}</td>
+                        <td>${ipData.reason || 'No reason provided'}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button onclick="unblockIP('${ipData.ip}')" class="icon-btn edit" title="Unblock">
+                                    <i class="fas fa-unlock"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    list.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Error loading blocked IPs:", error);
+            }
+        }
+        
+        // Unblock IP
+        async function unblockIP(ip) {
+            if (confirm(`Unblock IP ${ip}?`)) {
+                try {
+                    await db.collection('blockedIPs').doc(ip).delete();
+                    showAlert(`IP ${ip} unblocked!`, 'success');
+                    loadBlockedIPs();
+                    loadUserStats();
+                    recordAdminActivity(`Unblocked IP: ${ip}`);
+                } catch (error) {
+                    showAlert('Error unblocking IP.', 'danger');
+                }
+            }
+        }
+        
+        // Load website settings
+        async function loadWebsiteSettings() {
+            try {
+                const settingsRef = db.collection('settings').doc('website');
+                const doc = await settingsRef.get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('websiteTitle').value = data.title || 'DARK ZONE TOOLKIT';
+                    document.getElementById('websiteSubtitle').value = data.subtitle || 'Premium Hacking Tools Collection';
+                    document.getElementById('themeColor').value = data.themeColor || '#00ffe7';
+                    document.getElementById('maintenanceMode').value = data.maintenanceMode || 'false';
+                }
+                
+                const whatsappRef = db.collection('settings').doc('whatsapp');
+                const whatsappDoc = await whatsappRef.get();
+                
+                if (whatsappDoc.exists) {
+                    const data = whatsappDoc.data();
+                    document.getElementById('whatsappURL').value = data.url || 'https://whatsapp.com/channel/0029VbBXISPDuMRjYCb7Xl0X';
+                    document.getElementById('redirectDelay').value = data.redirectDelay || 1000;
+                    document.getElementById('enableRedirect').value = data.enableRedirect || 'true';
+                }
+            } catch (error) {
+                console.error("Error loading website settings:", error);
+            }
+        }
+        
+        // Update WhatsApp settings
+        async function updateWhatsappSettings() {
+            const url = document.getElementById('whatsappURL').value.trim();
+            const delay = parseInt(document.getElementById('redirectDelay').value);
+            const enableRedirect = document.getElementById('enableRedirect').value;
+            
+            if (!url) {
+                showAlert('Please enter WhatsApp URL', 'warning');
+                return;
+            }
+            
+            try {
+                await db.collection('settings').doc('whatsapp').set({
+                    url: url,
+                    redirectDelay: delay,
+                    enableRedirect: enableRedirect,
+                    updated: new Date().toISOString()
+                }, { merge: true });
+                
+                showAlert('WhatsApp settings updated!', 'success');
+                recordAdminActivity('Updated WhatsApp settings');
+            } catch (error) {
+                console.error("Error updating WhatsApp settings:", error);
+                showAlert('Error updating WhatsApp settings.', 'danger');
+            }
+        }
+        
+        // Update website settings
+        async function updateWebsiteSettings() {
+            const title = document.getElementById('websiteTitle').value.trim();
+            const subtitle = document.getElementById('websiteSubtitle').value.trim();
+            const themeColor = document.getElementById('themeColor').value;
+            const maintenanceMode = document.getElementById('maintenanceMode').value;
+            
+            try {
+                await db.collection('settings').doc('website').set({
+                    title: title,
+                    subtitle: subtitle,
+                    themeColor: themeColor,
+                    maintenanceMode: maintenanceMode === 'true',
+                    updated: new Date().toISOString()
+                }, { merge: true });
+                
+                showAlert('Website settings updated!', 'success');
+                recordAdminActivity('Updated website settings');
+            } catch (error) {
+                console.error("Error updating website settings:", error);
+                showAlert('Error updating website settings.', 'danger');
+            }
+        }
+        
+        // Test redirect
+        function testRedirect() {
+            const url = document.getElementById('whatsappURL').value;
+            if (url) {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            } else {
+                showAlert('Please enter a valid URL first', 'warning');
+            }
+        }
+        
+        // Export tools
+        async function exportTools() {
+            try {
+                const toolsRef = db.collection('tools');
+                const snapshot = await toolsRef.get();
+                const tools = [];
+                
+                snapshot.forEach(doc => {
+                    tools.push(doc.data());
+                });
+                
+                const dataStr = JSON.stringify(tools, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = 'darkzone-tools-export.json';
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                
+                showAlert('Tools exported successfully!', 'success');
+                recordAdminActivity('Exported tools data');
+            } catch (error) {
+                console.error("Error exporting tools:", error);
+                showAlert('Error exporting tools.', 'danger');
+            }
+        }
+        
+        // Load security stats
+        async function loadSecurityStats() {
+            try {
+                // Load last password change
+                const securityRef = db.collection('settings').doc('security');
+                const doc = await securityRef.get();
+                
+                if (doc.exists) {
+                    document.getElementById('passwordLastChanged').value = 
+                        new Date(doc.data().passwordLastChanged).toLocaleString() || 'Never';
+                }
+            } catch (error) {
+                console.error("Error loading security stats:", error);
+            }
+        }
+        
+        // Show change password modal
+        function showChangePasswordModal() {
+            const newPass = prompt("Enter new admin password:", "");
+            if (newPass && newPass.length >= 6) {
+                if (confirm("Are you sure you want to change the admin password?")) {
+                    // Note: In production, this should update the actual authentication
+                    // For now, we'll just update a setting
+                    alert("Password change feature needs Firebase Authentication implementation");
+                    showAlert("Password change requires Firebase Auth setup", 'warning');
+                }
+            } else if (newPass) {
+                showAlert("Password must be at least 6 characters", 'warning');
+            }
+        }
+        
+        // Backup database
+        function backupDatabase() {
+            showAlert("Backup feature requires server-side implementation", 'info');
+        }
+        
+        // Clear old data
+        async function clearOldData() {
+            if (confirm("Clear user visit data older than 30 days?")) {
+                showAlert("This feature requires server-side implementation", 'info');
+                // In production: Delete old userVisits documents
+            }
+        }
+        
+        // Reset visits
+        async function resetVisits() {
+            if (confirm("Reset all user visit counts to zero?")) {
+                try {
+                    // This would require batch operations in production
+                    showAlert("Batch operation needed for production", 'info');
+                    recordAdminActivity('Reset visit counts');
+                } catch (error) {
+                    showAlert('Error resetting visits.', 'danger');
+                }
+            }
+        }
+        
+        // Refresh all data
+        async function refreshAll() {
+            await loadUserStats();
+            await loadActivity();
+            await loadToolsAdmin();
+            await loadBlockedIPs();
+            showAlert('Data refreshed successfully!', 'success');
+        }
+        
+        // Show alert
+        function showAlert(message, type) {
+            // Create alert element
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${type}`;
+            alertDiv.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : type === 'danger' ? 'times-circle' : 'info-circle'}"></i>
+                ${message}
+            `;
+            
+            // Add to top of admin container
+            const container = document.querySelector('.admin-container');
+            container.insertBefore(alertDiv, container.firstChild);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+        
+        // Show add user modal
+        function showAddUserModal() {
+            alert("Add User feature requires Firebase Authentication implementation");
+        }
+        
+        // Search activity
+        function searchActivity() {
+            const searchTerm = document.getElementById('searchActivity').value.toLowerCase();
+            const rows = document.querySelectorAll('#activityBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+        
+        // Start admin updates
+        function startAdminUpdates() {
+            setInterval(loadUserStats, 30000); // Update stats every 30 seconds
+        }
+        
+        // Logout
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                document.getElementById('adminPanel').style.display = 'none';
+                document.getElementById('adminLogin').style.display = 'flex';
+                document.getElementById('adminPass').value = '';
+                document.getElementById('adminUser').value = '';
+                recordAdminActivity('Logout');
+            }
+        }
+        
+        // Enter key for login
+        document.getElementById('adminPass').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                adminLogin();
+            }
+        });
+        
+        // Auto-focus on username
+        document.getElementById('adminUser').focus();
+        
+        // Initialize on page load
+        window.onload = function() {
+            // Check if already logged in (basic check)
+            const isLoggedIn = localStorage.getItem('darkzone_admin');
+            if (isLoggedIn === 'true') {
+                // Auto-login (in production, use proper session management)
+                // document.getElementById('adminLogin').style.display = 'none';
+                // document.getElementById('adminPanel').style.display = 'block';
+                // loadAdminData();
+            }
+        };
+    </script>
+</body>
+</html>
