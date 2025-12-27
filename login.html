@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login | DARK TECH ZONE</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+<body style="background:#05060a;color:#00ffe7;text-align:center;padding:100px">
+
+<h2>Login</h2>
+<input id="email"><br>
+<input id="pass" type="password"><br>
+<button onclick="login()">Login</button>
+
+<script>
+firebase.initializeApp({apiKey:"KEY",authDomain:"DOMAIN"});
+const auth=firebase.auth();
+function login(){
+ auth.signInWithEmailAndPassword(email.value,pass.value)
+ .then(()=>location.href="index.html");
+}
+</script>
+</body>
+</html>
