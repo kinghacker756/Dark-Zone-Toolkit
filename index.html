@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <title>Dark Tech Zone Toolkit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Nova+Square&family=Kanit&family=Baumans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(135deg, #0a0a0f, #1a1a2e, #16213e);
+      background-size: 400% 400%;
+      animation: bgFlow 15s ease infinite;
+      color: white;
+      overflow-x: hidden;
+      text-align: center;
+      min-height: 100vh;
+    }
+    @keyframes bgFlow { 
+      0% { background-position: 0% 50%; } 
+      50% { background-position: 100% 50%; } 
+      100% { background-position: 0% 50%; } 
+    }
+    
+    .wave-bg { 
+      position: fixed; width: 100%; height: 100%; 
+      top: 0; left: 0; overflow: hidden; z-index: -1; 
+    }
+    .wave { 
+      position: absolute; width: 200%; height: 200%; 
+      background: radial-gradient(circle at 50% 50%, #ff2a6d20, #05d9e820, transparent 70%); 
+      animation: waveMove 10s ease-in-out infinite alternate; 
+      filter: blur(60px); 
+    }
+    @keyframes waveMove { 
+      0% { transform: translate(-20%, -10%) scale(1); } 
+      100% { transform: translate(10%, 10%) scale(1.2); } 
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
+    
+    .title { 
+      font-family: 'Audiowide', cursive; 
+      font-size: 3rem; 
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #ff2a6d, #05d9e8, #005678);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      text-shadow: 0 0 30px rgba(255, 42, 109, 0.3);
+    }
+    .subtitle { 
+      font-family: 'Nova Square', cursive; 
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #05d9e8; 
+      margin-bottom: 30px;
+      text-shadow: 0 0 15px rgba(5, 217, 232, 0.5);
+    }
+    
+    .admin-access {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+    .admin-btn {
+      background: linear-gradient(135deg, #ff2a6d, #d1005b);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 42, 109, 0.3);
+    }
+    .admin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(255, 42, 109, 0.5);
+    }
+    
+    .search-container {
+      max-width: 500px;
+      margin: 0 auto 25px;
+      position: relative;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 14px 20px 14px 50px;
+      background: rgba(10, 10, 15, 0.6);
+      border: 2px solid #05d9e840;
+      border-radius: 30px;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(5, 217, 232, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    .search-container input:focus {
+      border-color: #ff2a6d;
+      box-shadow: 0 0 30px rgba(255, 42, 109, 0.3);
+    }
+    .search-container input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+    .search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #05d9e8;
+      filter: drop-shadow(0 0 8px #05d9e8);
+    }
+    
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 25px;
+      background: rgba(10, 10, 15, 0.5);
+      border: 1px solid #05d9e840;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      box-shadow: 0 0 20px rgba(5, 217, 232, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    .stat-item.live {
+      background: linear-gradient(135deg, rgba(255, 42, 109, 0.2), rgba(5, 217, 232, 0.2));
+      border-color: #ff2a6d60;
+      box-shadow: 0 0 25px rgba(255, 42, 109, 0.2);
+    }
+    .stat-item i {
+      color: #ff2a6d;
+      filter: drop-shadow(0 0 8px #ff2a6d);
+    }
+    
+    .tool-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+      gap: 20px; 
+      margin-bottom: 50px; 
+    }
+    
+    .tool-box { 
+      width: 100%;
+      padding: 25px 20px; 
+      background: rgba(10, 10, 15, 0.4);
+      backdrop-filter: blur(15px);
+      border: 2px solid;
+      border-image: linear-gradient(135deg, #ff2a6d, #05d9e8) 1;
+      border-radius: 15px; 
+      transition: all 0.3s ease; 
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 42, 109, 0.1), transparent);
+      transition: 0.5s;
+    }
+    .tool-box:hover::before {
+      left: 100%;
+    }
+    .tool-box:hover { 
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(255, 42, 109, 0.2),
+                  0 0 60px rgba(5, 217, 232, 0.1);
+    }
+    
+    .tool-icon { 
+      width: 60px; 
+      height: 60px; 
+      margin: 0 auto 15px;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px #05d9e8);
+    }
+    .tool-name { 
+      font-size: 1.1rem; 
+      color: white;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+    .tool-category {
+      font-size: 0.8rem;
+      color: #05d9e8;
+      background: rgba(5, 217, 232, 0.1);
+      padding: 4px 12px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    .tool-description {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+    
+    /* Report Section */
+    .report-section {
+      background: rgba(10, 10, 15, 0.4);
+      backdrop-filter: blur(15px);
+      border: 2px solid #ff2a6d;
+      border-radius: 15px;
+      padding: 30px;
+      margin: 40px 0;
+      text-align: left;
+    }
+    
+    .report-section h3 {
+      color: #ff2a6d;
+      font-family: 'Nova Square', cursive;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .report-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .report-form input,
+    .report-form select,
+    .report-form textarea {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #05d9e840;
+      border-radius: 8px;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    
+    .report-form input:focus,
+    .report-form select:focus,
+    .report-form textarea:focus {
+      border-color: #ff2a6d;
+      box-shadow: 0 0 15px rgba(255, 42, 109, 0.3);
+    }
+    
+    .report-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .report-submit {
+      background: linear-gradient(135deg, #ff2a6d, #d1005b);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-family: 'Kanit', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .report-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(255, 42, 109, 0.3);
+    }
+    
+    .footer {
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(5, 217, 232, 0.2);
+    }
+    .channel-btn {
+      background: linear-gradient(135deg, #ff2a6d, #d1005b);
+      color: white;
+      padding: 16px 40px;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(255, 42, 109, 0.3);
+      margin-bottom: 20px;
+    }
+    .channel-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(255, 42, 109, 0.4);
+    }
+    .copyright {
+      margin-top: 25px;
+      color: #05d9e8;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { 
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .title { animation: slideUp 0.8s ease-out; }
+    .subtitle { 
+      animation: slideUp 0.8s ease-out 0.2s both;
+      opacity: 0;
+    }
+    .search-container { 
+      animation: slideUp 0.8s ease-out 0.3s both;
+      opacity: 0;
+    }
+    .stats-bar { 
+      animation: slideUp 0.8s ease-out 0.4s both;
+      opacity: 0;
+    }
+    .tool-box {
+      animation: slideUp 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+    .tool-box:nth-child(1) { animation-delay: 0.1s; }
+    .tool-box:nth-child(2) { animation-delay: 0.2s; }
+    .tool-box:nth-child(3) { animation-delay: 0.3s; }
+    .tool-box:nth-child(4) { animation-delay: 0.4s; }
+    .tool-box:nth-child(5) { animation-delay: 0.5s; }
+    .tool-box:nth-child(6) { animation-delay: 0.6s; }
+    .tool-box:nth-child(7) { animation-delay: 0.7s; }
+    .tool-box:nth-child(8) { animation-delay: 0.8s; }
+    
+    /* Loading State */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+    }
+    
+    .loader {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(5, 217, 232, 0.3);
+      border-radius: 50%;
+      border-top-color: #05d9e8;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .message {
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      text-align: center;
+      font-weight: bold;
+      display: none;
+    }
+    
+    .success {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid #4CAF50;
+      color: #4CAF50;
+    }
+    
+    .error {
+      background: rgba(244, 67, 54, 0.2);
+      border: 1px solid #f44336;
+      color: #f44336;
+    }
+    
+    .warning {
+      background: rgba(255, 193, 7, 0.2);
+      border: 1px solid #ffc107;
+      color: #ffc107;
+    }
+  </style>
+</head>
+<body>
+  <div class="wave-bg">
+    <div class="wave"></div>
+  </div>
+
+  <div class="admin-access">
+    <a href="admin.html" class="admin-btn">
+      <i class="fas fa-lock"></i> Admin Panel
+    </a>
+  </div>
+
+  <div class="container">
+    <h1 class="title">DARK TECH ZONE</h1>
+    <p class="subtitle">Advanced Toolkit & Resources Hub</p>
+    
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Search tools by name, category, or description..." />
+    </div>
+    
+    <div class="stats-bar">
+      <div class="stat-item live">
+        <i class="fas fa-bolt"></i>
+        <span>Active Tools: <span id="toolCount">0</span></span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-eye"></i>
+        <span>Total Views: <span id="totalViews">0</span></span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-fire"></i>
+        <span>Popular Tool: <span id="popularTool">-</span></span>
+      </div>
+    </div>
+    
+    <div class="tool-grid" id="toolGrid">
+      <div class="loading">
+        <div class="loader"></div>
+      </div>
+    </div>
+    
+    <!-- Report Section -->
+    <div class="report-section">
+      <h3><i class="fas fa-flag"></i> Report an Issue or Suggest a Tool</h3>
+      <div class="message" id="reportMessage"></div>
+      <form class="report-form" id="reportForm">
+        <input type="text" id="reportName" placeholder="Your Name (Optional)" />
+        <input type="email" id="reportEmail" placeholder="Your Email (Optional)" />
+        <select id="reportType">
+          <option value="">Select Report Type</option>
+          <option value="broken">Broken Link</option>
+          <option value="suggestion">Tool Suggestion</option>
+          <option value="bug">Website Bug</option>
+          <option value="feature">Feature Request</option>
+          <option value="other">Other</option>
+        </select>
+        <input type="text" id="reportTool" placeholder="Tool Name (If applicable)" />
+        <textarea id="reportDescription" placeholder="Describe the issue or suggestion in detail..."></textarea>
+        <button type="submit" class="report-submit">
+          <i class="fas fa-paper-plane"></i> Submit Report
+        </button>
+      </form>
+    </div>
+    
+    <div class="footer">
+      <a href="https://whatsapp.com/channel/0029VbBWrHxDOQIa119G8545" target="_blank" class="channel-btn">
+        <i class="fab fa-whatsapp"></i>
+        Join Our WhatsApp Channel
+      </a>
+      <div class="copyright">
+        © 2024 Dark Tech Zone Toolkit | Report issues to help us improve
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script>
+    // Your new Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFAJHOZiCOx-Axi_yIXPzNYLe2payowMg",
+      authDomain: "dark-zone-toolkit.firebaseapp.com",
+      projectId: "dark-zone-toolkit",
+      storageBucket: "dark-zone-toolkit.firebasestorage.app",
+      messagingSenderId: "81877953322",
+      appId: "1:81877953322:web:940865bf3ad1ec25e90c53",
+      measurementId: "G-4CXWPEGTHW"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    let tools = [];
+
+    // Load tools from Firestore
+    async function loadTools() {
+      try {
+        const querySnapshot = await db.collection('tools').orderBy('views', 'desc').get();
+        
+        tools = [];
+        querySnapshot.forEach((doc) => {
+          tools.push({ id: doc.id, ...doc.data() });
+        });
+        
+        renderTools(tools);
+        updateStats();
+      } catch (error) {
+        console.error("Error loading tools:", error);
+        document.getElementById('toolGrid').innerHTML = `
+          <div class="error" style="grid-column: 1/-1; padding: 20px; text-align: center;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Error loading tools. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Render tools to the grid
+    function renderTools(toolsToRender) {
+      const grid = document.getElementById('toolGrid');
+      
+      if (toolsToRender.length === 0) {
+        grid.innerHTML = '<p style="color: #05d9e8; grid-column: 1/-1; text-align: center;">No tools found</p>';
+        return;
+      }
+
+      grid.innerHTML = '';
+      
+      toolsToRender.forEach(tool => {
+        const toolElement = document.createElement('a');
+        toolElement.className = 'tool-box';
+        toolElement.href = tool.url;
+        toolElement.target = '_blank';
+        toolElement.onclick = () => incrementViews(tool.id);
+        
+        toolElement.innerHTML = `
+          <img src="${tool.icon || getDefaultIcon(tool.name)}" class="tool-icon" 
+               onerror="this.src='${getDefaultIcon(tool.name)}'">
+          <div class="tool-name">${tool.name}</div>
+          ${tool.category ? `<div class="tool-category">${tool.category}</div>` : ''}
+          ${tool.description ? `<div class="tool-description">${tool.description}</div>` : ''}
+          <div style="margin-top: 15px; color: #05d9e8; font-size: 0.8rem;">
+            <i class="fas fa-eye"></i> ${tool.views || 0} views
+          </div>
+        `;
+        
+        grid.appendChild(toolElement);
+      });
+    }
+
+    // Get default icon
+    function getDefaultIcon(name) {
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0a0a0f&color=ff2a6d&bold=true&size=128`;
+    }
+
+    // Increment view count
+    async function incrementViews(toolId) {
+      try {
+        await db.collection('tools').doc(toolId).update({
+          views: firebase.firestore.FieldValue.increment(1),
+          lastAccessed: new Date().toISOString()
+        });
+        
+        // Update locally
+        const tool = tools.find(t => t.id === toolId);
+        if (tool) {
+          tool.views = (tool.views || 0) + 1;
+          updateStats();
+        }
+      } catch (error) {
+        console.error("Error incrementing views:", error);
+      }
+    }
+
+    // Update statistics
+    function updateStats() {
+      const totalViews = tools.reduce((sum, tool) => sum + (tool.views || 0), 0);
+      const popularTool = tools.length > 0 ? 
+        tools.reduce((prev, current) => (prev.views || 0) > (current.views || 0) ? prev : current).name : 
+        '-';
+      
+      // Safely update elements
+      const toolCountElement = document.getElementById('toolCount');
+      const totalViewsElement = document.getElementById('totalViews');
+      const popularToolElement = document.getElementById('popularTool');
+      
+      if (toolCountElement) toolCountElement.textContent = tools.length;
+      if (totalViewsElement) totalViewsElement.textContent = totalViews;
+      if (popularToolElement) popularToolElement.textContent = popularTool;
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filtered = tools.filter(tool => 
+        tool.name.toLowerCase().includes(searchTerm) ||
+        (tool.category && tool.category.toLowerCase().includes(searchTerm)) ||
+        (tool.description && tool.description.toLowerCase().includes(searchTerm))
+      );
+      renderTools(filtered);
+    });
+
+    // Report form submission
+    document.getElementById('reportForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const reportData = {
+        name: document.getElementById('reportName').value.trim(),
+        email: document.getElementById('reportEmail').value.trim(),
+        type: document.getElementById('reportType').value,
+        tool: document.getElementById('reportTool').value.trim(),
+        description: document.getElementById('reportDescription').value.trim(),
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        ip: await getIPAddress()
+      };
+
+      // Validate
+      if (!reportData.type) {
+        showMessage('Please select a report type', 'error');
+        return;
+      }
+
+      if (!reportData.description) {
+        showMessage('Please describe your issue or suggestion', 'error');
+        return;
+      }
+
+      try {
+        await db.collection('reports').add(reportData);
+        showMessage('Thank you! Your report has been submitted successfully.', 'success');
+        document.getElementById('reportForm').reset();
+      } catch (error) {
+        console.error('Error submitting report:', error);
+        showMessage('Error submitting report. Please try again.', 'error');
+      }
+    });
+
+    // Get IP address (simplified)
+    async function getIPAddress() {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+      } catch (error) {
+        return 'unknown';
+      }
+    }
+
+    // Show message
+    function showMessage(text, type) {
+      const messageElement = document.getElementById('reportMessage');
+      messageElement.textContent = text;
+      messageElement.className = `message ${type}`;
+      messageElement.style.display = 'block';
+      
+      setTimeout(() => {
+        messageElement.style.display = 'none';
+      }, 5000);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTools();
+      
+      // Real-time updates for tools
+      db.collection('tools').onSnapshot((snapshot) => {
+        tools = [];
+        snapshot.forEach((doc) => {
+          tools.push({ id: doc.id, ...doc.data() });
+        });
+        renderTools(tools);
+        updateStats();
+      }, (error) => {
+        console.error("Error in real-time update:", error);
+      });
+    });
+  </script>
+</body>
+</html>
