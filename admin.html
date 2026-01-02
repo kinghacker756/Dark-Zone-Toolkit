@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Dark Tech Zone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff2a6d;
+            --secondary: #05d9e8;
+            --dark-bg: #0a0a0f;
+            --card-bg: #1a1a2e;
+            --text: #ffffff;
+            --text-secondary: #b8b8d1;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            padding: 50px;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-logo {
+            margin-bottom: 30px;
+        }
+
+        .login-logo h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-family: 'Audiowide', cursive;
+        }
+
+        .login-logo span {
+            color: var(--secondary);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .login-input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(5, 217, 232, 0.2);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 42, 109, 0.3);
+        }
+
+        .error-message {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .admin-container {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--card-bg);
+            padding: 30px 20px;
+            border-right: 2px solid var(--primary);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            letter-spacing: 2px;
+            font-family: 'Audiowide', cursive;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(255, 42, 109, 0.2), rgba(5, 217, 232, 0.1));
+            color: var(--text);
+            border-left: 4px solid var(--primary);
+        }
+
+        .nav-link i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            color: var(--secondary);
+            font-size: 2.2rem;
+            font-family: 'Audiowide', cursive;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-email {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+
+        .logout-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #d1005b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 42, 109, 0.3);
+        }
+
+        /* Stats Cards - 2 CARDS PER ROW */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 CARDS PER ROW */
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+            box-shadow: 0 15px 30px rgba(5, 217, 232, 0.2);
+        }
+
+        .stat-card.primary {
+            border-top: 5px solid var(--primary);
+        }
+
+        .stat-card.secondary {
+            border-top: 5px solid var(--secondary);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 15px 0;
+            color: var(--primary);
+            font-family: 'Audiowide', cursive;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Common Section Styles */
+        .section-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h3 {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 42, 109, 0.3);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            background: rgba(255, 42, 109, 0.15);
+            color: var(--primary);
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background: rgba(5, 217, 232, 0.2);
+            color: var(--secondary);
+        }
+
+        .edit-btn:hover {
+            background: rgba(5, 217, 232, 0.3);
+        }
+
+        .delete-btn {
+            background: rgba(255, 42, 109, 0.2);
+            color: var(--primary);
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 42, 109, 0.3);
+        }
+
+        .view-btn {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+        }
+
+        .view-btn:hover {
+            background: rgba(33, 150, 243, 0.3);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-reviewed {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        .status-resolved {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .status-rejected {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 550px;
+            border: 3px solid var(--primary);
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 42, 109, 0.2);
+        }
+
+        .modal h2 {
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-family: 'Audiowide', cursive;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(5, 217, 232, 0.2);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .submit-btn {
+            flex: 1;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #d1005b;
+            transform: translateY(-2px);
+        }
+
+        .cancel-btn {
+            flex: 1;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .cancel-btn:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            grid-column: span 2;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(5, 217, 232, 0.3);
+            border-radius: 50%;
+            border-top-color: #05d9e8;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                margin-left: 280px;
+                padding: 25px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+            
+            .logo h2,
+            .nav-link span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+                padding: 20px;
+            }
+            
+            .nav-link {
+                justify-content: center;
+                padding: 16px;
+            }
+            
+            .nav-link i {
+                font-size: 1.4rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr; /* 1 CARD PER ROW ON TABLET */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-card {
+                padding: 20px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .section-header h3 {
+                font-size: 1.5rem;
+            }
+            
+            .add-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-box {
+                padding: 30px 20px;
+            }
+            
+            .login-logo h1 {
+                font-size: 2rem;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stat-card {
+                padding: 25px;
+            }
+            
+            .stat-value {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Report Details */
+        .report-details {
+            margin: 25px 0;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .report-field {
+            margin-bottom: 20px;
+        }
+
+        .report-field strong {
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .report-field p {
+            color: var(--text);
+            margin: 0;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+        
+        /* Back to Main Button */
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 14px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(255, 42, 109, 0.3);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 42, 109, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-logo">
+                <h1>DARK<span>TECH</span></h1>
+                <p style="color: var(--text-secondary); font-size: 1.1rem; margin-top: 5px;">Admin Control Panel</p>
+            </div>
+            
+            <div class="login-form">
+                <input type="email" id="email" class="login-input" placeholder="Email Address" autocomplete="username">
+                <input type="password" id="password" class="login-input" placeholder="Password" autocomplete="current-password">
+                <button class="login-btn" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                
+                <div class="error-message" id="loginError"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="dashboard" class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h2>DARK<span>TECH</span></h2>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">Admin Panel</p>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="showSection('dashboard')">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('tools')">
+                        <i class="fas fa-tools"></i>
+                        <span>Tools Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('reports')">
+                        <i class="fas fa-flag"></i>
+                        <span>User Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('analytics')">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1><i class="fas fa-terminal"></i> Admin Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-email" id="userEmail">Loading...</div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboardSection" class="section active">
+                <!-- Stats Cards - 2 PER ROW -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-label"><i class="fas fa-tools"></i> Total Tools</div>
+                        <div class="stat-value" id="totalTools">0</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Active in system</div>
+                    </div>
+                    
+                    <div class="stat-card secondary">
+                        <div class="stat-label"><i class="fas fa-eye"></i> Total Views</div>
+                        <div class="stat-value" id="totalViews">0</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Across all tools</div>
+                    </div>
+                    
+                    <div class="stat-card primary">
+                        <div class="stat-label"><i class="fas fa-flag"></i> Pending Reports</div>
+                        <div class="stat-value" id="pendingReports">0</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Awaiting review</div>
+                    </div>
+                    
+                    <div class="stat-card secondary">
+                        <div class="stat-label"><i class="fas fa-users"></i> Active Users</div>
+                        <div class="stat-value" id="activeUsers">0</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Last 24 hours</div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3><i class="fas fa-history"></i> Recent Reports</h3>
+                    </div>
+                    <div id="recentReports">
+                        <div class="loading">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools Management Section -->
+            <div id="toolsSection" class="section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3><i class="fas fa-tools"></i> Tools Management</h3>
+                        <button class="add-btn" onclick="openAddToolModal()">
+                            <i class="fas fa-plus"></i> Add New Tool
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Icon</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Views</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allToolsTable">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 60px;">
+                                        <div class="loading">
+                                            <div class="loader"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Section -->
+            <div id="reportsSection" class="section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3><i class="fas fa-flag"></i> User Reports</h3>
+                        <select id="reportFilter" onchange="filterReports()" style="background: rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 10px; border: 2px solid var(--secondary); font-size: 1rem;">
+                            <option value="all">All Reports</option>
+                            <option value="pending">Pending</option>
+                            <option value="reviewed">Reviewed</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Submitted</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTable">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 60px;">
+                                        <div class="loading">
+                                            <div class="loader"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analyticsSection" class="section">
+                <div class="section-card">
+                    <h3><i class="fas fa-chart-bar"></i> Analytics Dashboard</h3>
+                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                        <i class="fas fa-chart-line" style="font-size: 4rem; opacity: 0.3; margin-bottom: 20px;"></i>
+                        <p>Analytics dashboard coming soon...</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Track usage patterns and user engagement</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Back to Main Button -->
+        <a href="index.html" class="back-btn" style="display: none;" id="backToMain">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Toolkit</span>
+        </a>
+    </div>
+
+    <!-- Add/Edit Tool Modal -->
+    <div class="modal" id="toolModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeToolModal()">×</button>
+            <h2 id="modalTitle">Add New Tool</h2>
+            <form id="toolForm">
+                <div class="form-group">
+                    <label for="toolName"><i class="fas fa-tag"></i> Tool Name *</label>
+                    <input type="text" id="toolName" required placeholder="Enter tool name">
+                </div>
+                <div class="form-group">
+                    <label for="toolUrl"><i class="fas fa-link"></i> Tool URL *</label>
+                    <input type="url" id="toolUrl" required placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="toolIcon"><i class="fas fa-image"></i> Icon URL (Optional)</label>
+                    <input type="url" id="toolIcon" placeholder="https://example.com/icon.png">
+                    <div style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px;">
+                        Leave empty for auto-generated icon
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="toolCategory"><i class="fas fa-folder"></i> Category</label>
+                    <input type="text" id="toolCategory" placeholder="Development, Design, AI, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="toolDescription"><i class="fas fa-align-left"></i> Description</label>
+                    <textarea id="toolDescription" placeholder="Brief description of the tool..."></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" onclick="closeToolModal()">Cancel</button>
+                    <button type="submit" class="submit-btn" id="modalSubmitBtn">Add Tool</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Report Details Modal -->
+    <div class="modal" id="reportModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeReportModal()">×</button>
+            <h2><i class="fas fa-flag"></i> Report Details</h2>
+            <div id="reportDetails">
+                <!-- Report details will be loaded here -->
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="closeReportModal()">Close</button>
+                <button class="submit-btn" onclick="resolveReport()" id="resolveBtn">
+                    <i class="fas fa-check"></i> Mark as Resolved
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFAJHOZiCOx-Axi_yIXPzNYLe2payowMg",
+            authDomain: "dark-zone-toolkit.firebaseapp.com",
+            projectId: "dark-zone-toolkit",
+            storageBucket: "dark-zone-toolkit.firebasestorage.app",
+            messagingSenderId: "81877953322",
+            appId: "1:81877953322:web:940865bf3ad1ec25e90c53",
+            measurementId: "G-4CXWPEGTHW"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        let currentUser = null;
+        let tools = [];
+        let reports = [];
+        let editingToolId = null;
+        let viewingReportId = null;
+
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                showDashboard();
+                loadDashboard();
+            } else {
+                showLogin();
+            }
+        });
+
+        // Login function
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('loginError');
+
+            if (!email || !password) {
+                errorElement.textContent = 'Please enter email and password';
+                errorElement.style.display = 'block';
+                return;
+            }
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                // Login successful - handled by auth state observer
+            } catch (error) {
+                console.error('Login error:', error);
+                errorElement.textContent = getErrorMessage(error);
+                errorElement.style.display = 'block';
+            }
+        }
+
+        // Get error message
+        function getErrorMessage(error) {
+            switch (error.code) {
+                case 'auth/user-not-found':
+                    return 'User not found';
+                case 'auth/wrong-password':
+                    return 'Incorrect password';
+                case 'auth/invalid-email':
+                    return 'Invalid email address';
+                case 'auth/user-disabled':
+                    return 'Account has been disabled';
+                default:
+                    return 'Login failed. Please try again.';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                auth.signOut();
+            }
+        }
+
+        // Show login page
+        function showLogin() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('backToMain').style.display = 'none';
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'flex';
+            document.getElementById('backToMain').style.display = 'flex';
+            
+            const userEmailElement = document.getElementById('userEmail');
+            if (userEmailElement && currentUser) {
+                userEmailElement.textContent = currentUser.email;
+            }
+        }
+
+        // Show section
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected section
+            const section = document.getElementById(sectionId + 'Section');
+            if (section) {
+                section.classList.add('active');
+            }
+            
+            // Activate nav link
+            const navLink = document.querySelector(`.nav-link[onclick="showSection('${sectionId}')"]`);
+            if (navLink) {
+                navLink.classList.add('active');
+            }
+            
+            // Load section data
+            if (sectionId === 'tools') {
+                loadAllTools();
+            } else if (sectionId === 'reports') {
+                loadReports();
+            }
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                // Load tools
+                const toolsSnapshot = await db.collection('tools').get();
+                tools = [];
+                let totalViews = 0;
+                
+                toolsSnapshot.forEach((doc) => {
+                    const tool = { id: doc.id, ...doc.data() };
+                    tools.push(tool);
+                    totalViews += tool.views || 0;
+                });
+
+                // Load reports
+                const reportsSnapshot = await db.collection('reports').orderBy('createdAt', 'desc').limit(10).get();
+                reports = [];
+                let pendingReports = 0;
+                
+                reportsSnapshot.forEach((doc) => {
+                    const report = { id: doc.id, ...doc.data() };
+                    reports.push(report);
+                    if (report.status === 'pending') {
+                        pendingReports++;
+                    }
+                });
+
+                // Update dashboard stats
+                updateElementText('totalTools', tools.length);
+                updateElementText('totalViews', totalViews);
+                updateElementText('pendingReports', pendingReports);
+                
+                // Estimate active users (simplified)
+                const activeUsers = Math.floor(Math.random() * 50) + 10; // Random for demo
+                updateElementText('activeUsers', activeUsers);
+
+                // Update recent reports
+                updateRecentReports();
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                alert('Error loading dashboard data');
+            }
+        }
+
+        // Helper function to safely update element text
+        function updateElementText(elementId, text) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = text;
+            }
+        }
+
+        // Update recent reports
+        function updateRecentReports() {
+            const recentReportsElement = document.getElementById('recentReports');
+            if (!recentReportsElement) return;
+            
+            if (reports.length === 0) {
+                recentReportsElement.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                        <i class="fas fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                        <p>No recent reports</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            reports.slice(0, 5).forEach(report => {
+                const date = new Date(report.createdAt).toLocaleDateString();
+                const description = report.description.length > 50 ? 
+                    report.description.substring(0, 50) + '...' : 
+                    report.description;
+                
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; border-left: 4px solid ${getReportTypeColor(report.type)};">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                <strong style="color: var(--text);">${report.type || 'Report'}</strong>
+                                <span class="status-badge status-${report.status || 'pending'}">${report.status || 'Pending'}</span>
+                            </div>
+                            <div style="color: var(--text-secondary); font-size: 0.9rem;">${description}</div>
+                            <div style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px;">
+                                <i class="far fa-clock"></i> ${date}
+                            </div>
+                        </div>
+                        <button class="action-btn view-btn" onclick="viewReport('${report.id}')" style="margin-left: 10px;">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </div>
+                `;
+            });
+            
+            recentReportsElement.innerHTML = html;
+        }
+
+        // Get color for report type
+        function getReportTypeColor(type) {
+            const colors = {
+                'broken': '#f44336',
+                'suggestion': '#4CAF50',
+                'bug': '#FF9800',
+                'feature': '#2196F3',
+                'other': '#9C27B0'
+            };
+            return colors[type] || '#05d9e8';
+        }
+
+        // Load all tools
+        async function loadAllTools() {
+            try {
+                const querySnapshot = await db.collection('tools').orderBy('createdAt', 'desc').get();
+                
+                tools = [];
+                const table = document.getElementById('allToolsTable');
+                
+                if (querySnapshot.empty) {
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 60px;">
+                                <i class="fas fa-tools" style="font-size: 3rem; color: var(--text-secondary); opacity: 0.3; margin-bottom: 15px; display: block;"></i>
+                                <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No Tools Found</h3>
+                                <p style="color: var(--text-secondary);">Add your first tool using the "Add New Tool" button</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const tool = { id: doc.id, ...doc.data() };
+                    tools.push(tool);
+                    
+                    const createdAt = tool.createdAt ? 
+                        new Date(tool.createdAt).toLocaleDateString() : 
+                        'N/A';
+                    
+                    const iconUrl = tool.icon || `https://ui-avatars.com/api/?name=${encodeURIComponent(tool.name)}&background=0a0a0f&color=ff2a6d&bold=true&size=64`;
+                    
+                    html += `
+                        <tr>
+                            <td style="width: 80px;">
+                                <img src="${iconUrl}" style="width: 50px; height: 50px; border-radius: 10px; object-fit: contain; border: 2px solid rgba(255, 42, 109, 0.3);" 
+                                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(tool.name)}&background=0a0a0f&color=ff2a6d&bold=true&size=64'">
+                            </td>
+                            <td>
+                                <strong>${tool.name}</strong>
+                                <div style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 3px;">
+                                    <a href="${tool.url}" target="_blank" style="color: #05d9e8;">${tool.url.substring(0, 25)}...</a>
+                                </div>
+                            </td>
+                            <td>
+                                <span style="background: rgba(5, 217, 232, 0.2); padding: 5px 12px; border-radius: 12px; color: #05d9e8; font-size: 0.85rem;">
+                                    ${tool.category || 'General'}
+                                </span>
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 5px; color: #ff2a6d;">
+                                    <i class="fas fa-eye"></i>
+                                    <span>${tool.views || 0}</span>
+                                </div>
+                            </td>
+                            <td>${createdAt}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn edit-btn" onclick="editTool('${doc.id}')">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="action-btn delete-btn" onclick="deleteTool('${doc.id}')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                table.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading tools:', error);
+                const table = document.getElementById('allToolsTable');
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 60px; color: #ff4444;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                            <h3>Error Loading Tools</h3>
+                            <p>Please check your connection and try again</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Load reports
+        async function loadReports() {
+            try {
+                const querySnapshot = await db.collection('reports').orderBy('createdAt', 'desc').get();
+                
+                reports = [];
+                const table = document.getElementById('reportsTable');
+                
+                if (querySnapshot.empty) {
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 60px;">
+                                <i class="fas fa-inbox" style="font-size: 3rem; color: var(--text-secondary); opacity: 0.3; margin-bottom: 15px; display: block;"></i>
+                                <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No Reports Found</h3>
+                                <p style="color: var(--text-secondary);">User reports will appear here</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const report = { id: doc.id, ...doc.data() };
+                    reports.push(report);
+                    
+                    const date = new Date(report.createdAt).toLocaleDateString();
+                    const description = report.description.length > 30 ? 
+                        report.description.substring(0, 30) + '...' : 
+                        report.description;
+                    
+                    html += `
+                        <tr>
+                            <td>
+                                <span style="color: ${getReportTypeColor(report.type)}; font-weight: 600;">
+                                    ${report.type || 'Unknown'}
+                                </span>
+                            </td>
+                            <td>${description}</td>
+                            <td><span class="status-badge status-${report.status || 'pending'}">${report.status || 'Pending'}</span></td>
+                            <td>${date}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view-btn" onclick="viewReport('${doc.id}')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                    <button class="action-btn edit-btn" onclick="updateReportStatus('${doc.id}', 'resolved')">
+                                        <i class="fas fa-check"></i> Resolve
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                table.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading reports:', error);
+                const table = document.getElementById('reportsTable');
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 60px; color: #ff4444;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                            <h3>Error Loading Reports</h3>
+                            <p>Please check your connection and try again</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Filter reports
+        function filterReports() {
+            const filter = document.getElementById('reportFilter').value;
+            const rows = document.querySelectorAll('#reportsTable tr');
+            
+            rows.forEach(row => {
+                if (row.cells.length > 0) {
+                    const statusCell = row.cells[2];
+                    if (statusCell) {
+                        const statusBadge = statusCell.querySelector('.status-badge');
+                        if (statusBadge) {
+                            const status = statusBadge.className.includes('status-') ? 
+                                statusBadge.className.split('status-')[1].split(' ')[0] : '';
+                            if (filter === 'all' || status === filter) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // View report details
+        async function viewReport(reportId) {
+            try {
+                const doc = await db.collection('reports').doc(reportId).get();
+                if (!doc.exists) {
+                    alert('Report not found');
+                    return;
+                }
+                
+                const report = doc.data();
+                viewingReportId = reportId;
+                
+                const details = document.getElementById('reportDetails');
+                const date = new Date(report.createdAt).toLocaleString();
+                
+                details.innerHTML = `
+                    <div class="report-details">
+                        <div class="report-field">
+                            <strong><i class="fas fa-flag"></i> Report Type:</strong>
+                            <p style="color: ${getReportTypeColor(report.type)}; font-weight: 600;">${report.type || 'Unknown'}</p>
+                        </div>
+                        <div class="report-field">
+                            <strong><i class="fas fa-user"></i> Submitted By:</strong>
+                            <p>${report.name || 'Anonymous'} ${report.email ? `(${report.email})` : ''}</p>
+                        </div>
+                        <div class="report-field">
+                            <strong><i class="fas fa-toolbox"></i> Tool Name:</strong>
+                            <p>${report.tool || 'Not specified'}</p>
+                        </div>
+                        <div class="report-field">
+                            <strong><i class="fas fa-align-left"></i> Description:</strong>
+                            <p style="white-space: pre-wrap;">${report.description || 'No description'}</p>
+                        </div>
+                        <div class="report-field">
+                            <strong><i class="fas fa-info-circle"></i> Status:</strong>
+                            <p><span class="status-badge status-${report.status || 'pending'}">${report.status || 'Pending'}</span></p>
+                        </div>
+                        <div class="report-field">
+                            <strong><i class="far fa-clock"></i> Submitted:</strong>
+                            <p>${date}</p>
+                        </div>
+                        ${report.ip ? `<div class="report-field">
+                            <strong><i class="fas fa-network-wired"></i> IP Address:</strong>
+                            <p style="font-family: monospace;">${report.ip}</p>
+                        </div>` : ''}
+                    </div>
+                `;
+                
+                // Update resolve button text based on current status
+                const resolveBtn = document.getElementById('resolveBtn');
+                if (report.status === 'resolved') {
+                    resolveBtn.innerHTML = '<i class="fas fa-times"></i> Reopen Report';
+                    resolveBtn.onclick = () => updateReportStatus(reportId, 'pending');
+                } else {
+                    resolveBtn.innerHTML = '<i class="fas fa-check"></i> Mark as Resolved';
+                    resolveBtn.onclick = () => resolveReport();
+                }
+                
+                document.getElementById('reportModal').style.display = 'flex';
+                
+            } catch (error) {
+                console.error('Error loading report:', error);
+                alert('Error loading report details');
+            }
+        }
+
+        // Update report status
+        async function updateReportStatus(reportId, status) {
+            try {
+                await db.collection('reports').doc(reportId).update({
+                    status: status,
+                    updatedAt: new Date().toISOString(),
+                    reviewedBy: currentUser.email
+                });
+                
+                alert(`Report marked as ${status}`);
+                loadDashboard();
+                loadReports();
+                
+                if (viewingReportId === reportId) {
+                    closeReportModal();
+                }
+                
+            } catch (error) {
+                console.error('Error updating report:', error);
+                alert('Error updating report status');
+            }
+        }
+
+        // Resolve report (from modal)
+        function resolveReport() {
+            if (viewingReportId) {
+                updateReportStatus(viewingReportId, 'resolved');
+            }
+        }
+
+        // Close report modal
+        function closeReportModal() {
+            document.getElementById('reportModal').style.display = 'none';
+            viewingReportId = null;
+        }
+
+        // Open add tool modal
+        function openAddToolModal() {
+            editingToolId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Tool';
+            document.getElementById('modalSubmitBtn').textContent = 'Add Tool';
+            document.getElementById('toolForm').reset();
+            document.getElementById('toolModal').style.display = 'flex';
+        }
+
+        // Edit tool
+        async function editTool(toolId) {
+            try {
+                const doc = await db.collection('tools').doc(toolId).get();
+                if (!doc.exists) {
+                    alert('Tool not found');
+                    return;
+                }
+                
+                const tool = doc.data();
+                editingToolId = toolId;
+                
+                document.getElementById('modalTitle').textContent = 'Edit Tool';
+                document.getElementById('modalSubmitBtn').textContent = 'Update Tool';
+                
+                document.getElementById('toolName').value = tool.name || '';
+                document.getElementById('toolUrl').value = tool.url || '';
+                document.getElementById('toolIcon').value = tool.icon || '';
+                document.getElementById('toolCategory').value = tool.category || '';
+                document.getElementById('toolDescription').value = tool.description || '';
+                
+                document.getElementById('toolModal').style.display = 'flex';
+            } catch (error) {
+                console.error('Error loading tool:', error);
+                alert('Error loading tool');
+            }
+        }
+
+        // Close tool modal
+        function closeToolModal() {
+            document.getElementById('toolModal').style.display = 'none';
+            editingToolId = null;
+        }
+
+        // Handle tool form submission
+        document.getElementById('toolForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const toolData = {
+                name: document.getElementById('toolName').value.trim(),
+                url: document.getElementById('toolUrl').value.trim(),
+                icon: document.getElementById('toolIcon').value.trim(),
+                category: document.getElementById('toolCategory').value.trim() || 'General',
+                description: document.getElementById('toolDescription').value.trim(),
+                updatedAt: new Date().toISOString()
+            };
+
+            // Validate
+            if (!toolData.name || !toolData.url) {
+                alert('Please fill in required fields (Name and URL)');
+                return;
+            }
+
+            try {
+                if (editingToolId) {
+                    // Update existing tool
+                    await db.collection('tools').doc(editingToolId).update(toolData);
+                    alert('✅ Tool updated successfully!');
+                } else {
+                    // Add new tool
+                    toolData.createdAt = new Date().toISOString();
+                    toolData.views = 0;
+                    await db.collection('tools').add(toolData);
+                    alert('✅ Tool added successfully!');
+                }
+                
+                closeToolModal();
+                loadDashboard();
+                loadAllTools();
+                
+            } catch (error) {
+                console.error('Error saving tool:', error);
+                alert('❌ Error saving tool: ' + error.message);
+            }
+        });
+
+        // Delete tool
+        async function deleteTool(toolId) {
+            const tool = tools.find(t => t.id === toolId);
+            if (!tool) return;
+            
+            if (confirm(`Are you sure you want to delete "${tool.name}"?\nThis action cannot be undone.`)) {
+                try {
+                    await db.collection('tools').doc(toolId).delete();
+                    alert('✅ Tool deleted successfully!');
+                    loadDashboard();
+                    loadAllTools();
+                } catch (error) {
+                    console.error('Error deleting tool:', error);
+                    alert('❌ Error deleting tool: ' + error.message);
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check auth state
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    currentUser = user;
+                    showDashboard();
+                    loadDashboard();
+                } else {
+                    showLogin();
+                }
+            });
+
+            // Handle Enter key in login
+            document.getElementById('password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                const toolModal = document.getElementById('toolModal');
+                const reportModal = document.getElementById('reportModal');
+                
+                if (e.target === toolModal) {
+                    closeToolModal();
+                }
+                if (e.target === reportModal) {
+                    closeReportModal();
+                }
+            });
+
+            // Auto-refresh dashboard every 30 seconds
+            setInterval(() => {
+                if (document.getElementById('dashboard').style.display !== 'none') {
+                    loadDashboard();
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>

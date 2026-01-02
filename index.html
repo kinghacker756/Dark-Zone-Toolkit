@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <title>Dark Tech Zone Toolkit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Nova+Square&family=Kanit&family=Baumans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(135deg, #0a0a0f, #1a1a2e, #16213e);
+      background-size: 400% 400%;
+      animation: bgFlow 15s ease infinite;
+      color: white;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    @keyframes bgFlow { 
+      0% { background-position: 0% 50%; } 
+      50% { background-position: 100% 50%; } 
+      100% { background-position: 0% 50%; } 
+    }
+    
+    .wave-bg { 
+      position: fixed; 
+      width: 100%; 
+      height: 100%; 
+      top: 0; 
+      left: 0; 
+      overflow: hidden; 
+      z-index: -1; 
+    }
+    
+    .wave { 
+      position: absolute; 
+      width: 200%; 
+      height: 200%; 
+      background: radial-gradient(circle at 50% 50%, #ff2a6d20, #05d9e820, transparent 70%); 
+      animation: waveMove 10s ease-in-out infinite alternate; 
+      filter: blur(60px); 
+    }
+    
+    @keyframes waveMove { 
+      0% { transform: translate(-20%, -10%) scale(1); } 
+      100% { transform: translate(10%, 10%) scale(1.2); } 
+    }
+
+    /* Container */
+    .container { 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      padding: 20px; 
+      position: relative; 
+      z-index: 1; 
+    }
+    
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      padding: 20px 0;
+      border-bottom: 2px solid rgba(255, 42, 109, 0.2);
+    }
+    
+    .title { 
+      font-family: 'Audiowide', cursive; 
+      font-size: 3.5rem; 
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #ff2a6d, #05d9e8, #005678);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(255, 42, 109, 0.3);
+    }
+    
+    .admin-btn {
+      background: linear-gradient(135deg, #ff2a6d, #d1005b);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 42, 109, 0.3);
+      font-weight: bold;
+    }
+    
+    .admin-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255, 42, 109, 0.5);
+    }
+    
+    /* Search Bar */
+    .search-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .search-container input {
+      width: 100%;
+      padding: 18px 20px 18px 60px;
+      background: rgba(10, 10, 15, 0.6);
+      border: 2px solid #05d9e840;
+      border-radius: 30px;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      font-size: 1.1rem;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 25px rgba(5, 217, 232, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    .search-container input:focus {
+      border-color: #ff2a6d;
+      box-shadow: 0 0 40px rgba(255, 42, 109, 0.3);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 25px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #05d9e8;
+      font-size: 1.2rem;
+      filter: drop-shadow(0 0 10px #05d9e8);
+    }
+    
+    /* Stats Bar */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 30px;
+      background: rgba(10, 10, 15, 0.5);
+      border: 1px solid #05d9e840;
+      border-radius: 25px;
+      font-size: 1rem;
+      box-shadow: 0 0 25px rgba(5, 217, 232, 0.1);
+      backdrop-filter: blur(10px);
+      min-width: 200px;
+      justify-content: center;
+    }
+    
+    .stat-item i {
+      color: #ff2a6d;
+      font-size: 1.2rem;
+      filter: drop-shadow(0 0 10px #ff2a6d);
+    }
+    
+    /* TOOL GRID - 2 CARDS PER ROW */
+    .tool-grid-container {
+      padding: 20px;
+      background: rgba(10, 10, 15, 0.3);
+      border-radius: 20px;
+      margin-bottom: 50px;
+      border: 1px solid rgba(255, 42, 109, 0.1);
+    }
+    
+    .tool-grid { 
+      display: grid; 
+      grid-template-columns: repeat(2, 1fr); /* ALWAYS 2 CARDS PER ROW */
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    /* Tool Card - LARGER DESIGN */
+    .tool-card { 
+      background: rgba(10, 10, 15, 0.5);
+      backdrop-filter: blur(15px);
+      border: 3px solid;
+      border-image: linear-gradient(135deg, #ff2a6d, #05d9e8) 1;
+      border-radius: 20px; 
+      transition: all 0.4s ease; 
+      overflow: hidden;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      height: 450px; /* FIXED HEIGHT FOR CONSISTENCY */
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .tool-card:hover { 
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 60px rgba(255, 42, 109, 0.3),
+                  0 0 80px rgba(5, 217, 232, 0.2);
+      border-image: linear-gradient(135deg, #ff2a6d, #ff2a6d) 1;
+    }
+    
+    .tool-card-header {
+      padding: 30px 30px 20px;
+      background: linear-gradient(to bottom, rgba(255, 42, 109, 0.1), transparent);
+      text-align: center;
+      flex-shrink: 0;
+    }
+    
+    /* LARGE ICON - INCREASED SIZE */
+    .tool-icon-container {
+      margin: 0 auto 20px;
+      width: 120px; /* MUCH LARGER */
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5, 217, 232, 0.1);
+      border-radius: 25px;
+      border: 2px solid rgba(5, 217, 232, 0.3);
+      padding: 15px;
+    }
+    
+    .tool-icon { 
+      width: 90px; /* LARGER ICON */
+      height: 90px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px #05d9e8);
+    }
+    
+    .tool-name { 
+      font-size: 1.5rem; /* LARGER TEXT */
+      color: white;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    
+    .tool-category {
+      font-size: 0.9rem;
+      color: #05d9e8;
+      background: rgba(5, 217, 232, 0.15);
+      padding: 6px 16px;
+      border-radius: 15px;
+      display: inline-block;
+      font-weight: 600;
+    }
+    
+    .tool-card-body {
+      padding: 0 30px 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .tool-description {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    
+    .tool-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #05d9e8;
+      font-size: 0.9rem;
+    }
+    
+    .tool-views {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .tool-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ff2a6d;
+      font-weight: 600;
+    }
+    
+    /* Report Section */
+    .report-section {
+      background: rgba(10, 10, 15, 0.5);
+      backdrop-filter: blur(15px);
+      border: 2px solid #ff2a6d;
+      border-radius: 20px;
+      padding: 40px;
+      margin: 60px 0;
+      text-align: left;
+    }
+    
+    .report-section h3 {
+      color: #ff2a6d;
+      font-family: 'Nova Square', cursive;
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .report-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    
+    .report-form input,
+    .report-form select,
+    .report-form textarea {
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #05d9e840;
+      border-radius: 10px;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    
+    .report-form input:focus,
+    .report-form select:focus,
+    .report-form textarea:focus {
+      border-color: #ff2a6d;
+      box-shadow: 0 0 20px rgba(255, 42, 109, 0.2);
+    }
+    
+    .report-form textarea {
+      grid-column: span 2;
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    .report-submit {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #ff2a6d, #d1005b);
+      color: white;
+      border: none;
+      padding: 18px;
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    
+    .report-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 42, 109, 0.4);
+    }
+    
+    .message {
+      grid-column: span 2;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      text-align: center;
+      font-weight: bold;
+      display: none;
+    }
+    
+    .success {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid #4CAF50;
+      color: #4CAF50;
+    }
+    
+    .error {
+      background: rgba(244, 67, 54, 0.2);
+      border: 1px solid #f44336;
+      color: #f44336;
+    }
+    
+    /* Footer */
+    .footer {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 2px solid rgba(5, 217, 232, 0.2);
+      text-align: center;
+    }
+    
+    .channel-btn {
+      background: linear-gradient(135deg, #ff2a6d, #d1005b);
+      color: white;
+      padding: 18px 45px;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(255, 42, 109, 0.3);
+      margin-bottom: 25px;
+    }
+    
+    .channel-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(255, 42, 109, 0.4);
+    }
+    
+    .copyright {
+      margin-top: 25px;
+      color: #05d9e8;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .title { animation: fadeInUp 0.8s ease-out; }
+    .search-container { animation: fadeInUp 0.8s ease-out 0.2s both; }
+    .stats-bar { animation: fadeInUp 0.8s ease-out 0.3s both; }
+    .tool-card { animation: fadeInUp 0.6s ease-out; }
+    
+    /* Loading State */
+    .loading {
+      grid-column: span 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 400px;
+    }
+    
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(5, 217, 232, 0.3);
+      border-radius: 50%;
+      border-top-color: #05d9e8;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .container {
+        max-width: 100%;
+        padding: 15px;
+      }
+      
+      .title {
+        font-size: 2.8rem;
+      }
+    }
+    
+    @media (max-width: 992px) {
+      .tool-grid {
+        gap: 25px;
+      }
+      
+      .tool-card {
+        height: 420px;
+      }
+      
+      .tool-icon-container {
+        width: 110px;
+        height: 110px;
+      }
+      
+      .tool-icon {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+      
+      .title {
+        font-size: 2.5rem;
+      }
+      
+      .search-container input {
+        padding: 16px 20px 16px 55px;
+      }
+      
+      .stats-bar {
+        gap: 15px;
+      }
+      
+      .stat-item {
+        min-width: 160px;
+        padding: 10px 20px;
+      }
+      
+      .tool-grid {
+        grid-template-columns: repeat(2, 1fr); /* STILL 2 CARDS PER ROW */
+        gap: 20px;
+      }
+      
+      .tool-card {
+        height: 400px;
+      }
+      
+      .tool-icon-container {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .tool-icon {
+        width: 70px;
+        height: 70px;
+      }
+      
+      .tool-name {
+        font-size: 1.3rem;
+      }
+      
+      .report-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .report-form textarea,
+      .report-submit,
+      .message {
+        grid-column: span 1;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .tool-grid {
+        grid-template-columns: 1fr; /* 1 CARD PER ROW ON VERY SMALL SCREENS */
+        gap: 20px;
+      }
+      
+      .tool-card {
+        height: auto;
+        min-height: 400px;
+      }
+      
+      .title {
+        font-size: 2.2rem;
+      }
+      
+      .search-container input {
+        font-size: 1rem;
+        padding: 14px 20px 14px 50px;
+      }
+      
+      .stats-bar {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .stat-item {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+    
+    /* Tool Card Animation Delays */
+    .tool-card:nth-child(1) { animation-delay: 0.1s; }
+    .tool-card:nth-child(2) { animation-delay: 0.2s; }
+    .tool-card:nth-child(3) { animation-delay: 0.3s; }
+    .tool-card:nth-child(4) { animation-delay: 0.4s; }
+    .tool-card:nth-child(5) { animation-delay: 0.5s; }
+    .tool-card:nth-child(6) { animation-delay: 0.6s; }
+  </style>
+</head>
+<body>
+  <div class="wave-bg">
+    <div class="wave"></div>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title">DARK TECH ZONE</h1>
+      <a href="admin.html" class="admin-btn">
+        <i class="fas fa-lock"></i> Admin Panel
+      </a>
+    </div>
+    
+    <!-- Search Section -->
+    <div class="search-section">
+      <p style="color: #05d9e8; font-size: 1.2rem; margin-bottom: 20px; font-family: 'Nova Square', cursive;">
+        <i class="fas fa-rocket"></i> Advanced Toolkit & Resources Hub
+      </p>
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Search tools by name, category, or description..." />
+      </div>
+    </div>
+    
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <i class="fas fa-tools"></i>
+        <span>Total Tools: <span id="toolCount">0</span></span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-eye"></i>
+        <span>Total Views: <span id="totalViews">0</span></span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-fire"></i>
+        <span>Popular: <span id="popularTool">-</span></span>
+      </div>
+    </div>
+    
+    <!-- Tool Grid Container -->
+    <div class="tool-grid-container">
+      <h2 style="color: #ff2a6d; font-family: 'Nova Square', cursive; text-align: center; margin-bottom: 30px; font-size: 2rem;">
+        <i class="fas fa-cubes"></i> Available Tools
+      </h2>
+      
+      <div class="tool-grid" id="toolGrid">
+        <div class="loading">
+          <div class="loader"></div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 30px;">
+        <div style="color: #05d9e8; font-size: 0.9rem; opacity: 0.7;">
+          <i class="fas fa-info-circle"></i> Click any tool to open it in a new tab
+        </div>
+      </div>
+    </div>
+    
+    <!-- Report Section -->
+    <div class="report-section">
+      <h3><i class="fas fa-flag"></i> Report an Issue or Suggest a Tool</h3>
+      <div class="message" id="reportMessage"></div>
+      <form class="report-form" id="reportForm">
+        <input type="text" id="reportName" placeholder="Your Name (Optional)" />
+        <input type="email" id="reportEmail" placeholder="Your Email (Optional)" />
+        <select id="reportType">
+          <option value="">Select Report Type</option>
+          <option value="broken">Broken Link</option>
+          <option value="suggestion">Tool Suggestion</option>
+          <option value="bug">Website Bug</option>
+          <option value="feature">Feature Request</option>
+          <option value="other">Other</option>
+        </select>
+        <input type="text" id="reportTool" placeholder="Tool Name (If applicable)" />
+        <textarea id="reportDescription" placeholder="Describe the issue or suggestion in detail..."></textarea>
+        <button type="submit" class="report-submit">
+          <i class="fas fa-paper-plane"></i> Submit Report
+        </button>
+      </form>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <a href="https://whatsapp.com/channel/0029VbBWrHxDOQIa119G8545" target="_blank" class="channel-btn">
+        <i class="fab fa-whatsapp"></i>
+        Join Our WhatsApp Channel
+      </a>
+      <div class="copyright">
+        © 2024 Dark Tech Zone Toolkit | Built with Firebase | Report issues to help us improve
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFAJHOZiCOx-Axi_yIXPzNYLe2payowMg",
+      authDomain: "dark-zone-toolkit.firebaseapp.com",
+      projectId: "dark-zone-toolkit",
+      storageBucket: "dark-zone-toolkit.firebasestorage.app",
+      messagingSenderId: "81877953322",
+      appId: "1:81877953322:web:940865bf3ad1ec25e90c53",
+      measurementId: "G-4CXWPEGTHW"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    let tools = [];
+
+    // Load tools from Firestore
+    async function loadTools() {
+      try {
+        const querySnapshot = await db.collection('tools').orderBy('views', 'desc').get();
+        
+        tools = [];
+        querySnapshot.forEach((doc) => {
+          const toolData = doc.data();
+          tools.push({ 
+            id: doc.id, 
+            ...toolData,
+            // Ensure all required fields exist
+            name: toolData.name || 'Unnamed Tool',
+            url: toolData.url || '#',
+            icon: toolData.icon || '',
+            category: toolData.category || 'General',
+            description: toolData.description || 'No description available.',
+            views: toolData.views || 0
+          });
+        });
+        
+        renderTools(tools);
+        updateStats();
+      } catch (error) {
+        console.error("Error loading tools:", error);
+        document.getElementById('toolGrid').innerHTML = `
+          <div class="error" style="grid-column: span 2; padding: 30px; text-align: center; background: rgba(244, 67, 54, 0.1); border-radius: 15px; border: 1px solid #f44336;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 15px; color: #f44336;"></i>
+            <h3 style="color: #f44336; margin-bottom: 10px;">Error Loading Tools</h3>
+            <p style="color: rgba(255,255,255,0.7);">Please check your connection and try again.</p>
+            <button onclick="loadTools()" style="margin-top: 20px; padding: 10px 25px; background: #ff2a6d; color: white; border: none; border-radius: 8px; cursor: pointer;">
+              <i class="fas fa-redo"></i> Retry
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    // Render tools to the grid - LARGER CARDS
+    function renderTools(toolsToRender) {
+      const grid = document.getElementById('toolGrid');
+      
+      if (toolsToRender.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: span 2; text-align: center; padding: 60px;">
+            <i class="fas fa-box-open" style="font-size: 4rem; color: #05d9e8; opacity: 0.5; margin-bottom: 20px;"></i>
+            <h3 style="color: #05d9e8; margin-bottom: 10px;">No Tools Found</h3>
+            <p style="color: rgba(255,255,255,0.6);">Add your first tool from the admin panel!</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      
+      toolsToRender.forEach((tool, index) => {
+        const iconUrl = tool.icon || getDefaultIcon(tool.name);
+        const shortDescription = tool.description.length > 120 ? 
+          tool.description.substring(0, 120) + '...' : 
+          tool.description;
+        
+        html += `
+          <a href="${tool.url}" class="tool-card" target="_blank" onclick="incrementViews('${tool.id}')" data-index="${index}">
+            <div class="tool-card-header">
+              <div class="tool-icon-container">
+                <img src="${iconUrl}" class="tool-icon" 
+                     onerror="this.src='${getDefaultIcon(tool.name)}'; this.onerror=null;">
+              </div>
+              <div class="tool-name">${tool.name}</div>
+              <div class="tool-category">${tool.category}</div>
+            </div>
+            
+            <div class="tool-card-body">
+              <div class="tool-description">
+                ${shortDescription}
+              </div>
+              
+              <div class="tool-stats">
+                <div class="tool-views">
+                  <i class="fas fa-eye"></i>
+                  <span>${tool.views} views</span>
+                </div>
+                <div class="tool-link">
+                  <span>Visit Tool</span>
+                  <i class="fas fa-external-link-alt"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        `;
+      });
+      
+      grid.innerHTML = html;
+      
+      // Add staggered animation
+      document.querySelectorAll('.tool-card').forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+      });
+    }
+
+    // Get default icon - LARGER VERSION
+    function getDefaultIcon(name) {
+      const colors = ['ff2a6d', '05d9e8', '005678', 'd1005b', '00b4d8'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0a0a0f&color=${color}&bold=true&size=256&font-size=0.5&length=2`;
+    }
+
+    // Increment view count
+    async function incrementViews(toolId) {
+      try {
+        // Open the tool in a new tab
+        const tool = tools.find(t => t.id === toolId);
+        if (tool) {
+          // Increment views in Firestore
+          await db.collection('tools').doc(toolId).update({
+            views: firebase.firestore.FieldValue.increment(1),
+            lastAccessed: new Date().toISOString()
+          });
+          
+          // Update locally
+          tool.views = (tool.views || 0) + 1;
+          updateStats();
+          
+          // Update the specific card
+          const card = document.querySelector(`.tool-card[onclick*="${toolId}"]`);
+          if (card) {
+            const viewsElement = card.querySelector('.tool-views span');
+            if (viewsElement) {
+              viewsElement.textContent = `${tool.views} views`;
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error incrementing views:", error);
+      }
+    }
+
+    // Update statistics
+    function updateStats() {
+      const totalViews = tools.reduce((sum, tool) => sum + (tool.views || 0), 0);
+      const popularTool = tools.length > 0 ? 
+        tools.reduce((prev, current) => (prev.views || 0) > (current.views || 0) ? prev : current).name : 
+        '-';
+      
+      // Safely update elements
+      const toolCountElement = document.getElementById('toolCount');
+      const totalViewsElement = document.getElementById('totalViews');
+      const popularToolElement = document.getElementById('popularTool');
+      
+      if (toolCountElement) toolCountElement.textContent = tools.length;
+      if (totalViewsElement) totalViewsElement.textContent = totalViews;
+      if (popularToolElement) popularToolElement.textContent = popularTool.length > 20 ? 
+        popularTool.substring(0, 20) + '...' : popularTool;
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filtered = tools.filter(tool => 
+        tool.name.toLowerCase().includes(searchTerm) ||
+        (tool.category && tool.category.toLowerCase().includes(searchTerm)) ||
+        (tool.description && tool.description.toLowerCase().includes(searchTerm))
+      );
+      renderTools(filtered);
+    });
+
+    // Report form submission
+    document.getElementById('reportForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const reportData = {
+        name: document.getElementById('reportName').value.trim(),
+        email: document.getElementById('reportEmail').value.trim(),
+        type: document.getElementById('reportType').value,
+        tool: document.getElementById('reportTool').value.trim(),
+        description: document.getElementById('reportDescription').value.trim(),
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        ip: await getIPAddress()
+      };
+
+      // Validate
+      if (!reportData.type) {
+        showMessage('Please select a report type', 'error');
+        document.getElementById('reportType').focus();
+        return;
+      }
+
+      if (!reportData.description) {
+        showMessage('Please describe your issue or suggestion', 'error');
+        document.getElementById('reportDescription').focus();
+        return;
+      }
+
+      try {
+        await db.collection('reports').add(reportData);
+        showMessage('Thank you! Your report has been submitted successfully.', 'success');
+        document.getElementById('reportForm').reset();
+      } catch (error) {
+        console.error('Error submitting report:', error);
+        showMessage('Error submitting report. Please try again.', 'error');
+      }
+    });
+
+    // Get IP address
+    async function getIPAddress() {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+      } catch (error) {
+        return 'unknown';
+      }
+    }
+
+    // Show message
+    function showMessage(text, type) {
+      const messageElement = document.getElementById('reportMessage');
+      messageElement.textContent = text;
+      messageElement.className = `message ${type}`;
+      messageElement.style.display = 'block';
+      
+      // Scroll to message
+      messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      setTimeout(() => {
+        messageElement.style.display = 'none';
+      }, 5000);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTools();
+      
+      // Real-time updates for tools
+      db.collection('tools').onSnapshot((snapshot) => {
+        tools = [];
+        snapshot.forEach((doc) => {
+          const toolData = doc.data();
+          tools.push({ 
+            id: doc.id, 
+            ...toolData,
+            name: toolData.name || 'Unnamed Tool',
+            url: toolData.url || '#',
+            icon: toolData.icon || '',
+            category: toolData.category || 'General',
+            description: toolData.description || 'No description available.',
+            views: toolData.views || 0
+          });
+        });
+        renderTools(tools);
+        updateStats();
+      }, (error) => {
+        console.error("Error in real-time update:", error);
+      });
+      
+      // Focus search input when '/' is pressed
+      document.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== document.getElementById('searchInput')) {
+          e.preventDefault();
+          document.getElementById('searchInput').focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
