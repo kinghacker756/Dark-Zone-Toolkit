@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BJ_DEVS AI - @BJ_DEVS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #00f3ff;
+            --secondary: #0066ff;
+            --accent: #ff0055;
+            --bg-dark: #020205;
+            --bg-panel: rgba(2, 2, 5, 0.95);
+            --border: rgba(0, 243, 255, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Dynamic Height for Mobile Browsers */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- BACKGROUND FX --- */
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: -1;
+        }
+
+        /* --- HEADER --- */
+        header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-panel);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            font-size: 0.75rem; padding: 4px 8px;
+            border: 1px solid var(--primary); color: var(--primary);
+            border-radius: 4px; background: rgba(0, 243, 255, 0.1);
+            text-transform: uppercase; font-weight: bold;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px; background: var(--primary);
+            border-radius: 50%; box-shadow: 0 0 5px var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        /* --- AVATAR (Responsive) --- */
+        .avatar-container {
+            flex-shrink: 0; display: flex; justify-content: center;
+            align-items: center; padding: 15px 0; position: relative;
+        }
+
+        .avatar-ring {
+            width: 110px; height: 110px; border: 2px solid var(--border);
+            border-radius: 50%; position: relative;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        .avatar-ring::before {
+            content: ''; position: absolute; inset: -4px;
+            border: 2px dashed var(--secondary); border-radius: 50%;
+            animation: spin 10s linear infinite;
+        }
+
+        .face-structure {
+            width: 80px; height: 80px;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.2), #000);
+            border-radius: 40% 40% 50% 50%; position: relative;
+            border: 1px solid var(--primary);
+            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .eyes-container {
+            position: absolute; top: 35%; width: 100%;
+            display: flex; justify-content: space-evenly;
+        }
+        .eye {
+            width: 18px; height: 5px; background-color: var(--primary);
+            border-radius: 2px; box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+            animation: blink 4s infinite;
+        }
+
+        .mouth-container {
+            position: absolute; bottom: 25%; left: 50%;
+            transform: translateX(-50%); display: flex; gap: 3px;
+            align-items: center; height: 20px;
+        }
+        .bar {
+            width: 3px; height: 3px; background: var(--primary);
+            border-radius: 2px; transition: height 0.1s;
+        }
+
+        /* --- CHAT AREA --- */
+        .chat-area {
+            flex-grow: 1; overflow-y: auto; padding: 15px;
+            display: flex; flex-direction: column; gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .msg {
+            max-width: 90%; padding: 12px 16px; border-radius: 12px;
+            font-size: 0.95rem; line-height: 1.5; animation: fadeUp 0.3s ease-out;
+            word-wrap: break-word; position: relative;
+        }
+        .msg.ai {
+            align-self: flex-start; background: rgba(0, 243, 255, 0.08);
+            border: 1px solid var(--border); border-top-left-radius: 0; color: #d0d0ff;
+        }
+        .msg.user {
+            align-self: flex-end; background: rgba(0, 102, 255, 0.2);
+            border: 1px solid rgba(0, 102, 255, 0.5); border-top-right-radius: 0;
+            color: #fff; text-align: right;
+        }
+        .msg strong { color: var(--primary); font-weight: 700; }
+        .msg pre { 
+            background: #000; padding: 10px; margin-top: 5px; 
+            border-radius: 5px; overflow-x: auto; border: 1px solid #333; 
+            text-align: left; font-size: 0.85rem;
+        }
+        .msg code { font-family: monospace; color: #00ff88; }
+
+        /* --- INPUT AREA (Mobile Optimized) --- */
+        .input-wrapper {
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border);
+            padding: 10px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom)); /* iPhone Safe Area */
+            flex-shrink: 0;
+        }
+
+        .preview-container {
+            font-size: 0.8rem; color: var(--primary);
+            margin-bottom: 8px; padding-left: 5px;
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        .input-container {
+            display: flex; gap: 8px; align-items: center;
+        }
+        
+        .chat-input {
+            flex-grow: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+            padding: 12px; border-radius: 25px; color: #fff;
+            font-family: 'Rajdhani', sans-serif; font-size: 1rem; outline: none;
+            -webkit-appearance: none;
+        }
+        .chat-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 243, 255, 0.15); }
+
+        .btn {
+            background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary);
+            color: var(--primary); width: 45px; height: 45px; border-radius: 50%; /* Round buttons */
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            transition: 0.2s; flex-shrink: 0;
+        }
+        .btn:active { transform: scale(0.95); background: rgba(0, 243, 255, 0.2); }
+        .btn.listening { background: #ff0055; color: #fff; border-color: #ff0055; animation: pulseRed 1s infinite; }
+        
+        .btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+        .typing-indicator { font-size: 0.75rem; color: var(--primary); margin-left: 20px; margin-bottom: 5px; opacity: 0; }
+        .typing-indicator.active { opacity: 1; animation: pulse 1s infinite; }
+        
+        #fileInput { display: none; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes breathe { 0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(0,243,255,0.1); } 50% { transform: scale(1.02); box-shadow: 0 0 50px rgba(0,243,255,0.3); } }
+        @keyframes blink { 0%, 90%, 100% { transform: scaleY(1); opacity: 1; } 95% { transform: scaleY(0.1); opacity: 0.5; } }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 85, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 0, 85, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 85, 0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- MEDIA QUERIES (Responsiveness) --- */
+        @media (max-width: 400px) {
+            .avatar-ring { width: 90px; height: 90px; }
+            .face-structure { width: 70px; height: 70px; }
+            .chat-input { padding: 10px 15px; font-size: 0.9rem; }
+            .btn { width: 40px; height: 40px; }
+            .brand { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <header>
+        <div class="brand">BJ_DEVS - AI</div>
+        <div class="status-badge">
+            <div class="status-dot"></div> <span id="systemStatus">ONLINE</span>
+        </div>
+    </header>
+
+    <div class="avatar-container">
+        <div class="avatar-ring">
+            <div class="face-structure">
+                <div class="eyes-container">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mouth-container" id="mouthViz">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-area" id="chatContainer">
+        <div class="msg ai">
+            <strong>SYSTEM STATUS:</strong> Online & Fully Operational.<br>
+            Welcome to <strong>BJTricks AI</strong> — where innovation meets intelligence.<br>
+        Experience the power of AI-driven solutions built for the modern digital world.
+        </div>
+    </div>
+    
+    <div class="typing-indicator" id="typingInd">PROCESSING DATA...</div>
+
+    <div class="input-wrapper">
+        <div class="preview-container" id="previewContainer"></div>
+        <div class="input-container">
+            <input type="file" id="fileInput">
+            
+                       
+            <input type="text" class="chat-input" id="messageInput" placeholder="Command..." autocomplete="off">
+            
+            <button class="btn" id="voiceBtn" title="Speak">
+                <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+            </button>
+            
+            <button class="btn" id="sendBtn" title="Execute">
+                <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIG & DOM ---
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendBtn');
+        const voiceBtn = document.getElementById('voiceBtn');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const typingInd = document.getElementById('typingInd');
+        const systemStatus = document.getElementById('systemStatus');
+        
+        let selectedFile = null;
+        let isSpeaking = false;
+
+        // --- FILE HANDLING ---
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                selectedFile = e.target.files[0];
+                previewContainer.innerHTML = `<span><svg style="width:14px;height:14px;vertical-align:middle;stroke:var(--primary);fill:none;stroke-width:2" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg> ${selectedFile.name}</span> <span style="cursor:pointer; color:#ff5555; margin-left:10px; font-weight:bold" onclick="clearFile()">✖</span>`;
+            }
+        });
+
+        window.clearFile = function() {
+            selectedFile = null;
+            fileInput.value = '';
+            previewContainer.innerHTML = '';
+        }
+
+        // --- UI UTILS ---
+        function showTyping() {
+            typingInd.classList.add('active');
+            systemStatus.innerText = "BUSY";
+            systemStatus.style.color = "#00f3ff";
+        }
+
+        function hideTyping() {
+            typingInd.classList.remove('active');
+            systemStatus.innerText = "ONLINE";
+            systemStatus.style.color = "#fff";
+        }
+
+        function processText(text) {
+            // Basic formatting
+            let formatted = text
+                .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>');
+            return formatted;
+        }
+
+        function addMessage(htmlContent, isUser) {
+            const div = document.createElement('div');
+            div.className = `msg ${isUser ? 'user' : 'ai'}`;
+            div.innerHTML = htmlContent;
+            chatContainer.appendChild(div);
+            // Instant scroll to bottom
+            setTimeout(() => {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 50);
+        }
+
+        // --- NETWORK (NO API KEY) ---
+        async function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text && !selectedFile) return;
+
+            // Stop any ongoing speech when sending new message
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
+
+            let userDisplay = processText(text);
+            if (selectedFile) userDisplay += `<br><small style="color:var(--primary); display:block; margin-top:5px;">📎 [File: ${selectedFile.name}]</small>`;
+            addMessage(userDisplay, true);
+
+            const formData = new FormData();
+            formData.append('text', text); // Send raw text
+            if (selectedFile) formData.append('file', selectedFile);
+
+            // Cleanup Inputs
+            messageInput.value = '';
+            previewContainer.innerHTML = '';
+            selectedFile = null;
+            fileInput.value = '';
+
+            showTyping();
+
+            try {
+                const res = await fetch('https://bj-tricks-ai.vercel.app/chat', { method: 'POST', body: formData });
+                const data = await res.json();
+                hideTyping();
+                
+                let responseText = data.result || data.error || "No data received.";
+                
+                // 1. SPEAK (Voice Output)
+                // Filter out code blocks for speech
+                const speakableText = responseText.replace(/[*`#]/g, '').replace(/<[^>]*>/g, '').split("```")[0];
+                speak(speakableText);
+
+                // 2. DISPLAY
+                addMessage(processText(responseText), false);
+
+            } catch (err) {
+                hideTyping();
+                addMessage('<span style="color:#ff5555">Network Error. Check internet connection.</span>', false);
+                speak("I cannot connect to the server right now sir.");
+            }
+        }
+
+        // --- ROBOT VOICE & ANIMATION ---
+        let mouthInterval;
+        
+        function animateMouth(active) {
+            const bars = document.querySelectorAll('.bar');
+            if(active) {
+                if(!mouthInterval) {
+                    mouthInterval = setInterval(() => {
+                        bars.forEach(b => b.style.height = Math.random() * 20 + 3 + 'px');
+                    }, 100);
+                }
+            } else {
+                clearInterval(mouthInterval);
+                mouthInterval = null;
+                bars.forEach(b => b.style.height = '3px');
+            }
+        }
+
+        function speak(text) {
+            if (!window.speechSynthesis) return;
+            
+            window.speechSynthesis.cancel();
+            
+            // Shorten text for mobile stability
+            const shortText = text.substring(0, 300); 
+
+            const utterance = new SpeechSynthesisUtterance(shortText);
+            utterance.rate = 1.0;
+            utterance.pitch = 0.9;
+            
+            const voices = window.speechSynthesis.getVoices();
+            // Try to find Google US English (Android default) or any English voice
+            const robotVoice = voices.find(v => v.name.includes('Google US English')) || 
+                               voices.find(v => v.lang.includes('en-US')) || voices[0];
+            
+            if (robotVoice) utterance.voice = robotVoice;
+
+            utterance.onstart = () => animateMouth(true);
+            utterance.onend = () => animateMouth(false);
+            utterance.onerror = () => animateMouth(false);
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // --- MICROPHONE FIX (UNIVERSAL) ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false; // Mobile prefers false
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            voiceBtn.addEventListener('click', () => {
+                if (voiceBtn.classList.contains('listening')) {
+                    recognition.stop();
+                } else {
+                    // Try to start mic
+                    try {
+                        recognition.start();
+                    } catch(e) {
+                        console.log("Mic restart error", e);
+                        recognition.stop();
+                    }
+                }
+            });
+
+            recognition.onstart = () => {
+                voiceBtn.classList.add('listening');
+                messageInput.placeholder = "Listening...";
+                systemStatus.innerText = "LISTENING";
+                systemStatus.style.color = "#ff0055";
+            };
+
+            recognition.onend = () => {
+                voiceBtn.classList.remove('listening');
+                messageInput.placeholder = "Command...";
+                if(!typingInd.classList.contains('active')) {
+                    systemStatus.innerText = "ONLINE";
+                    systemStatus.style.color = "#fff";
+                }
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                messageInput.value = transcript;
+                // Add a small delay so user can see what was typed, then send
+                setTimeout(sendMessage, 500);
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Mic Error:", event.error);
+                voiceBtn.classList.remove('listening');
+                messageInput.placeholder = "Mic Error (Check Permissions)";
+            };
+
+        } else {
+            // Fallback for browsers without Speech API
+            voiceBtn.style.display = 'none';
+            addMessage("<strong>System Note:</strong> Voice input not supported in this browser.", false);
+        }
+
+        // --- EVENT HANDLERS ---
+        sendButton.onclick = sendMessage;
+        
+        messageInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Initialize Voices (Required for Chrome)
+        window.speechSynthesis.onvoiceschanged = () => {};
+
+    </script>
+</body>
+</html>
