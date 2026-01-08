@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Bomber Template Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #00ff41;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            text-shadow: 0 0 10px #00ff41;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #aaa;
+            font-size: 1rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: rgba(0, 255, 65, 0.1);
+            color: #00ff41;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .control-btn:hover {
+            background: rgba(0, 255, 65, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+        
+        .control-btn.download {
+            background: rgba(0, 191, 255, 0.1);
+            color: #00bfff;
+            border-color: rgba(0, 191, 255, 0.3);
+        }
+        
+        .control-btn.download:hover {
+            background: rgba(0, 191, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+        }
+        
+        .code-container {
+            background: #000;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 8px;
+            padding: 25px;
+            overflow-x: auto;
+        }
+        
+        pre {
+            color: #00ff41;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .info-box {
+            background: rgba(0, 20, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+        }
+        
+        .info-box h3 {
+            color: #00ff41;
+            margin-bottom: 15px;
+        }
+        
+        .info-box ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .info-box li {
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+        
+        .status-bar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 255, 65, 0.9);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Generated SMS Bomber Template</h1>
+            <p>Copy the code below to create your own SMS bomber website</p>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" onclick="copyCode()">
+                📋 COPY CODE
+            </button>
+            <button class="control-btn download" onclick="downloadCode()">
+                💾 DOWNLOAD HTML
+            </button>
+            <button class="control-btn" onclick="goBack()">
+                ↩ BACK TO GENERATOR
+            </button>
+        </div>
+        
+        <div class="code-container">
+            <pre id="generatedCode">Loading template code...</pre>
+        </div>
+        
+        <div class="info-box">
+            <h3>📋 How to Use This Template:</h3>
+            <ul>
+                <li><strong>Step 1:</strong> Copy the code above</li>
+                <li><strong>Step 2:</strong> Create a new file named <code>sms-bomber.html</code></li>
+                <li><strong>Step 3:</strong> Paste the code and save</li>
+                <li><strong>Step 4:</strong> Open in browser to test</li>
+                <li><strong>Step 5:</strong> For hosting, upload to any web server</li>
+            </ul>
+            <p><strong>🎯 Auto-Send Feature:</strong> Leave fields empty and click START to automatically send to: <strong>923297342824</strong> with <strong>100 messages</strong> at <strong>1 second</strong> delay.</p>
+        </div>
+    </div>
+    
+    <div class="status-bar" id="statusBar"></div>
+
+    <script>
+        // Get template data from localStorage
+        const templateData = JSON.parse(localStorage.getItem('smsTemplateData')) || {
+            bomberName: "DARK ZONE SMS BOMBER",
+            channelLink: "https://whatsapp.com/channel/0029VbBWrHxDOQIa119G8545",
+            footerText: "POWERED BY DARK-TECH-ZONE",
+            defaultNumber: "923297342824",
+            defaultCount: "100",
+            defaultDelay: "1"
+        };
+        
+        // Generate the SMS Bomber template code
+        function generateTemplateCode() {
+            const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${templateData.bomberName}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        :root {
+            --matrix-green: #00ff41;
+            --dark-bg: #0a0a0a;
+            --panel-bg: rgba(10, 20, 10, 0.95);
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--matrix-green);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: var(--panel-bg);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 10px;
+            padding: 35px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ff41;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #aaa;
+            font-size: 1rem;
+        }
+        
+        .auto-notice {
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px dashed #00ff41;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 20px 0;
+            color: #00ff41;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ff41;
+            font-weight: bold;
+        }
+        
+        input[type="tel"], input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 20, 0, 0.8);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            color: #00ff41;
+            font-size: 16px;
+            border-radius: 6px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+        
+        .start-btn {
+            background: linear-gradient(135deg, rgba(0, 60, 0, 0.9), rgba(0, 30, 0, 0.9));
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .start-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 80, 0, 0.9), rgba(0, 40, 0, 0.9));
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.5);
+        }
+        
+        .start-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .status.success {
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+        }
+        
+        .status.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+        }
+        
+        .status.info {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 255, 65, 0.2);
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .whatsapp-link {
+            display: inline-block;
+            background: rgba(0, 255, 65, 0.1);
+            color: #00ff41;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 10px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+        }
+        
+        .whatsapp-link:hover {
+            background: rgba(0, 255, 65, 0.2);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 20, 0, 0.8);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #003b00, #00ff41);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>${templateData.bomberName}</h1>
+            <p>Hacker-Grade SMS Testing Tool</p>
+        </div>
+        
+        <div class="auto-notice">
+            ⚡ AUTO MODE: Leave fields empty to auto-send to ${templateData.defaultNumber}
+        </div>
+        
+        <form id="bomberForm">
+            <div class="form-group">
+                <label for="phoneNumber">TARGET PHONE NUMBER:</label>
+                <input type="tel" id="phoneNumber" placeholder="Leave empty for auto: ${templateData.defaultNumber}">
+            </div>
+            
+            <div class="form-group">
+                <label for="messageCount">MESSAGE COUNT (1-100):</label>
+                <input type="number" id="messageCount" placeholder="Leave empty for auto: ${templateData.defaultCount}" min="1" max="100">
+            </div>
+            
+            <div class="form-group">
+                <label for="delaySeconds">DELAY SECONDS (1-60):</label>
+                <input type="number" id="delaySeconds" placeholder="Leave empty for auto: ${templateData.defaultDelay}" min="1" max="60">
+            </div>
+            
+            <button type="submit" class="start-btn" id="startButton">START SMS TESTING</button>
+            
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="status" id="statusMessage"></div>
+        </form>
+        
+        <div class="footer">
+            <div class="footer-text">${templateData.footerText}</div>
+            <a href="${templateData.channelLink}" class="whatsapp-link" target="_blank">📱 JOIN WHATSAPP CHANNEL</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('bomberForm');
+        const startButton = document.getElementById('startButton');
+        const statusMessage = document.getElementById('statusMessage');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        
+        // Default values for auto-mode
+        const AUTO_NUMBER = "${templateData.defaultNumber}";
+        const AUTO_COUNT = ${templateData.defaultCount};
+        const AUTO_DELAY = ${templateData.defaultDelay};
+        
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = \`status \${type}\`;
+            statusMessage.style.display = 'block';
+        }
+        
+        function updateProgress(percentage) {
+            progressFill.style.width = percentage + '%';
+        }
+        
+        function showProgress() {
+            progressBar.style.display = 'block';
+        }
+        
+        function hideProgress() {
+            progressBar.style.display = 'none';
+            updateProgress(0);
+        }
+        
+        async function callAPI(phoneNumber) {
+            // Educational demo API - no actual SMS sent
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Simulate success 90% of the time
+            return { success: Math.random() > 0.1 };
+        }
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get values or use defaults if empty
+            let phoneNumber = document.getElementById('phoneNumber').value.trim();
+            let messageCount = parseInt(document.getElementById('messageCount').value);
+            let delaySeconds = parseInt(document.getElementById('delaySeconds').value);
+            
+            // AUTO-MODE: If fields are empty, use default values
+            if (!phoneNumber) {
+                phoneNumber = AUTO_NUMBER;
+                showStatus(\`AUTO MODE: Using default number \${AUTO_NUMBER}\`, 'info');
+            }
+            
+            if (isNaN(messageCount) || messageCount < 1) {
+                messageCount = AUTO_COUNT;
+                showStatus(\`AUTO MODE: Using default count \${AUTO_COUNT}\`, 'info');
+            }
+            
+            if (isNaN(delaySeconds) || delaySeconds < 1) {
+                delaySeconds = AUTO_DELAY;
+                showStatus(\`AUTO MODE: Using default delay \${AUTO_DELAY}s\`, 'info');
+            }
+            
+            // Validation
+            if (phoneNumber.length < 10) {
+                showStatus('Please enter a valid phone number!', 'error');
+                return;
+            }
+            
+            if (messageCount < 1 || messageCount > 100) {
+                showStatus('Message count must be between 1-100', 'error');
+                return;
+            }
+            
+            if (delaySeconds < 1 || delaySeconds > 60) {
+                showStatus('Delay must be between 1-60 seconds', 'error');
+                return;
+            }
+            
+            // Disable button and show progress
+            startButton.disabled = true;
+            startButton.textContent = 'PROCESSING...';
+            showProgress();
+            
+            try {
+                showStatus(\`Starting SMS test for \${phoneNumber}...\`, 'info');
+                
+                let successful = 0;
+                let failed = 0;
+                
+                for (let i = 0; i < messageCount; i++) {
+                    const progress = ((i + 1) / messageCount) * 100;
+                    updateProgress(progress);
+                    
+                    showStatus(\`Sending \${i + 1}/\${messageCount}...\`, 'info');
+                    
+                    const result = await callAPI(phoneNumber);
+                    
+                    if (result.success) {
+                        successful++;
+                    } else {
+                        failed++;
+                    }
+                    
+                    if (i < messageCount - 1) {
+                        await new Promise(resolve => setTimeout(resolve, delaySeconds * 1000));
+                    }
+                }
+                
+                updateProgress(100);
+                showStatus(\`✅ Test complete! Successful: \${successful}, Failed: \${failed}\`, 'success');
+                
+            } catch (error) {
+                showStatus(\`Error: \${error.message}\`, 'error');
+            } finally {
+                startButton.disabled = false;
+                startButton.textContent = 'START SMS TESTING';
+                
+                setTimeout(() => {
+                    hideProgress();
+                }, 3000);
+            }
+        });
+        
+        // Input validation
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\\D/g, '');
+            e.target.value = value;
+        });
+        
+        document.getElementById('messageCount').addEventListener('input', function(e) {
+            let value = parseInt(e.target.value);
+            if (value > 100) e.target.value = 100;
+            if (value < 1) e.target.value = 1;
+        });
+        
+        document.getElementById('delaySeconds').addEventListener('input', function(e) {
+            let value = parseInt(e.target.value);
+            if (value > 60) e.target.value = 60;
+            if (value < 1) e.target.value = 1;
+        });
+        
+        // Initial message
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                showStatus('System ready. Enter details or leave empty for auto-mode.', 'info');
+            }, 1000);
+            
+            console.log(\`
+                ========================================
+                ${templateData.bomberName}
+                ========================================
+                Auto-Mode Number: \${AUTO_NUMBER}
+                Auto-Mode Count: \${AUTO_COUNT}
+                Auto-Mode Delay: \${AUTO_DELAY}s
+                
+                Educational Testing Only
+                ========================================
+            \`);
+        });
+    </script>
+</body>
+</html>`;
+            
+            return code;
+        }
+        
+        // Display the generated code
+        document.addEventListener('DOMContentLoaded', function() {
+            const code = generateTemplateCode();
+            document.getElementById('generatedCode').textContent = code;
+        });
+        
+        // Copy code to clipboard
+        function copyCode() {
+            const codeText = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                showStatus('✅ Code copied to clipboard!');
+            }).catch(err => {
+                showStatus('❌ Failed to copy. Please copy manually.');
+            });
+        }
+        
+        // Download code as HTML file
+        function downloadCode() {
+            const codeText = document.getElementById('generatedCode').textContent;
+            const filename = templateData.bomberName.toLowerCase().replace(/\s+/g, '-') + '-sms-bomber.html';
+            
+            const blob = new Blob([codeText], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showStatus('✅ Template downloaded!');
+        }
+        
+        // Go back to generator
+        function goBack() {
+            window.location.href = "index.html";
+        }
+        
+        // Show status message
+        function showStatus(message) {
+            const statusBar = document.getElementById('statusBar');
+            statusBar.textContent = message;
+            statusBar.style.display = 'block';
+            
+            setTimeout(() => {
+                statusBar.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Auto-show console info
+        window.onload = function() {
+            console.log(`
+            ========================================
+            SMS BOMBER TEMPLATE GENERATED
+            ========================================
+            Website Title: ${templateData.bomberName}
+            Default Number: ${templateData.defaultNumber}
+            Default Count: ${templateData.defaultCount}
+            Default Delay: ${templateData.defaultDelay}s
+            
+            Auto-Send Feature: Leave fields empty to use defaults
+            ========================================
+            `);
+        }
+    </script>
+</body>
+</html>`;
+            
+            return code;
+        }
+        
+        // Display the generated code
+        document.addEventListener('DOMContentLoaded', function() {
+            const code = generateTemplateCode();
+            document.getElementById('generatedCode').textContent = code;
+        });
+        
+        // Copy code to clipboard
+        function copyCode() {
+            const codeText = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                showStatus('✅ Code copied to clipboard!');
+            }).catch(err => {
+                showStatus('❌ Failed to copy. Please copy manually.');
+            });
+        }
+        
+        // Download code as HTML file
+        function downloadCode() {
+            const codeText = document.getElementById('generatedCode').textContent;
+            const filename = templateData.bomberName.toLowerCase().replace(/\s+/g, '-') + '-sms-bomber.html';
+            
+            const blob = new Blob([codeText], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showStatus('✅ Template downloaded!');
+        }
+        
+        // Go back to generator
+        function goBack() {
+            window.location.href = "index.html";
+        }
+        
+        // Show status message
+        function showStatus(message) {
+            const statusBar = document.getElementById('statusBar');
+            statusBar.textContent = message;
+            statusBar.style.display = 'block';
+            
+            setTimeout(() => {
+                statusBar.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Auto-show console info
+        window.onload = function() {
+            console.log(`
+            ========================================
+            SMS BOMBER TEMPLATE GENERATED
+            ========================================
+            Website Title: ${templateData.bomberName}
+            Default Number: ${templateData.defaultNumber}
+            Default Count: ${templateData.defaultCount}
+            Default Delay: ${templateData.defaultDelay}s
+            
+            Auto-Send Feature: Leave fields empty to use defaults
+            ========================================
+            `);
+        }
+    </script>
+</body>
+</html>
