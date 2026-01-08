@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARK ZONE SMS BOMBER - TEMPLATE GENERATOR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #00ff41;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(10, 20, 10, 0.95);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ff41;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #aaa;
+            font-size: 1rem;
+        }
+        
+        .warning {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        .warning h3 {
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ff41;
+            font-weight: bold;
+        }
+        
+        input[type="text"], input[type="url"] {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 20, 0, 0.8);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            color: #00ff41;
+            font-size: 16px;
+            border-radius: 6px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+        
+        .generate-btn {
+            background: linear-gradient(135deg, rgba(0, 60, 0, 0.9), rgba(0, 30, 0, 0.9));
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .generate-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 80, 0, 0.9), rgba(0, 40, 0, 0.9));
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .feature-box {
+            background: rgba(0, 20, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px dashed rgba(0, 255, 65, 0.3);
+        }
+        
+        .feature-box h4 {
+            color: #00ff41;
+            margin-bottom: 10px;
+        }
+        
+        .auto-info {
+            background: rgba(0, 255, 65, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DARK ZONE SMS BOMBER</h1>
+            <p>Template Generator - Create Your Custom SMS Bomber Website</p>
+        </div>
+        
+        <div class="warning">
+            <h3>⚠️ LEGAL DISCLAIMER</h3>
+            <p>This tool generates code for EDUCATIONAL PURPOSES ONLY. Using SMS bombing tools for harassment or spam is ILLEGAL and may result in criminal charges.</p>
+        </div>
+        
+        <div class="auto-info">
+            <h4>🚀 AUTO-SEND FEATURE ENABLED</h4>
+            <p>Empty fields = Auto send to: <strong>923297342824</strong>, Count: <strong>100</strong>, Delay: <strong>1 second</strong></p>
+        </div>
+        
+        <form id="generatorForm">
+            <div class="form-group">
+                <label for="bomberName">Website Title:</label>
+                <input type="text" id="bomberName" placeholder="Enter bomber name" value="DARK ZONE SMS BOMBER">
+            </div>
+            
+            <div class="form-group">
+                <label for="channelLink">WhatsApp Channel Link:</label>
+                <input type="url" id="channelLink" placeholder="Enter WhatsApp channel link" value="https://whatsapp.com/channel/0029VbBWrHxDOQIa119G8545">
+            </div>
+            
+            <div class="form-group">
+                <label for="footerText">Footer Text:</label>
+                <input type="text" id="footerText" placeholder="Enter footer text" value="POWERED BY DARK-TECH-ZONE">
+            </div>
+            
+            <div class="feature-box">
+                <h4>🎯 Auto-Send Configuration</h4>
+                <p>Default Phone: <strong>923297342824</strong></p>
+                <p>Default Count: <strong>100 messages</strong></p>
+                <p>Default Delay: <strong>1 second</strong></p>
+            </div>
+            
+            <button type="button" class="generate-btn" onclick="generateTemplate()">
+                GENERATE SMS BOMBER TEMPLATE
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function generateTemplate() {
+            // Get form values
+            const bomberName = document.getElementById('bomberName').value || "DARK ZONE SMS BOMBER";
+            const channelLink = document.getElementById('channelLink').value || "https://whatsapp.com/channel/0029VbBWrHxDOQIa119G8545";
+            const footerText = document.getElementById('footerText').value || "POWERED BY DARK-TECH-ZONE";
+            
+            // Store data in localStorage
+            const templateData = {
+                bomberName: bomberName,
+                channelLink: channelLink,
+                footerText: footerText,
+                defaultNumber: "923297342824",
+                defaultCount: "100",
+                defaultDelay: "1"
+            };
+            
+            localStorage.setItem('smsTemplateData', JSON.stringify(templateData));
+            
+            // Redirect to generator page
+            window.location.href = "gen.html";
+        }
+        
+        // Auto-fill with example on page load
+        window.onload = function() {
+            console.log(`
+            ========================================
+            DARK ZONE SMS BOMBER GENERATOR
+            ========================================
+            Auto-Send Feature Enabled:
+            • Default Phone: 923297342824
+            • Default Count: 100 messages
+            • Default Delay: 1 second
+            
+            Leave fields empty = Auto-send to default
+            ========================================
+            `);
+        }
+    </script>
+</body>
+</html>
